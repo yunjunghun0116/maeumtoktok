@@ -1,0 +1,56 @@
+name: app
+description: "마음톡톡 앱 - 부정감정 완화 LLM 연구 (김재정)"
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+11
+
+environment:
+  sdk: ^3.7.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  cupertino_icons: ^1.0.8
+  # 파이어베이스
+  firebase_core: ^3.12.0
+  cloud_firestore: ^5.6.4
+  firebase_storage: ^12.4.5
+  # 데이터직렬화
+  json_annotation: ^4.9.0
+  # 상태관리
+  provider: ^6.1.2
+  # 내부저장소
+  shared_preferences: ^2.5.2
+  # 화면 내 알림
+  another_flushbar: ^1.12.30
+  # 이미지 선택
+  image_picker: ^1.1.2
+  # 랭체인
+  langchain_openai: ^0.7.3
+  langchain: ^0.7.7+2
+  langchain_core: ^0.3.6+1
+  # 버튼
+  flutter_speed_dial: ^7.0.0
+  # 채팅 화면(스크롤 화면)
+  scrollable_positioned_list: ^0.3.8
+  # 암호화
+  crypto: ^3.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+  # 데이터직렬화
+  json_serializable: ^6.9.4
+  build_runner: ^2.4.15 # dart run build_runner build
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/logo/
+    - assets/profile/

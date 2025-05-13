@@ -1,0 +1,1 @@
+enum SenderType { member, target }

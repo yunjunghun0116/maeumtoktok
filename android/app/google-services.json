@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "405870854090",
+    "project_id": "maeumtoktok",
+    "storage_bucket": "maeumtoktok.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:405870854090:android:49eab64ba25bcfad1f5933",
+        "android_client_info": {
+          "package_name": "com.maeumtoktok.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIbPbdLWW-m_nDIFPGjmXnT-xM7DJ2LdM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
