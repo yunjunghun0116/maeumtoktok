@@ -11,11 +11,11 @@ class MemberRepositoryImpl implements MemberRepository {
 
   MemberRepositoryImpl._internal();
 
-  static CollectionReference get collection =>
+  static CollectionReference get _collection =>
       FirebaseFirestore.instance.collection(FirebaseCollection.memberCollection);
 
   @override
   Future<void> update(Member member) async {
-    await collection.doc(member.id).update(member.toJson());
+    await _collection.doc(member.id).update(member.toJson());
   }
 }

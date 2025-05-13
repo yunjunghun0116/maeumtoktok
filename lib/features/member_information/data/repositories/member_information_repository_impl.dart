@@ -13,19 +13,19 @@ class MemberInformationRepositoryImpl implements MemberInformationRepository {
 
   MemberInformationRepositoryImpl._internal();
 
-  static CollectionReference get collection =>
+  static CollectionReference get _collection =>
       FirebaseFirestore.instance.collection(FirebaseCollection.memberInformationCollection);
 
   @override
   MemberInformation create(MemberInformation information, Transaction transaction) {
-    var ref = collection.doc(information.id);
+    var ref = _collection.doc(information.id);
     transaction.set(ref, information.toJson());
     return information;
   }
 
   @override
   Future<MemberInformation> readById(String id) async {
-    var snapshot = await collection.doc(id).get();
+    var snapshot = await _collection.doc(id).get();
     if (!snapshot.exists) throw CustomException(ExceptionMessage.badRequest);
     var information = MemberInformation.fromJson(snapshot.data() as Map<String, dynamic>);
     return information;
@@ -33,7 +33,7 @@ class MemberInformationRepositoryImpl implements MemberInformationRepository {
 
   @override
   Future<MemberInformation> update(MemberInformation information) async {
-    await collection.doc(information.id).update(information.toJson());
+    await _collection.doc(information.id).update(information.toJson());
     return information;
   }
 }

@@ -4,12 +4,13 @@ import 'package:app/features/member_information/domain/repositories/target_infor
 import '../../../../shared/base/base_use_case_with_param.dart';
 
 class UpdateMemberInformation implements BaseUseCaseWithParam<MemberInformation, MemberInformation> {
-  final MemberInformationRepository memberInformationRepository;
+  final MemberInformationRepository _memberInformationRepository;
 
-  UpdateMemberInformation({required this.memberInformationRepository});
+  UpdateMemberInformation({required MemberInformationRepository memberInformationRepository})
+    : _memberInformationRepository = memberInformationRepository;
 
   @override
   Future<MemberInformation> call(MemberInformation information) async {
-    return await memberInformationRepository.update(information);
+    return await _memberInformationRepository.update(information);
   }
 }

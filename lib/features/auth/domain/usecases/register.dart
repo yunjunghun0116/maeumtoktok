@@ -16,38 +16,42 @@ import '../../../../core/exceptions/exception_message.dart';
 import '../../../../shared/repositories/sequence/sequence_repository.dart';
 
 class Register extends BaseUseCaseWithParam<RegisterDto, Member> {
-  final AuthRepository authRepository;
-  final SequenceRepository sequenceRepository;
-  final MemberInformationRepository memberInformationRepository;
-  final TargetRepository targetRepository;
-  final TargetInformationRepository targetInformationRepository;
+  final AuthRepository _authRepository;
+  final SequenceRepository _sequenceRepository;
+  final MemberInformationRepository _memberInformationRepository;
+  final TargetRepository _targetRepository;
+  final TargetInformationRepository _targetInformationRepository;
 
   Register({
-    required this.authRepository,
-    required this.sequenceRepository,
-    required this.memberInformationRepository,
-    required this.targetRepository,
-    required this.targetInformationRepository,
-  });
+    required AuthRepository authRepository,
+    required SequenceRepository sequenceRepository,
+    required MemberInformationRepository memberInformationRepository,
+    required TargetRepository targetRepository,
+    required TargetInformationRepository targetInformationRepository,
+  }) : _targetInformationRepository = targetInformationRepository,
+       _targetRepository = targetRepository,
+       _memberInformationRepository = memberInformationRepository,
+       _sequenceRepository = sequenceRepository,
+       _authRepository = authRepository;
 
   @override
   Future<Member> call(RegisterDto registerDto) async {
-    bool isDuplicated = await authRepository.existsByEmail(registerDto.email);
+    bool isDuplicated = await _authRepository.existsByEmail(registerDto.email);
     if (isDuplicated) throw CustomException(ExceptionMessage.emailDuplicated);
-    var id = await sequenceRepository.getNextSequence(FirebaseCollection.memberCollection);
+    var id = await _sequenceRepository.getNextSequence(FirebaseCollection.memberCollection);
     var member = Member.fromDto(id, registerDto);
 
     var imagePath = ImageUtil.getProfileImagePath(id);
     var imageUploadResult = await ImageUtil.uploadDefaultImage(imagePath);
 
-    await authRepository.runTransaction((transaction) {
-      authRepository.create(member, transaction);
+    await _authRepository.runTransaction((transaction) {
+      _authRepository.create(member, transaction);
       var memberInformation = MemberInformation.fromId(member.id);
-      memberInformationRepository.create(memberInformation, transaction);
+      _memberInformationRepository.create(memberInformation, transaction);
       var target = Target.defaultTarget(member.id, imageUploadResult);
-      targetRepository.create(target, transaction);
+      _targetRepository.create(target, transaction);
       var targetInformation = TargetInformation.defaultInformation(target.id, imageUploadResult);
-      targetInformationRepository.create(targetInformation, transaction);
+      _targetInformationRepository.create(targetInformation, transaction);
     });
 
     return member;

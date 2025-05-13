@@ -5,13 +5,12 @@ import 'package:app/shared/base/base_use_case_with_param.dart';
 import 'package:app/shared/repositories/local/local_repository.dart';
 
 class Login extends BaseUseCaseWithParam<LoginDto, Member> {
-  final AuthRepository authRepository;
-  final LocalRepository localRepository;
+  final AuthRepository _authRepository;
 
-  Login({required this.authRepository, required this.localRepository});
+  Login({required AuthRepository authRepository}) : _authRepository = authRepository;
 
   @override
   Future<Member> call(LoginDto loginDto) async {
-    return await authRepository.readByEmailAndPassword(loginDto.email, loginDto.password);
+    return await _authRepository.readByEmailAndPassword(loginDto.email, loginDto.password);
   }
 }

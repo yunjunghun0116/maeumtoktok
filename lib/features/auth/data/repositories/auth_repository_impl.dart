@@ -13,25 +13,25 @@ class AuthRepositoryImpl implements AuthRepository {
 
   AuthRepositoryImpl._internal();
 
-  static CollectionReference get collection =>
+  static CollectionReference get _collection =>
       FirebaseFirestore.instance.collection(FirebaseCollection.memberCollection);
 
   @override
   Member create(Member member, Transaction transaction) {
-    var ref = collection.doc(member.id);
+    var ref = _collection.doc(member.id);
     transaction.set(ref, member.toJson());
     return member;
   }
 
   @override
   Future<bool> existsByEmail(String email) async {
-    var snapshot = await collection.where("email", isEqualTo: email).get();
+    var snapshot = await _collection.where("email", isEqualTo: email).get();
     return snapshot.docs.isNotEmpty;
   }
 
   @override
   Future<Member> readByEmailAndPassword(String email, String password) async {
-    var snapshot = await collection.where("email", isEqualTo: email).where("password", isEqualTo: password).get();
+    var snapshot = await _collection.where("email", isEqualTo: email).where("password", isEqualTo: password).get();
     if (snapshot.docs.isEmpty) throw CustomException(ExceptionMessage.wrongEmailOrPassword);
     var member = Member.fromJson(snapshot.docs.first.data() as Map<String, dynamic>);
     return member;
@@ -39,7 +39,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Member> readByEmail(String email) async {
-    var snapshot = await collection.where("email", isEqualTo: email).get();
+    var snapshot = await _collection.where("email", isEqualTo: email).get();
     if (snapshot.docs.isEmpty) throw CustomException(ExceptionMessage.wrongEmailRegExp);
     var member = Member.fromJson(snapshot.docs.first.data() as Map<String, dynamic>);
     return member;

@@ -4,12 +4,13 @@ import '../../../../shared/base/base_use_case_with_param.dart';
 import '../entities/member_information.dart';
 
 class ReadMemberInformation implements BaseUseCaseWithParam<String, MemberInformation> {
-  final MemberInformationRepository memberInformationRepository;
+  final MemberInformationRepository _memberInformationRepository;
 
-  ReadMemberInformation({required this.memberInformationRepository});
+  ReadMemberInformation({required MemberInformationRepository memberInformationRepository})
+    : _memberInformationRepository = memberInformationRepository;
 
   @override
   Future<MemberInformation> call(String id) async {
-    return await memberInformationRepository.readById(id);
+    return await _memberInformationRepository.readById(id);
   }
 }

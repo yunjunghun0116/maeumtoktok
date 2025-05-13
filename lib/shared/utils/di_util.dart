@@ -95,10 +95,8 @@ final class DiUtil {
       ),
     );
     result.add(
-      ProxyProvider2<AuthRepository, LocalRepository, Login>(
-        update:
-            (_, authRepository, localRepository, login) =>
-                login ?? Login(authRepository: authRepository, localRepository: localRepository),
+      ProxyProvider<AuthRepository, Login>(
+        update: (_, authRepository, login) => login ?? Login(authRepository: authRepository),
       ),
     );
     result.add(
