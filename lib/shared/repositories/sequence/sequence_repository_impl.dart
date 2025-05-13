@@ -10,7 +10,7 @@ class SequenceRepositoryImpl implements SequenceRepository {
 
   SequenceRepositoryImpl._internal();
 
-  static CollectionReference get collection =>
+  static CollectionReference get _collection =>
       FirebaseFirestore.instance.collection(FirebaseCollection.sequenceCollection);
 
   @override
@@ -18,9 +18,9 @@ class SequenceRepositoryImpl implements SequenceRepository {
     if (!(await existsCollectionName(collectionName))) {
       return await setNewCollection(collectionName);
     }
-    var snapshot = await collection.doc(collectionName).get();
+    var snapshot = await _collection.doc(collectionName).get();
     var sequence = snapshot.get("sequence") as int;
-    collection.doc(collectionName).update({"sequence": sequence + 1});
+    _collection.doc(collectionName).update({"sequence": sequence + 1});
 
     return sequence.toString();
   }
@@ -28,11 +28,11 @@ class SequenceRepositoryImpl implements SequenceRepository {
   Future<String> setNewCollection(String collectionName) async {
     var defaultSequence = 1;
     var defaultMap = {"sequence": defaultSequence};
-    await collection.doc(collectionName).set(defaultMap);
+    await _collection.doc(collectionName).set(defaultMap);
     return defaultSequence.toString();
   }
 
   Future<bool> existsCollectionName(String collectionName) async {
-    return (await collection.doc(collectionName).get()).exists;
+    return (await _collection.doc(collectionName).get()).exists;
   }
 }

@@ -7,16 +7,20 @@ import '../../../../shared/constants/firebase_collection.dart';
 import '../../../../shared/repositories/sequence/sequence_repository.dart';
 
 class CreateTargetIssue implements BaseUseCaseWithParam<CreateIssueDto, TargetIssue> {
-  final TargetIssueRepository targetIssueRepository;
-  final SequenceRepository sequenceRepository;
+  final TargetIssueRepository _targetIssueRepository;
+  final SequenceRepository _sequenceRepository;
 
-  CreateTargetIssue({required this.targetIssueRepository, required this.sequenceRepository});
+  CreateTargetIssue({
+    required TargetIssueRepository targetIssueRepository,
+    required SequenceRepository sequenceRepository,
+  }) : _sequenceRepository = sequenceRepository,
+       _targetIssueRepository = targetIssueRepository;
 
   @override
   Future<TargetIssue> call(CreateIssueDto createIssueDto) async {
-    var id = await sequenceRepository.getNextSequence(FirebaseCollection.targetIssueCollection);
+    var id = await _sequenceRepository.getNextSequence(FirebaseCollection.targetIssueCollection);
     var issue = TargetIssue.fromDto(id, createIssueDto);
 
-    return await targetIssueRepository.create(issue);
+    return await _targetIssueRepository.create(issue);
   }
 }

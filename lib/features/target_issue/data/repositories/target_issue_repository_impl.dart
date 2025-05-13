@@ -11,29 +11,29 @@ class TargetIssueRepositoryImpl implements TargetIssueRepository {
 
   TargetIssueRepositoryImpl._internal();
 
-  static CollectionReference get collection =>
+  static CollectionReference get _collection =>
       FirebaseFirestore.instance.collection(FirebaseCollection.targetIssueCollection);
 
   @override
   Future<TargetIssue> create(TargetIssue issue) async {
-    await collection.doc(issue.id).set(issue.toJson());
+    await _collection.doc(issue.id).set(issue.toJson());
     return issue;
   }
 
   @override
   Future<List<TargetIssue>> readAllByTargetId(String id) async {
-    var snapshot = await collection.where("targetId", isEqualTo: id).get();
+    var snapshot = await _collection.where("targetId", isEqualTo: id).get();
     return snapshot.docs.map((document) => TargetIssue.fromJson(document.data() as Map<String, dynamic>)).toList();
   }
 
   @override
   Future<TargetIssue> update(TargetIssue issue) async {
-    await collection.doc(issue.id).update(issue.toJson());
+    await _collection.doc(issue.id).update(issue.toJson());
     return issue;
   }
 
   @override
   Future<void> delete(TargetIssue issue) async {
-    await collection.doc(issue.id).delete();
+    await _collection.doc(issue.id).delete();
   }
 }

@@ -4,12 +4,13 @@ import 'package:app/features/target_issue/domain/repositories/target_issue_repos
 import '../../../../shared/base/base_use_case_with_param.dart';
 
 class ReadAllTargetIssue implements BaseUseCaseWithParam<String, List<TargetIssue>> {
-  final TargetIssueRepository targetIssueRepository;
+  final TargetIssueRepository _targetIssueRepository;
 
-  ReadAllTargetIssue({required this.targetIssueRepository});
+  ReadAllTargetIssue({required TargetIssueRepository targetIssueRepository})
+    : _targetIssueRepository = targetIssueRepository;
 
   @override
   Future<List<TargetIssue>> call(String id) async {
-    return await targetIssueRepository.readAllByTargetId(id);
+    return await _targetIssueRepository.readAllByTargetId(id);
   }
 }

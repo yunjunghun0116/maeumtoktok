@@ -4,12 +4,13 @@ import 'package:app/features/target_issue/domain/repositories/target_issue_repos
 import '../../../../shared/base/base_use_case_with_param.dart';
 
 class DeleteTargetIssue implements BaseUseCaseWithParam<TargetIssue, void> {
-  final TargetIssueRepository targetIssueRepository;
+  final TargetIssueRepository _targetIssueRepository;
 
-  DeleteTargetIssue({required this.targetIssueRepository});
+  DeleteTargetIssue({required TargetIssueRepository targetIssueRepository})
+    : _targetIssueRepository = targetIssueRepository;
 
   @override
   Future<void> call(TargetIssue issue) async {
-    await targetIssueRepository.delete(issue);
+    await _targetIssueRepository.delete(issue);
   }
 }

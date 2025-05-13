@@ -72,7 +72,13 @@ class _IssueScreenState extends State<IssueScreen> {
               ),
             ),
           ),
-          body: Column(children: controller.issues.map((issue) => getIssueCard(issue)).toList()),
+          body: Column(
+            children:
+                [
+                  ...controller.positiveIssues,
+                  ...controller.negativeIssues,
+                ].map((issue) => getIssueCard(issue)).toList(),
+          ),
           floatingActionButton: SpeedDial(
             children: [getActionChild(IssueType.negative), getActionChild(IssueType.positive)],
             icon: Icons.add,

@@ -76,8 +76,9 @@ final class ChatUtil {
   }
 
   static void _validateTargetIssues(BuildContext context) {
-    var targetIssues = context.read<TargetIssueController>().issues;
-    if (targetIssues.isEmpty) {
+    var positiveIssues = context.read<TargetIssueController>().positiveIssues;
+    var negativeIssues = context.read<TargetIssueController>().negativeIssues;
+    if (positiveIssues.isEmpty && negativeIssues.isEmpty) {
       throw CustomException(ExceptionMessage.targetIssueRequired);
     }
   }

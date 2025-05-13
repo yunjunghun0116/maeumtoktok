@@ -14,11 +14,11 @@ class TargetIssueController extends BaseController {
   final UpdateTargetIssue _updateTargetIssueUseCase;
   final DeleteTargetIssue _deleteTargetIssueUseCase;
 
-  List<TargetIssue> issues = [];
+  List<TargetIssue> _issues = [];
 
-  List<TargetIssue> get positiveIssues => issues.where((issue) => issue.issueType == IssueType.positive).toList();
+  List<TargetIssue> get positiveIssues => _issues.where((issue) => issue.issueType == IssueType.positive).toList();
 
-  List<TargetIssue> get negativeIssues => issues.where((issue) => issue.issueType == IssueType.negative).toList();
+  List<TargetIssue> get negativeIssues => _issues.where((issue) => issue.issueType == IssueType.negative).toList();
 
   TargetIssueController({
     required CreateTargetIssue createTargetIssueUseCase,
@@ -31,7 +31,7 @@ class TargetIssueController extends BaseController {
        _createTargetIssueUseCase = createTargetIssueUseCase;
 
   Future<void> initialize(String targetId) async {
-    issues = await readAll(targetId);
+    _issues = await readAll(targetId);
     notifyListeners();
   }
 
