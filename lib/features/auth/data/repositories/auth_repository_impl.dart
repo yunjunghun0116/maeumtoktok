@@ -31,16 +31,17 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Member> readByEmailAndPassword(String email, String password) async {
-    var snapshot = await _collection.where("email", isEqualTo: email).where("password", isEqualTo: password).get();
+    var snapshot = await _collection.where("email", isEqualTo: email).get();
     if (snapshot.docs.isEmpty) throw CustomException(ExceptionMessage.wrongEmailOrPassword);
     var member = Member.fromJson(snapshot.docs.first.data() as Map<String, dynamic>);
+    member.validatePassword(password);
     return member;
   }
 
   @override
   Future<Member> readByEmail(String email) async {
     var snapshot = await _collection.where("email", isEqualTo: email).get();
-    if (snapshot.docs.isEmpty) throw CustomException(ExceptionMessage.wrongEmailRegExp);
+    if (snapshot.docs.isEmpty) throw CustomException(ExceptionMessage.wrongEmailOrPassword);
     var member = Member.fromJson(snapshot.docs.first.data() as Map<String, dynamic>);
     return member;
   }

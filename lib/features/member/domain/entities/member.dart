@@ -1,4 +1,7 @@
+import 'package:app/core/exceptions/custom_exception.dart';
+import 'package:app/core/exceptions/exception_message.dart';
 import 'package:app/features/member/domain/entities/role.dart';
+import 'package:app/shared/utils/security_util.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../auth/data/models/register_dto.dart';
@@ -33,15 +36,22 @@ class Member {
   Map<String, dynamic> toJson() => _$MemberToJson(this);
 
   factory Member.fromDto(String id, RegisterDto registerDto) {
+    String encryptedPassword = SecurityUtil.encryptPassword(registerDto.password);
     return Member(
       id: id,
       email: registerDto.email,
-      password: registerDto.password,
+      password: encryptedPassword,
       name: registerDto.name,
       age: registerDto.age,
       gender: registerDto.gender,
       role: Role.member,
       lastLoginDate: DateTime.now(),
     );
+  }
+
+  void validatePassword(String inputPassword) {
+    if (!SecurityUtil.checkPW(inputPassword, password)) {
+      throw CustomException(ExceptionMessage.wrongEmailOrPassword);
+    }
   }
 }
