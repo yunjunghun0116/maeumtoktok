@@ -1,10 +1,6 @@
 import 'package:app/features/chat/domain/entities/sender_type.dart';
 import 'package:app/shared/utils/security_util.dart';
-import 'package:json_annotation/json_annotation.dart';
 
-part 'message.g.dart';
-
-@JsonSerializable()
 class Message {
   final String chatId;
   final String senderId;

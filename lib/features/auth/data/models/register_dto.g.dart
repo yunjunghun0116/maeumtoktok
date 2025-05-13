@@ -14,12 +14,13 @@ RegisterDto _$RegisterDtoFromJson(Map<String, dynamic> json) => RegisterDto(
   gender: $enumDecode(_$GenderEnumMap, json['gender']),
 );
 
-Map<String, dynamic> _$RegisterDtoToJson(RegisterDto instance) => <String, dynamic>{
-  'email': instance.email,
-  'password': instance.password,
-  'name': instance.name,
-  'age': instance.age,
-  'gender': _$GenderEnumMap[instance.gender]!,
-};
+Map<String, dynamic> _$RegisterDtoToJson(RegisterDto instance) =>
+    <String, dynamic>{
+      'email': instance.email,
+      'password': instance.password,
+      'name': instance.name,
+      'age': instance.age,
+      'gender': _$GenderEnumMap[instance.gender]!,
+    };
 
 const _$GenderEnumMap = {Gender.male: 'male', Gender.female: 'female'};

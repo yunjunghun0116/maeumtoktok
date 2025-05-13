@@ -13,11 +13,15 @@ TargetIssue _$TargetIssueFromJson(Map<String, dynamic> json) => TargetIssue(
   description: json['description'] as String,
 );
 
-Map<String, dynamic> _$TargetIssueToJson(TargetIssue instance) => <String, dynamic>{
-  'id': instance.id,
-  'targetId': instance.targetId,
-  'issueType': _$IssueTypeEnumMap[instance.issueType]!,
-  'description': instance.description,
-};
+Map<String, dynamic> _$TargetIssueToJson(TargetIssue instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'targetId': instance.targetId,
+      'issueType': _$IssueTypeEnumMap[instance.issueType]!,
+      'description': instance.description,
+    };
 
-const _$IssueTypeEnumMap = {IssueType.positive: 'positive', IssueType.negative: 'negative'};
+const _$IssueTypeEnumMap = {
+  IssueType.positive: 'positive',
+  IssueType.negative: 'negative',
+};
