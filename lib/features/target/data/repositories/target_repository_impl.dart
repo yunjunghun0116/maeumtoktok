@@ -13,19 +13,19 @@ class TargetRepositoryImpl implements TargetRepository {
 
   TargetRepositoryImpl._internal();
 
-  static CollectionReference get collection =>
+  static CollectionReference get _collection =>
       FirebaseFirestore.instance.collection(FirebaseCollection.targetCollection);
 
   @override
   Target create(Target target, Transaction transaction) {
-    var ref = collection.doc(target.id);
+    var ref = _collection.doc(target.id);
     transaction.set(ref, target.toJson());
     return target;
   }
 
   @override
   Future<Target> readById(String id) async {
-    var snapshot = await collection.doc(id).get();
+    var snapshot = await _collection.doc(id).get();
     if (!snapshot.exists) throw CustomException(ExceptionMessage.badRequest);
     var target = Target.fromJson(snapshot.data() as Map<String, dynamic>);
     return target;
@@ -33,7 +33,7 @@ class TargetRepositoryImpl implements TargetRepository {
 
   @override
   Future<Target> update(Target target) async {
-    await collection.doc(target.id).update(target.toJson());
+    await _collection.doc(target.id).update(target.toJson());
     return target;
   }
 }

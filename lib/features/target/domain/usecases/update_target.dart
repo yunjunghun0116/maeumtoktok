@@ -4,12 +4,12 @@ import 'package:app/features/target/domain/repositories/target_repository.dart';
 import '../../../../shared/base/base_use_case_with_param.dart';
 
 class UpdateTarget implements BaseUseCaseWithParam<Target, Target> {
-  final TargetRepository targetRepository;
+  final TargetRepository _targetRepository;
 
-  UpdateTarget({required this.targetRepository});
+  UpdateTarget({required TargetRepository targetRepository}) : _targetRepository = targetRepository;
 
   @override
   Future<Target> call(Target target) async {
-    return await targetRepository.update(target);
+    return await _targetRepository.update(target);
   }
 }

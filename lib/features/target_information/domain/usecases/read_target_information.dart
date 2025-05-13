@@ -4,12 +4,13 @@ import 'package:app/features/target_information/domain/repositories/target_infor
 import '../../../../shared/base/base_use_case_with_param.dart';
 
 class ReadTargetInformation implements BaseUseCaseWithParam<String, TargetInformation> {
-  final TargetInformationRepository targetInformationRepository;
+  final TargetInformationRepository _targetInformationRepository;
 
-  ReadTargetInformation({required this.targetInformationRepository});
+  ReadTargetInformation({required TargetInformationRepository targetInformationRepository})
+    : _targetInformationRepository = targetInformationRepository;
 
   @override
   Future<TargetInformation> call(String id) async {
-    return await targetInformationRepository.readById(id);
+    return await _targetInformationRepository.readById(id);
   }
 }
