@@ -4,12 +4,12 @@ import 'package:app/shared/base/base_stream_use_case_with_param.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ReadRecentMessage extends BaseStreamUseCaseWithParam<Chat, QuerySnapshot> {
-  final MessageRepository messageRepository;
+  final MessageRepository _messageRepository;
 
-  ReadRecentMessage({required this.messageRepository});
+  ReadRecentMessage({required MessageRepository messageRepository}) : _messageRepository = messageRepository;
 
   @override
   Stream<QuerySnapshot> call(Chat chat) {
-    return messageRepository.readAllMessage(chat);
+    return _messageRepository.readAllMessage(chat);
   }
 }

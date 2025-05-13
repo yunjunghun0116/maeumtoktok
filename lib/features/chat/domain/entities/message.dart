@@ -1,4 +1,5 @@
 import 'package:app/features/chat/domain/entities/sender_type.dart';
+import 'package:app/shared/utils/security_util.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'message.g.dart';
@@ -19,7 +20,25 @@ class Message {
     required this.timeStamp,
   });
 
-  factory Message.fromJson(Map<String, dynamic> json) => _$MessageFromJson(json);
+  factory Message.fromJson(Map<String, dynamic> json) {
+    String decryptedMessage = SecurityUtil.decryptChat(json['contents'] as String);
+    return Message(
+      chatId: json['chatId'] as String,
+      senderId: json['senderId'] as String,
+      senderType: SenderType.getSenderTypeFromName(json['senderType'] as String),
+      contents: decryptedMessage,
+      timeStamp: DateTime.parse(json['timeStamp'] as String),
+    );
+  }
 
-  Map<String, dynamic> toJson() => _$MessageToJson(this);
+  Map<String, dynamic> toJson() {
+    String encryptedMessage = SecurityUtil.encryptChat(contents);
+    return <String, dynamic>{
+      'chatId': chatId,
+      'senderId': senderId,
+      'senderType': SenderType.getSenderTypeName(senderType),
+      'contents': encryptedMessage,
+      'timeStamp': timeStamp.toIso8601String(),
+    };
+  }
 }

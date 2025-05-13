@@ -6,16 +6,18 @@ import 'package:app/shared/constants/firebase_collection.dart';
 import 'package:app/shared/repositories/sequence/sequence_repository.dart';
 
 class CreateChat extends BaseUseCaseWithParam<CreateChatDto, Chat> {
-  final SequenceRepository sequenceRepository;
-  final ChatRepository chatRepository;
+  final SequenceRepository _sequenceRepository;
+  final ChatRepository _chatRepository;
 
-  CreateChat({required this.sequenceRepository, required this.chatRepository});
+  CreateChat({required SequenceRepository sequenceRepository, required ChatRepository chatRepository})
+    : _chatRepository = chatRepository,
+      _sequenceRepository = sequenceRepository;
 
   @override
   Future<Chat> call(CreateChatDto createChatDto) async {
-    var id = await sequenceRepository.getNextSequence(FirebaseCollection.chatCollection);
+    var id = await _sequenceRepository.getNextSequence(FirebaseCollection.chatCollection);
     var chat = Chat.of(id: id, member: createChatDto.member, target: createChatDto.target);
-    await chatRepository.create(chat);
+    await _chatRepository.create(chat);
     return chat;
   }
 }

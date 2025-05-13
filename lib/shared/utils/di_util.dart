@@ -15,7 +15,6 @@ import 'package:app/features/chat/domain/usecases/create_message.dart';
 import 'package:app/features/chat/domain/usecases/exists_chat.dart';
 import 'package:app/features/chat/domain/usecases/read_chat.dart';
 import 'package:app/features/chat/domain/usecases/read_more_message.dart';
-import 'package:app/features/chat/domain/usecases/update_chat.dart';
 import 'package:app/features/chat/presentation/controllers/chat_controller.dart';
 import 'package:app/features/chat/presentation/controllers/message_controller.dart';
 import 'package:app/features/member/presentation/controllers/member_controller.dart';
@@ -322,22 +321,12 @@ final class DiUtil {
       ),
     );
     result.add(
-      ProxyProvider<ChatRepository, UpdateChat>(
-        update: (_, chatRepository, updateChat) => updateChat ?? UpdateChat(chatRepository: chatRepository),
-      ),
-    );
-    result.add(
-      ChangeNotifierProxyProvider4<CreateChat, ExistsChat, ReadChat, UpdateChat, ChatController?>(
+      ChangeNotifierProxyProvider3<CreateChat, ExistsChat, ReadChat, ChatController?>(
         create: (_) => null,
         update:
-            (_, createChat, existsChat, readChat, updateChat, controller) =>
+            (_, createChat, existsChat, readChat, controller) =>
                 controller ??
-                ChatController(
-                  createChatUseCase: createChat,
-                  existsChatUseCase: existsChat,
-                  readChatUseCase: readChat,
-                  updateChatUseCase: updateChat,
-                ),
+                ChatController(createChatUseCase: createChat, existsChatUseCase: existsChat, readChatUseCase: readChat),
       ),
     );
     return result;
