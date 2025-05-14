@@ -77,10 +77,14 @@ class _IssueScreenState extends State<IssueScreen> {
                 [
                   ...controller.positiveIssues,
                   ...controller.negativeIssues,
-                ].map((issue) => getIssueCard(issue)).toList(),
+                ].map((issue) => getIssueCard(issue: issue)).toList(),
           ),
           floatingActionButton: SpeedDial(
-            children: [getActionChild(IssueType.negative), getActionChild(IssueType.positive)],
+            children: [
+              getActionChild(issueType: IssueType.normal),
+              getActionChild(issueType: IssueType.negative),
+              getActionChild(issueType: IssueType.positive),
+            ],
             icon: Icons.add,
             backgroundColor: AppColors.mainColor,
             foregroundColor: AppColors.whiteColor,
@@ -90,7 +94,7 @@ class _IssueScreenState extends State<IssueScreen> {
     );
   }
 
-  Widget getIssueCard(TargetIssue issue) {
+  Widget getIssueCard({required TargetIssue issue}) {
     return GestureDetector(
       onTap: () => _updateDialog(issue),
       child: Container(
@@ -98,10 +102,7 @@ class _IssueScreenState extends State<IssueScreen> {
         padding: const EdgeInsets.all(16),
         width: double.infinity,
         decoration: BoxDecoration(
-          border: Border.all(
-            color: issue.issueType == IssueType.positive ? AppColors.okColor : AppColors.noColor,
-            width: 2,
-          ),
+          border: Border.all(color: issue.issueType.color, width: 2),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
@@ -114,14 +115,14 @@ class _IssueScreenState extends State<IssueScreen> {
     );
   }
 
-  SpeedDialChild getActionChild(IssueType issueType) {
+  SpeedDialChild getActionChild({required IssueType issueType}) {
     return SpeedDialChild(
       onTap: () => _createDialog(issueType),
       child: Text(
         issueType.name,
         style: TextStyle(color: AppColors.whiteColor, fontWeight: FontWeight.bold, fontSize: 14, height: 20 / 14),
       ),
-      backgroundColor: issueType == IssueType.positive ? AppColors.okColor : AppColors.noColor,
+      backgroundColor: issueType.color,
       shape: CircleBorder(),
     );
   }
