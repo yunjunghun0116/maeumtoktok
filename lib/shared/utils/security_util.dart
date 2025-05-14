@@ -1,10 +1,11 @@
+import 'package:app/core/exceptions/custom_exception.dart';
+import 'package:app/core/exceptions/exception_message.dart';
 import 'package:app/shared/constants/secrets.dart';
 import 'package:bcrypt/bcrypt.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 
 final class SecurityUtil {
   static final _key = encrypt.Key.fromUtf8(Secrets.chatEncryptKey);
-  static final _iv = encrypt.IV.fromLength(16);
   static final _encrypter = encrypt.Encrypter(encrypt.AES(_key));
 
   static String encryptPassword(String plainText) {
@@ -16,12 +17,19 @@ final class SecurityUtil {
   }
 
   static String encryptChat(String plainText) {
-    final encrypted = _encrypter.encrypt(plainText, iv: _iv);
-    return encrypted.base64;
+    final iv = encrypt.IV.fromSecureRandom(16);
+    final encrypted = _encrypter.encrypt(plainText, iv: iv);
+    return '${iv.base64}:${encrypted.base64}';
   }
 
   static String decryptChat(String encryptedChat) {
-    final encrypted = encrypt.Encrypted.from64(encryptedChat);
-    return _encrypter.decrypt(encrypted, iv: _iv);
+    final parts = encryptedChat.split(':');
+    if (parts.length != 2) {
+      throw CustomException(ExceptionMessage.badRequest);
+    }
+
+    final iv = encrypt.IV.fromBase64(parts[0]);
+    final encrypted = encrypt.Encrypted.fromBase64(parts[1]);
+    return _encrypter.decrypt(encrypted, iv: iv);
   }
 }

@@ -70,6 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void messageInitialize() {
     if (_chat == null) return;
     _messageSubscription = context.read<MessageController>().readAll(_chat!).listen((snapshot) {
+      if (snapshot.docs.isEmpty) return;
       var result = snapshot.docs.map((doc) => Message.fromJson(doc.data() as Map<String, dynamic>)).toList();
       setState(() => _messages = result);
 
