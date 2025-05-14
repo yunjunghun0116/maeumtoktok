@@ -20,6 +20,8 @@ class TargetIssueController extends BaseController {
 
   List<TargetIssue> get negativeIssues => _issues.where((issue) => issue.issueType == IssueType.negative).toList();
 
+  List<TargetIssue> get normalIssues => _issues.where((issue) => issue.issueType == IssueType.normal).toList();
+
   TargetIssueController({
     required CreateTargetIssue createTargetIssueUseCase,
     required ReadAllTargetIssue readAllTargetIssueUseCase,

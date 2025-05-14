@@ -103,8 +103,8 @@ class _TargetInformationScreenState extends State<TargetInformationScreen> {
   void initState() {
     super.initState();
     _nameController.text = context.read<TargetController>().target!.name;
-    _jobController.text = context.read<TargetController>().target!.job ?? "";
-    _ageController.text = context.read<TargetController>().target!.age?.toString() ?? "";
+    _jobController.text = context.read<TargetController>().target!.job;
+    _ageController.text = context.read<TargetController>().target!.age.toString();
   }
 
   @override
@@ -245,9 +245,9 @@ class _TargetInformationScreenState extends State<TargetInformationScreen> {
     );
   }
 
-  Widget simpleActionButton(String title, Function onTap) {
+  Widget simpleActionButton(String title, Function() onTap) {
     return GestureDetector(
-      onTap: () => onTap(),
+      onTap: onTap,
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20),
         height: 52,

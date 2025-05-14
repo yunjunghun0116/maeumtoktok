@@ -77,6 +77,7 @@ class _IssueScreenState extends State<IssueScreen> {
                 [
                   ...controller.positiveIssues,
                   ...controller.negativeIssues,
+                  ...controller.normalIssues,
                 ].map((issue) => getIssueCard(issue: issue)).toList(),
           ),
           floatingActionButton: SpeedDial(
