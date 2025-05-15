@@ -7,13 +7,13 @@ import 'package:app/features/target/domain/entities/target.dart';
 import 'package:app/features/target/domain/repositories/target_repository.dart';
 import 'package:app/features/target_information/domain/entities/target_information.dart';
 import 'package:app/features/target_information/domain/repositories/target_information_repository.dart';
-import 'package:app/shared/base/base_use_case_with_param.dart';
+import 'package:app/core/domain/usecases/base_use_case_with_param.dart';
 import 'package:app/shared/constants/firebase_collection.dart';
 import 'package:app/shared/utils/image_util.dart';
 
 import '../../../../core/exceptions/custom_exception.dart';
 import '../../../../core/exceptions/exception_message.dart';
-import '../../../../shared/repositories/sequence/sequence_repository.dart';
+import '../../../../core/domain/repositories/sequence_repository.dart';
 
 class Register extends BaseUseCaseWithParam<RegisterDto, Member> {
   final AuthRepository _authRepository;

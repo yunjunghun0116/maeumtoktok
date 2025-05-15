@@ -1,6 +1,6 @@
 import 'package:app/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:app/shared/constants/local_repository_key.dart';
-import 'package:app/shared/repositories/local/local_repository.dart';
+import 'package:app/core/domain/repositories/local_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

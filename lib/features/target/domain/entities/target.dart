@@ -35,4 +35,9 @@ class Target {
   void updateAge(int age) {
     this.age = age;
   }
+
+  @override
+  String toString() {
+    return 'Target{id: $id, image: $image, name: $name, job: $job, age: $age}';
+  }
 }

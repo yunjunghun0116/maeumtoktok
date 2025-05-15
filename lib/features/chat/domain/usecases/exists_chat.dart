@@ -1,6 +1,6 @@
 import 'package:app/features/chat/data/models/exists_chat_dto.dart';
 import 'package:app/features/chat/domain/repositories/chat_repository.dart';
-import 'package:app/shared/base/base_use_case_with_param.dart';
+import 'package:app/core/domain/usecases/base_use_case_with_param.dart';
 
 class ExistsChat extends BaseUseCaseWithParam<ExistsChatDto, bool> {
   final ChatRepository _chatRepository;

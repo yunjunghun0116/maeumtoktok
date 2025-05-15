@@ -6,7 +6,7 @@ import 'package:app/features/target_issue/domain/usecases/delete_target_issue.da
 import 'package:app/features/target_issue/domain/usecases/read_all_target_issue.dart';
 import 'package:app/features/target_issue/domain/usecases/update_target_issue.dart';
 
-import '../../../../../shared/base/base_controller.dart';
+import '../../../../core/presentation/base_controller.dart';
 
 class TargetIssueController extends BaseController {
   final CreateTargetIssue _createTargetIssueUseCase;

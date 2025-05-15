@@ -2,9 +2,9 @@ import 'package:app/features/target_issue/data/models/create_issue_dto.dart';
 import 'package:app/features/target_issue/domain/entities/target_issue.dart';
 import 'package:app/features/target_issue/domain/repositories/target_issue_repository.dart';
 
-import '../../../../shared/base/base_use_case_with_param.dart';
+import '../../../../core/domain/usecases/base_use_case_with_param.dart';
 import '../../../../shared/constants/firebase_collection.dart';
-import '../../../../shared/repositories/sequence/sequence_repository.dart';
+import '../../../../core/domain/repositories/sequence_repository.dart';
 
 class CreateTargetIssue implements BaseUseCaseWithParam<CreateIssueDto, TargetIssue> {
   final TargetIssueRepository _targetIssueRepository;

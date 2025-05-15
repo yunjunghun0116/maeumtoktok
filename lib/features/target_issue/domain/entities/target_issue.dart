@@ -29,4 +29,9 @@ class TargetIssue {
   void updateDescription(String description) {
     this.description = description;
   }
+
+  @override
+  String toString() {
+    return 'TargetIssue{id: $id, targetId: $targetId, issueType: ${issueType.type}, description: $description}';
+  }
 }

@@ -14,4 +14,9 @@ class CreateIssueDto {
   factory CreateIssueDto.fromJson(Map<String, dynamic> json) => _$CreateIssueDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$CreateIssueDtoToJson(this);
+
+  @override
+  String toString() {
+    return 'CreateIssueDto{targetId: $targetId, issueType: ${issueType.type}, description: $description}';
+  }
 }

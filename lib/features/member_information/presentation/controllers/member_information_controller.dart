@@ -3,7 +3,7 @@ import 'package:app/features/member_information/domain/entities/member_informati
 import 'package:app/features/member_information/domain/usecases/read_member_information.dart';
 import 'package:app/features/member_information/domain/usecases/update_member_information.dart';
 
-import '../../../../../shared/base/base_controller.dart';
+import '../../../../core/presentation/base_controller.dart';
 
 class MemberInformationController extends BaseController {
   final ReadMemberInformation _readMemberInformationUseCase;

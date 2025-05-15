@@ -7,4 +7,9 @@ class CreateChatDto {
   final Target target;
 
   CreateChatDto({required this.member, required this.target});
+
+  @override
+  String toString() {
+    return 'CreateChatDto{member: ${member.toString()}, target: ${target.toString()}}';
+  }
 }

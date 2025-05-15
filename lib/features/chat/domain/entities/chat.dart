@@ -20,4 +20,9 @@ class Chat {
   factory Chat.of({required String id, required Member member, required Target target}) {
     return Chat(id: id, memberId: member.id, targetId: target.id);
   }
+
+  @override
+  String toString() {
+    return 'Chat{id: $id, memberId: $memberId, targetId: $targetId}';
+  }
 }

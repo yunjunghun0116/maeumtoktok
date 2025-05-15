@@ -2,17 +2,20 @@ import 'package:app/core/exceptions/custom_exception.dart';
 import 'package:app/core/exceptions/exception_message.dart';
 
 enum SenderType {
-  member,
-  target;
+  member("사용자", "member"),
+  target("상대방", "target");
 
-  static const Map<String, SenderType> _enumMap = {"member": SenderType.member, "target": SenderType.target};
+  final String name;
+  final String type;
 
-  static String getSenderTypeName(SenderType senderType) => senderType.name;
+  const SenderType(this.name, this.type);
 
-  static SenderType getSenderTypeFromName(String value) {
-    if (!_enumMap.containsKey(value)) {
+  static const Map<String, SenderType> _senderTypeMap = {"member": SenderType.member, "target": SenderType.target};
+
+  static SenderType getType(String value) {
+    if (!_senderTypeMap.containsKey(value)) {
       throw CustomException(ExceptionMessage.badRequest);
     }
-    return _enumMap[value]!;
+    return _senderTypeMap[value]!;
   }
 }

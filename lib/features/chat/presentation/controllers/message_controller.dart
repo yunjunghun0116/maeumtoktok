@@ -5,7 +5,7 @@ import 'package:app/features/chat/domain/usecases/create_message.dart';
 import 'package:app/features/chat/domain/usecases/read_more_message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../../../../shared/base/base_controller.dart';
+import '../../../../core/presentation/base_controller.dart';
 import '../../domain/usecases/read_recent_message.dart';
 
 class MessageController extends BaseController {

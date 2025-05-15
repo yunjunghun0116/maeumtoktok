@@ -20,4 +20,9 @@ class TargetInformation {
   void updateDescription(String description) {
     this.description = description;
   }
+
+  @override
+  String toString() {
+    return 'TargetInformation{id: $id, description: $description}';
+  }
 }

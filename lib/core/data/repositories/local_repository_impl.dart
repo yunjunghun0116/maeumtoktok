@@ -1,8 +1,8 @@
-import 'package:app/shared/repositories/local/local_repository.dart';
+import 'package:app/core/domain/repositories/local_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../core/exceptions/custom_exception.dart';
-import '../../../core/exceptions/exception_message.dart';
+import '../../exceptions/custom_exception.dart';
+import '../../exceptions/exception_message.dart';
 
 class LocalRepositoryImpl implements LocalRepository {
   static final LocalRepositoryImpl _instance = LocalRepositoryImpl._internal();

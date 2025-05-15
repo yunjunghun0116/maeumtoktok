@@ -37,4 +37,9 @@ class RegisterDto {
     if (!json.containsKey("age")) throw CustomException(ExceptionMessage.badRequest);
     if (!json.containsKey("gender")) throw CustomException(ExceptionMessage.badRequest);
   }
+
+  @override
+  String toString() {
+    return 'RegisterDto{email: $email, password: $password, name: $name, age: $age, gender: ${gender.gender}}';
+  }
 }

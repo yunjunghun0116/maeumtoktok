@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
-import '../../core/exceptions/custom_exception.dart';
+import '../exceptions/custom_exception.dart';
 
 abstract class BaseController extends ChangeNotifier {
   bool isLoading = false;

@@ -1,6 +1,5 @@
 import 'package:app/core/exceptions/custom_exception.dart';
 import 'package:app/core/exceptions/exception_message.dart';
-import 'package:app/features/member/domain/entities/role.dart';
 import 'package:app/shared/utils/security_util.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -17,7 +16,6 @@ class Member {
   final String name;
   final int age;
   final Gender gender;
-  final Role role;
   final DateTime lastLoginDate;
 
   Member({
@@ -27,7 +25,6 @@ class Member {
     required this.name,
     required this.age,
     required this.gender,
-    required this.role,
     required this.lastLoginDate,
   });
 
@@ -44,7 +41,6 @@ class Member {
       name: registerDto.name,
       age: registerDto.age,
       gender: registerDto.gender,
-      role: Role.member,
       lastLoginDate: DateTime.now(),
     );
   }
@@ -53,5 +49,10 @@ class Member {
     if (!SecurityUtil.checkPW(inputPassword, password)) {
       throw CustomException(ExceptionMessage.wrongEmailOrPassword);
     }
+  }
+
+  @override
+  String toString() {
+    return 'Member{id: $id, email: $email, password: $password, name: $name, age: $age, gender: ${gender.gender}, lastLoginDate: ${lastLoginDate.toIso8601String()}';
   }
 }

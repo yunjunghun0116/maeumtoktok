@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../constants/firebase_collection.dart';
-import 'sequence_repository.dart';
+import '../../../shared/constants/firebase_collection.dart';
+import '../../domain/repositories/sequence_repository.dart';
 
 class SequenceRepositoryImpl implements SequenceRepository {
   static final SequenceRepositoryImpl _instance = SequenceRepositoryImpl._internal();

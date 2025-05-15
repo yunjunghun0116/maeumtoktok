@@ -6,7 +6,7 @@ import 'package:app/features/chat/domain/usecases/create_chat.dart';
 import 'package:app/features/chat/domain/usecases/exists_chat.dart';
 import 'package:app/features/chat/domain/usecases/read_chat.dart';
 
-import '../../../../../shared/base/base_controller.dart';
+import '../../../../core/presentation/base_controller.dart';
 
 class ChatController extends BaseController {
   final CreateChat _createChatUseCase;

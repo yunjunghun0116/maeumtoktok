@@ -21,7 +21,7 @@ class Message {
     return Message(
       chatId: json['chatId'] as String,
       senderId: json['senderId'] as String,
-      senderType: SenderType.getSenderTypeFromName(json['senderType'] as String),
+      senderType: SenderType.getType(json['senderType'] as String),
       contents: decryptedMessage,
       timeStamp: DateTime.parse(json['timeStamp'] as String),
     );
@@ -32,9 +32,14 @@ class Message {
     return <String, dynamic>{
       'chatId': chatId,
       'senderId': senderId,
-      'senderType': SenderType.getSenderTypeName(senderType),
+      'senderType': senderType.type,
       'contents': encryptedMessage,
       'timeStamp': timeStamp.toIso8601String(),
     };
+  }
+
+  @override
+  String toString() {
+    return 'Message{chatId: $chatId, senderId: $senderId, senderType: ${senderType.type}, contents: $contents, timeStamp: ${timeStamp.toIso8601String()}}';
   }
 }

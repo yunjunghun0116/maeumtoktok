@@ -6,4 +6,9 @@ class ReadMoreMessageDto {
   final Message lastMessage;
 
   ReadMoreMessageDto({required this.chat, required this.lastMessage});
+
+  @override
+  String toString() {
+    return 'ReadMoreMessageDto{chat: ${chat.toString()}, lastMessage: ${lastMessage.toString()}}';
+  }
 }
