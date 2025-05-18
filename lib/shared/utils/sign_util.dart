@@ -1,9 +1,9 @@
+import 'package:app/core/domain/repositories/local_repository.dart';
 import 'package:app/features/member_information/presentation/controllers/member_information_controller.dart';
 import 'package:app/features/target/presentation/controllers/target_controller.dart';
 import 'package:app/features/target_information/presentation/controllers/target_information_controller.dart';
 import 'package:app/features/target_issue/presentation/controllers/target_issue_controller.dart';
 import 'package:app/shared/constants/local_repository_key.dart';
-import 'package:app/core/domain/repositories/local_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

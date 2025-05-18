@@ -7,10 +7,9 @@ part of 'target_information.dart';
 // **************************************************************************
 
 TargetInformation _$TargetInformationFromJson(Map<String, dynamic> json) =>
-    TargetInformation(
-      id: json['id'] as String,
-      description: json['description'] as String,
-    );
+    TargetInformation(id: json['id'] as String, description: json['description'] as String);
 
-Map<String, dynamic> _$TargetInformationToJson(TargetInformation instance) =>
-    <String, dynamic>{'id': instance.id, 'description': instance.description};
+Map<String, dynamic> _$TargetInformationToJson(TargetInformation instance) => <String, dynamic>{
+  'id': instance.id,
+  'description': instance.description,
+};

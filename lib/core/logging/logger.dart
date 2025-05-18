@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../shared/constants/firebase_collection.dart';
 import 'log_entity.dart';
 

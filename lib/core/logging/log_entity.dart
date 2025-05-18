@@ -1,5 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
-
 class LogEntity {
   final String? memberId;
   final Object? input;

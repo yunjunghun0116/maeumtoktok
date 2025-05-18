@@ -1,7 +1,7 @@
+import 'package:app/core/domain/usecases/base_use_case_with_param.dart';
 import 'package:app/features/chat/data/models/read_chat_dto.dart';
 import 'package:app/features/chat/domain/entities/chat.dart';
 import 'package:app/features/chat/domain/repositories/chat_repository.dart';
-import 'package:app/core/domain/usecases/base_use_case_with_param.dart';
 
 class ReadChat extends BaseUseCaseWithParam<ReadChatDto, Chat> {
   final ChatRepository _chatRepository;

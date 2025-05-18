@@ -1,3 +1,7 @@
+import 'package:app/core/data/repositories/local_repository_impl.dart';
+import 'package:app/core/data/repositories/sequence_repository_impl.dart';
+import 'package:app/core/domain/repositories/local_repository.dart';
+import 'package:app/core/domain/repositories/sequence_repository.dart';
 import 'package:app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:app/features/auth/domain/usecases/auto_login.dart';
@@ -39,10 +43,6 @@ import 'package:app/features/target_issue/domain/usecases/delete_target_issue.da
 import 'package:app/features/target_issue/domain/usecases/read_all_target_issue.dart';
 import 'package:app/features/target_issue/domain/usecases/update_target_issue.dart';
 import 'package:app/features/target_issue/presentation/controllers/target_issue_controller.dart';
-import 'package:app/core/domain/repositories/local_repository.dart';
-import 'package:app/core/data/repositories/local_repository_impl.dart';
-import 'package:app/core/domain/repositories/sequence_repository.dart';
-import 'package:app/core/data/repositories/sequence_repository_impl.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
