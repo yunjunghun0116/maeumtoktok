@@ -9,7 +9,7 @@ class Login extends BaseUseCaseWithParam<LoginDto, Member> {
   Login({required AuthRepository authRepository}) : _authRepository = authRepository;
 
   @override
-  Future<Member> call(LoginDto loginDto) async {
+  Future<Member> execute(LoginDto loginDto) async {
     return await _authRepository.readByEmailAndPassword(loginDto.email, loginDto.password);
   }
 }

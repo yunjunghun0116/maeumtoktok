@@ -35,7 +35,7 @@ class Register extends BaseUseCaseWithParam<RegisterDto, Member> {
        _authRepository = authRepository;
 
   @override
-  Future<Member> call(RegisterDto registerDto) async {
+  Future<Member> execute(RegisterDto registerDto) async {
     bool isDuplicated = await _authRepository.existsByEmail(registerDto.email);
     if (isDuplicated) throw CustomException(ExceptionMessage.emailDuplicated);
     var id = await _sequenceRepository.getNextSequence(FirebaseCollection.memberCollection);

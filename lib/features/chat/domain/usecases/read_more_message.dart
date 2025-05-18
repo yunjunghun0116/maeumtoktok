@@ -9,7 +9,7 @@ class ReadMoreMessage extends BaseUseCaseWithParam<ReadMoreMessageDto, List<Mess
   ReadMoreMessage({required MessageRepository messageRepository}) : _messageRepository = messageRepository;
 
   @override
-  Future<List<Message>> call(ReadMoreMessageDto readMoreMessageDto) {
+  Future<List<Message>> execute(ReadMoreMessageDto readMoreMessageDto) {
     return _messageRepository.loadMoreMessage(
       chat: readMoreMessageDto.chat,
       lastMessage: readMoreMessageDto.lastMessage,

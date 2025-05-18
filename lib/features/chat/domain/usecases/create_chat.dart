@@ -14,7 +14,7 @@ class CreateChat extends BaseUseCaseWithParam<CreateChatDto, Chat> {
       _sequenceRepository = sequenceRepository;
 
   @override
-  Future<Chat> call(CreateChatDto createChatDto) async {
+  Future<Chat> execute(CreateChatDto createChatDto) async {
     var id = await _sequenceRepository.getNextSequence(FirebaseCollection.chatCollection);
     var chat = Chat.of(id: id, member: createChatDto.member, target: createChatDto.target);
     await _chatRepository.create(chat);

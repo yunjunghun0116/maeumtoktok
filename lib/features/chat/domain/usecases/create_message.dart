@@ -8,7 +8,7 @@ class CreateMessage extends BaseUseCaseWithParam<Message, Message> {
   CreateMessage({required MessageRepository messageRepository}) : _messageRepository = messageRepository;
 
   @override
-  Future<Message> call(Message message) async {
+  Future<Message> execute(Message message) async {
     await _messageRepository.create(message);
     return message;
   }

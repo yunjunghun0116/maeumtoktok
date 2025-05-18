@@ -9,7 +9,7 @@ class ReadChat extends BaseUseCaseWithParam<ReadChatDto, Chat> {
   ReadChat({required ChatRepository chatRepository}) : _chatRepository = chatRepository;
 
   @override
-  Future<Chat> call(ReadChatDto readChatDto) async {
+  Future<Chat> execute(ReadChatDto readChatDto) async {
     return await _chatRepository.readByMemberIdAndTargetId(readChatDto.memberId, readChatDto.targetId);
   }
 }

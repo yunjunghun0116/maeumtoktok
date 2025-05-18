@@ -16,7 +16,7 @@ class AutoLogin extends BaseUseCase<Member> {
       _authRepository = authRepository;
 
   @override
-  Future<Member> call() async {
+  Future<Member> execute() async {
     try {
       var isLoggedIn = _localRepository.read<bool>(LocalRepositoryKey.isLoggedIn);
       if (!isLoggedIn) throw CustomException(ExceptionMessage.badRequest);

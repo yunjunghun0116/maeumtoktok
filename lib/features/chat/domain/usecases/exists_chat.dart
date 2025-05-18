@@ -8,7 +8,7 @@ class ExistsChat extends BaseUseCaseWithParam<ExistsChatDto, bool> {
   ExistsChat({required ChatRepository chatRepository}) : _chatRepository = chatRepository;
 
   @override
-  Future<bool> call(ExistsChatDto existsChatDto) async {
+  Future<bool> execute(ExistsChatDto existsChatDto) async {
     return await _chatRepository.existsByMemberIdAndTargetId(existsChatDto.memberId, existsChatDto.targetId);
   }
 }

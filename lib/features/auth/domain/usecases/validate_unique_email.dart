@@ -7,7 +7,7 @@ class ValidateUniqueEmail extends BaseUseCaseWithParam<String, bool> {
   ValidateUniqueEmail({required AuthRepository authRepository}) : _authRepository = authRepository;
 
   @override
-  Future<bool> call(String email) async {
+  Future<bool> execute(String email) async {
     return await _authRepository.existsByEmail(email);
   }
 }
