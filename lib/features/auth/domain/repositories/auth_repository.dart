@@ -12,4 +12,6 @@ abstract class AuthRepository {
   Future<bool> existsByEmail(String email);
 
   Future<void> runTransaction(Function(Transaction transaction) action);
+
+  Future<bool> deleteByMember(Member member);
 }

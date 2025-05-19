@@ -5,6 +5,7 @@ import 'package:app/core/domain/repositories/sequence_repository.dart';
 import 'package:app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:app/features/auth/domain/usecases/auto_login.dart';
+import 'package:app/features/auth/domain/usecases/leave.dart';
 import 'package:app/features/auth/domain/usecases/login.dart';
 import 'package:app/features/auth/domain/usecases/register.dart';
 import 'package:app/features/auth/domain/usecases/validate_unique_email.dart';
@@ -128,6 +129,11 @@ final class DiUtil {
       ),
     );
     result.add(
+      ProxyProvider<AuthRepository, Leave>(
+        update: (_, authRepository, leave) => leave ?? Leave(authRepository: authRepository),
+      ),
+    );
+    result.add(
       ProxyProvider<AuthRepository, ValidateUniqueEmail>(
         update:
             (_, authRepository, validateUniqueEmail) =>
@@ -135,15 +141,16 @@ final class DiUtil {
       ),
     );
     result.add(
-      ChangeNotifierProxyProvider4<AutoLogin, Login, Register, ValidateUniqueEmail, AuthController?>(
+      ChangeNotifierProxyProvider5<AutoLogin, Login, Register, ValidateUniqueEmail, Leave, AuthController?>(
         create: (_) => null,
         update:
-            (_, autoLogin, login, register, validateUniqueEmail, controller) =>
+            (_, autoLogin, login, register, validateUniqueEmail, leave, controller) =>
                 controller ??
                 AuthController(
                   autoLoginUseCase: autoLogin,
                   loginUseCase: login,
                   registerUseCase: register,
+                  leaveUseCase: leave,
                   validateUniqueEmailUseCase: validateUniqueEmail,
                 ),
       ),

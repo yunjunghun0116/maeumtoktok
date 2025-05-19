@@ -52,4 +52,14 @@ class AuthRepositoryImpl implements AuthRepository {
       return await action(transaction);
     });
   }
+
+  @override
+  Future<bool> deleteByMember(Member member) async {
+    try {
+      await _collection.doc(member.id).delete();
+      return true;
+    } catch (e) {
+      throw CustomException(ExceptionMessage.badRequest);
+    }
+  }
 }

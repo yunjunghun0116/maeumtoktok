@@ -1,6 +1,7 @@
 import 'package:app/features/auth/data/models/login_dto.dart';
 import 'package:app/features/auth/data/models/register_dto.dart';
 import 'package:app/features/auth/domain/usecases/auto_login.dart';
+import 'package:app/features/auth/domain/usecases/leave.dart';
 import 'package:app/features/auth/domain/usecases/login.dart';
 import 'package:app/features/auth/domain/usecases/register.dart';
 import 'package:app/features/auth/domain/usecases/validate_unique_email.dart';
@@ -12,16 +13,19 @@ class AuthController extends BaseController {
   final Login _loginUseCase;
   final Register _registerUseCase;
   final AutoLogin _autoLoginUseCase;
+  final Leave _leaveUseCase;
   final ValidateUniqueEmail _validateUniqueEmailUseCase;
 
   AuthController({
     required Login loginUseCase,
     required Register registerUseCase,
     required AutoLogin autoLoginUseCase,
+    required Leave leaveUseCase,
     required ValidateUniqueEmail validateUniqueEmailUseCase,
   }) : _validateUniqueEmailUseCase = validateUniqueEmailUseCase,
        _autoLoginUseCase = autoLoginUseCase,
        _registerUseCase = registerUseCase,
+       _leaveUseCase = leaveUseCase,
        _loginUseCase = loginUseCase;
 
   Future<Member> login(LoginDto loginDto) async {
@@ -34,6 +38,10 @@ class AuthController extends BaseController {
 
   Future<Member> autoLogin() async {
     return await callMethod<Member>(() => _autoLoginUseCase.call());
+  }
+
+  Future<bool> leave(Member member) async {
+    return await callMethod<bool>(() => _leaveUseCase.call(member));
   }
 
   Future<bool> validateUniqueEmail(String email) async {
