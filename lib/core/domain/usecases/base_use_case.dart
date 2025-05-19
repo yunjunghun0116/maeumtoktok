@@ -3,19 +3,11 @@ import '../../logging/logger.dart';
 
 abstract class BaseUseCase<Result> {
   Future<Result> call() async {
-    final functionName = runtimeType.toString();
-
     try {
-      final result = await execute();
-      var logEntity = LogEntity(
-        memberId: null,
-        input: null,
-        output: result,
-        functionName: functionName,
-        timeStamp: DateTime.now(),
-      );
-      await Logger.log(logEntity);
-
+      var functionName = runtimeType.toString();
+      var result = await execute();
+      var logEntity = LogEntity(input: null, output: result, functionName: functionName, timeStamp: DateTime.now());
+      Logger.log(logEntity);
       return result;
     } catch (e) {
       rethrow;

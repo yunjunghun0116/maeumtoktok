@@ -57,7 +57,7 @@ class _MemberScreenState extends State<MemberScreen> {
               ),
             ),
             SizedBox(height: 20),
-            getCard(title: "문의하기", onTap: () {}),
+            // getCard(title: "문의하기", onTap: () {}),
           ],
         );
       },
