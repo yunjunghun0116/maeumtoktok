@@ -11,8 +11,6 @@ Member _$MemberFromJson(Map<String, dynamic> json) => Member(
   email: json['email'] as String,
   password: json['password'] as String,
   name: json['name'] as String,
-  age: (json['age'] as num).toInt(),
-  gender: $enumDecode(_$GenderEnumMap, json['gender']),
   lastLoginDate: DateTime.parse(json['lastLoginDate'] as String),
 );
 
@@ -21,9 +19,5 @@ Map<String, dynamic> _$MemberToJson(Member instance) => <String, dynamic>{
   'email': instance.email,
   'password': instance.password,
   'name': instance.name,
-  'age': instance.age,
-  'gender': _$GenderEnumMap[instance.gender]!,
   'lastLoginDate': instance.lastLoginDate.toIso8601String(),
 };
-
-const _$GenderEnumMap = {Gender.male: 'male', Gender.female: 'female'};

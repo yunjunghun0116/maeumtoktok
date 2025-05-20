@@ -69,7 +69,7 @@ class _MemberInformationInputDialogState extends State<MemberInformationInputDia
                   minLines: 10,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(10),
-                    hintText: "예)\n이름은 홍길동\n성별은 남자\n나이는 00살\n대체로 활발하고 유복하게 자란 편\n...",
+                    hintText: "예)\n성별은 남자\n나이는 00살\n대체로 활발하고 유복하게 자란 편\n...",
                     border: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,

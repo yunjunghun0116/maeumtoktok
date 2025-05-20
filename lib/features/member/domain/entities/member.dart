@@ -4,7 +4,6 @@ import 'package:app/shared/utils/security_util.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../auth/data/models/register_dto.dart';
-import 'gender.dart';
 
 part 'member.g.dart';
 
@@ -14,8 +13,6 @@ class Member {
   final String email;
   final String password;
   final String name;
-  final int age;
-  final Gender gender;
   final DateTime lastLoginDate;
 
   Member({
@@ -23,8 +20,6 @@ class Member {
     required this.email,
     required this.password,
     required this.name,
-    required this.age,
-    required this.gender,
     required this.lastLoginDate,
   });
 
@@ -39,8 +34,6 @@ class Member {
       email: registerDto.email,
       password: encryptedPassword,
       name: registerDto.name,
-      age: registerDto.age,
-      gender: registerDto.gender,
       lastLoginDate: DateTime.now(),
     );
   }
@@ -53,6 +46,6 @@ class Member {
 
   @override
   String toString() {
-    return 'Member{id: $id, email: $email, password: $password, name: $name, age: $age, gender: ${gender.gender}, lastLoginDate: ${lastLoginDate.toIso8601String()}';
+    return 'Member{id: $id, email: $email, password: $password, name: $name, lastLoginDate: ${lastLoginDate.toIso8601String()}';
   }
 }

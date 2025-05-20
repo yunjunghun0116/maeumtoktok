@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 
 import '../../../../shared/constants/app_colors.dart';
 import '../../../../shared/utils/sign_util.dart';
-import '../../../member/domain/entities/gender.dart';
 import '../../data/models/register_dto.dart';
 import 'email_password_screen.dart';
 import 'member_information_screen.dart';
@@ -21,8 +20,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   late String _email;
   late String _password;
   late String _name;
-  late int _age;
-  var _gender = Gender.male;
 
   var _pageIndex = 0;
 
@@ -32,15 +29,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _pageIndex++;
   });
 
-  void useMemberInformation(String name, Gender gender, int age) => setState(() {
+  void useMemberInformation(String name) => setState(() {
     _name = name;
-    _gender = gender;
-    _age = age;
     _pageIndex++;
   });
 
   Future<void> register() async {
-    var registerJson = {"email": _email, "password": _password, "name": _name, "age": _age, "gender": _gender.gender};
+    var registerJson = {"email": _email, "password": _password, "name": _name};
     var registerDto = RegisterDto.fromJson(registerJson);
     var member = await context.read<AuthController>().register(registerDto);
     if (!mounted) return;
@@ -52,9 +47,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       case 0:
         return EmailPasswordScreen(onPressed: (String email, String password) => useEmailAndPassword(email, password));
       case 1:
-        return MemberInformationScreen(
-          onPressed: (String name, Gender gender, int age) => useMemberInformation(name, gender, age),
-        );
+        return MemberInformationScreen(onPressed: (String name) => useMemberInformation(name));
       default:
         return SigningScreen(registerFunction: () => register());
     }

@@ -11,7 +11,7 @@ import '../../domain/entities/message.dart';
 
 class LangchainDatasource {
   Future<String> nextTargetMessage(String name, LangchainDto dto) async {
-    // var history = dto.messages.length >= 6 ? dto.messages.sublist(dto.messages.length - 6) : dto.messages;
+    var history = dto.messages.length >= 6 ? dto.messages.sublist(dto.messages.length - 6) : dto.messages;
     final messages = [
       ChatMessage.humanText(_memberInformationPrompt(name: name, description: dto.memberInformation.description)),
       ChatMessage.humanText(_targetInformationPrompt(target: dto.target, information: dto.targetInformation)),
@@ -21,14 +21,13 @@ class LangchainDatasource {
       ChatMessage.humanText(_conversationsContextPrompt(conversationsContext: dto.conversationsContext)),
     ];
 
-    // for (var message in history) {
-    //   if (message.senderType == SenderType.member) {
-    //     messages.add(ChatMessage.humanText(message.contents));
-    //   } else {
-    //     messages.add(ChatMessage.ai(message.contents));
-    //   }
-    // }
-    //
+    for (var message in history) {
+      if (message.senderType == SenderType.member) {
+        messages.add(ChatMessage.humanText(message.contents));
+      } else {
+        messages.add(ChatMessage.ai(message.contents));
+      }
+    }
 
     messages.add(ChatMessage.humanText(dto.message));
 
@@ -50,42 +49,42 @@ class LangchainDatasource {
   }
 
   Future<String> summarizeConversation(List<Message> messages) async {
-    var histories = messages
-        .map((message) {
-          final speaker = message.senderType == SenderType.member ? '사용자' : '상대방';
-          return '$speaker: ${message.contents}';
-        })
-        .join('\n');
-    return '''
-    다음은 사용자와 상대방 간의 최근 대화야.
-    최근 대화 내용 : $histories
-    ''';
-    // var recentMessages = messages.length >= 40 ? messages.sublist(messages.length - 40) : messages;
-    // var histories = recentMessages
+    // var histories = messages
     //     .map((message) {
     //       final speaker = message.senderType == SenderType.member ? '사용자' : '상대방';
     //       return '$speaker: ${message.contents}';
     //     })
     //     .join('\n');
-    // final prompt = '''
+    // return '''
     // 다음은 사용자와 상대방 간의 최근 대화야.
-    // 이 대화를 5줄 이내로 요약해줘.
-    // 대화의 감정 흐름, 갈등이나 사건, 사용자 심리 변화 등을 중심으로 최근 대화를 요약해줘.
-    //
     // 최근 대화 내용 : $histories
     // ''';
-    //
-    // final chatModel = ChatOpenAI(
-    //   apiKey: Secrets.openApiKey,
-    //   defaultOptions: ChatOpenAIOptions(model: 'gpt-4o', temperature: 0.3, maxTokens: 300, topP: 0.95),
-    // );
-    //
-    // final result = await chatModel.call([
-    //   ChatMessage.system("넌 요약가야. 주어진 대화를 정서 흐름 중심으로 요약해줘."),
-    //   ChatMessage.humanText(prompt),
-    // ]);
-    //
-    // return result.content;
+    var recentMessages = messages.length >= 40 ? messages.sublist(messages.length - 40) : messages;
+    var histories = recentMessages
+        .map((message) {
+          final speaker = message.senderType == SenderType.member ? '사용자' : '상대방';
+          return '$speaker: ${message.contents}';
+        })
+        .join('\n');
+    final prompt = '''
+    다음은 사용자와 상대방 간의 최근 대화야.
+    이 대화를 5줄 이내로 요약해줘.
+    대화의 감정 흐름, 갈등이나 사건, 사용자 심리 변화 등을 중심으로 최근 대화를 요약해줘.
+
+    최근 대화 내용 : $histories
+    ''';
+
+    final chatModel = ChatOpenAI(
+      apiKey: Secrets.openApiKey,
+      defaultOptions: ChatOpenAIOptions(model: 'gpt-4o', temperature: 0.3, maxTokens: 500, topP: 0.95),
+    );
+
+    final result = await chatModel.call([
+      ChatMessage.system("넌 요약가야. 주어진 대화를 정서 흐름 중심으로 요약해줘."),
+      ChatMessage.humanText(prompt),
+    ]);
+
+    return result.content;
   }
 
   String _memberInformationPrompt({required String name, required String description}) {
