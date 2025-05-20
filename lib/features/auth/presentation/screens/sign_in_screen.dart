@@ -1,5 +1,8 @@
+import 'package:app/core/exceptions/custom_exception.dart';
+import 'package:app/core/exceptions/exception_message.dart';
 import 'package:app/features/auth/data/models/login_dto.dart';
 import 'package:app/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:app/features/auth/presentation/widgets/invitation_dialog.dart';
 import 'package:app/shared/widgets/common_check_box.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -102,7 +105,16 @@ class _SignInScreenState extends State<SignInScreen> {
               SizedBox(height: 20),
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen())),
+                onTap: () async {
+                  String? result = await showDialog<String?>(
+                    context: context,
+                    builder: (context) => InvitationDialog(),
+                  );
+                  if (!mounted) return;
+                  if (result == null) return;
+                  if (result.isEmpty || result != "HCILAB") throw CustomException(ExceptionMessage.badRequest);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen()));
+                },
                 child: Container(
                   alignment: Alignment.center,
                   width: 120,

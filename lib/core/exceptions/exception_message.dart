@@ -13,6 +13,7 @@ enum ExceptionMessage {
   wrongEmailRegExp(400, "잘못된 형식의 이메일입니다"),
   wrongPasswordRegExp(400, "잘못된 형식의 패스워드입니다."),
   wrongEmailOrPassword(400, "이메일이나 패스워드가 잘못되었습니다."),
+  wrongInvitationCode(400, "초대코드가 잘못되었습니다."),
   notEqualPasswordAndPasswordCheck(400, "패스워드를 다시 한번 확인해 주세요."),
   /* 닉네임 관련 메시지 */
   wrongNameRegExp(400, "잘못된 형식의 닉네임입니다."),
