@@ -7,6 +7,7 @@ import 'package:app/features/target/domain/entities/target.dart';
 import 'package:app/features/target/presentation/controllers/target_controller.dart';
 import 'package:app/features/target_information/presentation/controllers/target_information_controller.dart';
 import 'package:app/features/target_information/presentation/screens/target_information_screen.dart';
+import 'package:app/features/target_issue/domain/entities/target_issue.dart';
 import 'package:app/features/target_issue/presentation/controllers/target_issue_controller.dart';
 import 'package:app/shared/widgets/common_progress_bar.dart';
 import 'package:flutter/material.dart';
@@ -53,15 +54,13 @@ class _HomeScreenState extends State<HomeScreen> {
     return inputCnt / totalCnt;
   }
 
-  double _getPositiveIssueProgress(BuildContext context) {
+  double _getPositiveIssueProgress(List<TargetIssue> issues) {
     var totalCnt = 1;
-    var issues = context.read<TargetIssueController>().positiveIssues;
     return issues.length / totalCnt;
   }
 
-  double _getNegativeIssueProgress(BuildContext context) {
+  double _getNegativeIssueProgress(List<TargetIssue> issues) {
     var totalCnt = 3;
-    var issues = context.read<TargetIssueController>().negativeIssues;
     return issues.length / totalCnt;
   }
 
@@ -96,25 +95,29 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget statusCard({required BuildContext context, required Target target}) {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.subColor2),
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Column(
-        children: [
-          inputStatus(title: "내 정보 입력현황", progress: _getMemberInformationInputProgress(context)),
-          SizedBox(height: 10),
-          inputStatus(title: "상대방 정보 입력현황", progress: _getTargetInputProgress(context, target)),
-          SizedBox(height: 10),
-          inputStatus(title: "긍정 사건 입력현황", progress: _getPositiveIssueProgress(context)),
-          SizedBox(height: 10),
-          inputStatus(title: "부정 사건 입력현황", progress: _getNegativeIssueProgress(context)),
-        ],
-      ),
+    return Consumer<TargetIssueController>(
+      builder: (context, controller, child) {
+        return Container(
+          width: double.infinity,
+          margin: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            border: Border.all(color: AppColors.subColor2),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Column(
+            children: [
+              inputStatus(title: "내 정보 입력 현황", progress: _getMemberInformationInputProgress(context)),
+              SizedBox(height: 10),
+              inputStatus(title: "단절된 대상 정보 입력 현황", progress: _getTargetInputProgress(context, target)),
+              SizedBox(height: 10),
+              inputStatus(title: "긍정 기억 입력 현황", progress: _getPositiveIssueProgress(controller.positiveIssues)),
+              SizedBox(height: 10),
+              inputStatus(title: "부정 기억 입력 현황", progress: _getNegativeIssueProgress(controller.negativeIssues)),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -122,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Row(
       children: [
         SizedBox(
-          width: 140,
+          width: 160,
           child: Text(title, style: TextStyle(fontSize: 12, height: 20 / 12, color: AppColors.fontGray600Color)),
         ),
         Expanded(child: CommonProgressBar(progress: progress)),

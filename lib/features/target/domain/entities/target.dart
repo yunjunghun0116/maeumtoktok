@@ -15,7 +15,7 @@ class Target {
   factory Target.fromJson(Map<String, dynamic> json) => _$TargetFromJson(json);
 
   factory Target.defaultTarget(String id, String image) {
-    return Target(id: id, image: image, name: "상대방", job: "", age: 0);
+    return Target(id: id, image: image, name: "단절된 대상", job: "", age: 0);
   }
 
   Map<String, dynamic> toJson() => _$TargetToJson(this);

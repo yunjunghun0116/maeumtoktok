@@ -62,7 +62,7 @@ class _IssueScreenState extends State<IssueScreen> {
             automaticallyImplyLeading: false,
             centerTitle: true,
             title: Text(
-              '상대방과의 사건 목록',
+              '단절된 대상과의 기억',
               style: TextStyle(
                 fontSize: 18,
                 height: 28 / 18,

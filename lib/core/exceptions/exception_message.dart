@@ -23,11 +23,11 @@ enum ExceptionMessage {
   cantUsePoint(400, "사용 가능한 포인트를 초과했습니다."),
   /* 채팅 관련 메시지 */
   memberInformationRequired(400, "내 정보가 입력되어야 합니다."),
-  targetInformationRequired(400, "상대방에 대한 추가 정보(성격 등)가 입력되어야 합니다."),
-  targetIssueRequired(400, "상대방과의 사건이 하나 이상 입력되어야 합니다."),
-  targetNameRequired(400, "상대방의 이름이 입력되어야 합니다."),
-  targetJobRequired(400, "상대방의 직업이 입력되어야 합니다."),
-  targetAgeRequired(400, "상대방의 나이가 입력되어야 합니다.");
+  targetInformationRequired(400, "단절된 대상에 대한 추가 정보(성격 등)가 입력되어야 합니다."),
+  targetIssueRequired(400, "단절된 대상과의 사건이 하나 이상 입력되어야 합니다."),
+  targetNameRequired(400, "단절된 대상의 이름이 입력되어야 합니다."),
+  targetJobRequired(400, "단절된 대상의 직업이 입력되어야 합니다."),
+  targetAgeRequired(400, "단절된 대상의 나이가 입력되어야 합니다.");
 
   final int statusCode;
   final String description;

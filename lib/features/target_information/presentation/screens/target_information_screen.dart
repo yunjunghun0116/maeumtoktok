@@ -138,7 +138,7 @@ class _TargetInformationScreenState extends State<TargetInformationScreen> {
                   ),
                   centerTitle: true,
                   title: Text(
-                    "상대방 프로필",
+                    "${target.name}의 프로필",
                     style: TextStyle(
                       fontSize: 18,
                       height: 28 / 18,
@@ -158,7 +158,7 @@ class _TargetInformationScreenState extends State<TargetInformationScreen> {
                       decoration: BoxDecoration(
                         border: Border.all(color: AppColors.subColor4),
                         borderRadius: BorderRadius.circular(150),
-                        image: DecorationImage(image: NetworkImage(controller.target!.image), fit: BoxFit.cover),
+                        image: DecorationImage(image: NetworkImage(target.image), fit: BoxFit.cover),
                       ),
                       child: Stack(
                         children: [
@@ -167,7 +167,7 @@ class _TargetInformationScreenState extends State<TargetInformationScreen> {
                             bottom: 0,
                             child: GestureDetector(
                               behavior: HitTestBehavior.opaque,
-                              onTap: () => _updateImage(controller.target!),
+                              onTap: () => _updateImage(target),
                               child: Container(
                                 width: 40,
                                 height: 40,

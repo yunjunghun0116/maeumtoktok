@@ -41,7 +41,7 @@ class _IssueInputDialogState extends State<IssueInputDialog> {
             Row(
               children: [
                 Text(
-                  "${widget.issueType.name} 사건 추가하기",
+                  "${widget.issueType.name} 기억 추가하기",
                   style: TextStyle(
                     fontSize: 16,
                     color: AppColors.fontGray800Color,
@@ -59,7 +59,7 @@ class _IssueInputDialogState extends State<IssueInputDialog> {
             ),
             SizedBox(height: 10),
             Text(
-              "상대방과의 사건(과거) 중\n기억에 남는 사건(과거)를 입력해 주세요.",
+              "단절된 대상과의 기억(과거) 중\n기억에 남는 기억(과거)을 입력해 주세요.",
               style: TextStyle(fontSize: 14, color: AppColors.fontGray600Color, height: 20 / 14),
             ),
             const SizedBox(height: 10),

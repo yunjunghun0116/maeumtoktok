@@ -94,7 +94,7 @@ class _MainScreenState extends State<MainScreen> {
                       activeIcon: Icons.view_list,
                       inactiveIcon: Icons.view_list_outlined,
                       index: 2,
-                      title: '사건',
+                      title: '기억',
                       onTap: () => setState(() => _currentIndex = 2),
                     ),
                     kBottomNavigationBarItem(

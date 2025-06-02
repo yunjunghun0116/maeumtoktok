@@ -29,18 +29,11 @@ class _SigningScreenState extends State<SigningScreen> {
           SizedBox(height: 100),
           SizedBox(width: 200, height: 200, child: Image.asset("assets/logo/app_logo_no_background.png")),
           Center(
-            child: RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
+            child: Center(
+              child: Text(
+                "안좋은 감정을 해결해주는\n나만의 부정감정 완화 에이전트",
+                textAlign: TextAlign.center,
                 style: TextStyle(color: AppColors.subColor3, fontSize: 16, height: 20 / 16),
-                children: [
-                  TextSpan(
-                    text: "마음톡톡\n\n",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.mainColor, height: 1),
-                  ),
-                  TextSpan(text: "안좋은 감정을 해결해주는\n"),
-                  TextSpan(text: "나만의 부정감정 완화 에이전트"),
-                ],
               ),
             ),
           ),
