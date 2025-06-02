@@ -97,24 +97,24 @@ class LangchainDatasource {
 
   String _targetInformationPrompt({required Target target, required TargetInformation information}) {
     return '''
-    상대방 정보는 이거야.
-    상대방 이름 : ${target.name},
-    상대방 나이 : ${target.age},
-    상대방 직업 : ${target.job},
-    상대방에 대한 추가 정보(성격, 살아온 환경 등) : ${information.description}.
+    단절된 대상에 대한 정보는 이거야.
+    단절된 대상 이름 : ${target.name},
+    단절된 대상 나이 : ${target.age},
+    단절된 대상 직업 : ${target.job},
+    단절된 대상에 대한 추가 정보(성격, 살아온 환경 등) : ${information.description}.
     ''';
   }
 
   String _positiveIssuesPrompt({required List<TargetIssue> issues}) {
     return '''
-    함께했던 긍정적인 사건은 이거야.
+    기억에 남는 긍정적인 기억은 이거야.
     ${issues.map((issue) => '- ${issue.description},').join('\n')}
     ''';
   }
 
   String _negativeIssuesPrompt({required List<TargetIssue> issues}) {
     return '''
-    기억에 남는 갈등 또는 상처 등 부정적인 사건은 이거야.
+    기억에 남는 부정적인 기억은 이거야.
     ${issues.map((issue) => '- ${issue.description},').join('\n')}
     ''';
   }

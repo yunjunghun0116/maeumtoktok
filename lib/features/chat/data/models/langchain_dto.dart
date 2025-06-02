@@ -10,6 +10,7 @@ class LangchainDto {
   final TargetInformation targetInformation;
   final List<TargetIssue> positiveIssues;
   final List<TargetIssue> negativeIssues;
+  final List<TargetIssue> normalIssues;
   final List<Message> messages;
   final String conversationsContext;
   final String message;
@@ -20,6 +21,7 @@ class LangchainDto {
     required this.targetInformation,
     required this.positiveIssues,
     required this.negativeIssues,
+    required this.normalIssues,
     required this.messages,
     required this.conversationsContext,
     required this.message,
@@ -31,6 +33,7 @@ class LangchainDto {
     required TargetInformation targetInformation,
     required List<TargetIssue> positiveIssues,
     required List<TargetIssue> negativeIssues,
+    required List<TargetIssue> normalIssues,
     required List<Message> messages,
     required String conversationsContext,
     required String message,
@@ -41,6 +44,7 @@ class LangchainDto {
       targetInformation: targetInformation,
       positiveIssues: positiveIssues,
       negativeIssues: negativeIssues,
+      normalIssues: normalIssues,
       messages: messages,
       conversationsContext: conversationsContext,
       message: message,

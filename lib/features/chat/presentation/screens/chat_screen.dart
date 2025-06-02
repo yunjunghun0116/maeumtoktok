@@ -96,7 +96,7 @@ class _ChatScreenState extends State<ChatScreen> {
     var targetInformation = context.read<TargetInformationController>().information!;
     var positiveIssues = context.read<TargetIssueController>().positiveIssues;
     var negativeIssues = context.read<TargetIssueController>().negativeIssues;
-
+    var normalIssues = context.read<TargetIssueController>().normalIssues;
     try {
       if (_isLoading) return;
       _isLoading = true;
@@ -106,6 +106,7 @@ class _ChatScreenState extends State<ChatScreen> {
         targetInfo: targetInformation,
         positiveIssues: positiveIssues,
         negativeIssues: negativeIssues,
+        normalIssues: normalIssues,
         messages: _messages,
       );
       if (!mounted) return;
@@ -154,6 +155,7 @@ class _ChatScreenState extends State<ChatScreen> {
     required TargetInformation targetInfo,
     required List<TargetIssue> positiveIssues,
     required List<TargetIssue> negativeIssues,
+    required List<TargetIssue> normalIssues,
     required List<Message> messages,
   }) async {
     var history = messages.reversed.toList();
@@ -167,6 +169,7 @@ class _ChatScreenState extends State<ChatScreen> {
       targetInformation: targetInfo,
       positiveIssues: positiveIssues,
       negativeIssues: negativeIssues,
+      normalIssues: normalIssues,
       messages: history,
       conversationsContext: conversationsContext,
       message: messages.first.contents,
