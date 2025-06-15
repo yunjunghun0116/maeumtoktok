@@ -46,3 +46,4 @@ app.*.map.json
 
 # API KEY
 /lib/core/firebase/
+/lib/shared/constants/secrets.dart
