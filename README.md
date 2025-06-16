@@ -1,16 +1,59 @@
-# app
+# 마음톡톡 (MaumTokTok)
+부정적 감정 완화를 위한 LLM 기반 감정공감 챗봇 애플리케이션
 
-마음톡톡 앱 - 부정감정 완화 LLM 연구 (김재정)
+---
 
-## Getting Started
+## 프로젝트 소개
 
-This project is a starting point for a Flutter application.
+**마음톡톡(MaumTokTok)**은 사용자의 부정적 감정(불안, 분노, 슬픔, 우울 등)을 인공지능 챗봇과의 대화를 통해 완화하도록 돕는 모바일 애플리케이션입니다.  
+LLM 기반 감정 공감형 응답 엔진을 통해 심리적 안정, 자기이해, 회복적 사고를 촉진합니다.
 
-A few resources to get you started if this is your first Flutter project:
+- **핵심 목적:**
+    - 1) 사용자의 부정감정 표현 유도 및 감정 치유 유도
+    - 2) 공감 기반 AI 응답 제공
+    - 3) 대화 데이터 기반 감정 추적 및 치료법 제안
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 주요 기능
+
+- **AI 공감 챗봇:**  
+  LLM 기반 자연어 대화 및 감정 공감형 응답
+
+- **부정감정 이끌기(감정환기):**  
+  심리치료 기법 반영
+
+- **감정 분석 및 기록:**  
+  대화 중 감정 키워드 추출, 대시보드에서 일별 감정 변화 확인
+
+- **프라이버시 보호:**  
+  모든 대화 데이터는 저장 시 암호화하여 저장하고, 채팅방에서 대화할 때 복호화하여 사용자만 확인(연구자 및 개발자도 확인 X)
+
+- **간결하고 직관적인 UI/UX:**  
+  사용자가 쉽게 감정을 기록하고 돌이켜볼 수 있도록 설계
+
+---
+
+## 기술 스택
+
+- **플랫폼:** Flutter (크로스플랫폼 지원)
+- **백엔드:** Firebase, OpenAI API(LangChain 연동)
+- **언어:** Dart
+- **AI/LLM:** GPT-4o, LangChain
+- **DB/스토리지:** Firestore, Firebase Storage
+
+---
+
+## 프로젝트 구조
+
+```plaintext
+maeumtoktok/
+├── lib/                 # Flutter 메인 소스코드
+│   ├── core/            # 공통 유틸리티, 모델, 서비스 등
+│   ├── features/        # 기능별(챗봇, 감정분석 등) 모듈
+│   └── main.dart        # 앱 진입점
+├── android/             # Android 관련 파일
+├── ios/                 # iOS 관련 파일
+├── pubspec.yaml         # 패키지/의존성 설정
+└── README.md            # 프로젝트 설명
+```
