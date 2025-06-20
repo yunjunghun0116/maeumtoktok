@@ -1,4 +1,9 @@
+import 'package:app/core/exceptions/custom_exception.dart';
+import 'package:app/core/exceptions/exception_message.dart';
+import 'package:app/shared/constants/secrets.dart';
+import 'package:app/shared/utils/local_util.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../shared/constants/app_colors.dart';
 import '../../../../shared/widgets/common_button.dart';
@@ -69,6 +74,30 @@ class _InvitationDialogState extends State<InvitationDialog> {
                 ),
                 style: TextStyle(fontSize: 14, color: AppColors.fontGray800Color, height: 20 / 14),
               ),
+            ),
+            Spacer(),
+            Row(
+              children: [
+                Spacer(),
+                GestureDetector(
+                  onTap: () async {
+                    var url = Uri.parse(Secrets.testRequestURL);
+                    if (!(await canLaunchUrl(url))) {
+                      throw CustomException(ExceptionMessage.cantOpenUri);
+                    }
+                    await launchUrl(url);
+                  },
+                  behavior: HitTestBehavior.opaque,
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    decoration: BoxDecoration(border: Border(bottom: BorderSide(color: AppColors.fontGray100Color))),
+                    child: Text(
+                      "초대코드 요청하기",
+                      style: TextStyle(fontSize: 14, height: 16 / 14, color: AppColors.fontGray200Color),
+                    ),
+                  ),
+                ),
+              ],
             ),
             Spacer(),
             CommonButton(
