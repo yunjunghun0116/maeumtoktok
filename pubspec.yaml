@@ -3,7 +3,7 @@ description: "마음톡톡 앱 - 부정감정 완화 LLM 연구 (김재정)"
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.3+22
+version: 1.0.4+23
 
 environment:
   sdk: ^3.7.0

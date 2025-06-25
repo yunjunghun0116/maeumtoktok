@@ -59,7 +59,7 @@ class LangchainDatasource {
     // 다음은 사용자와 상대방 간의 최근 대화야.
     // 최근 대화 내용 : $histories
     // ''';
-    var recentMessages = messages.length >= 40 ? messages.sublist(messages.length - 40) : messages;
+    var recentMessages = messages.length >= 60 ? messages.sublist(messages.length - 60) : messages;
     var histories = recentMessages
         .map((message) {
           final speaker = message.senderType == SenderType.member ? '사용자' : '상대방';
@@ -68,10 +68,11 @@ class LangchainDatasource {
         .join('\n');
     final prompt = '''
     다음은 사용자와 상대방 간의 최근 대화야.
-    이 대화를 5줄 이내로 요약해줘.
     대화의 감정 흐름, 갈등이나 사건, 사용자 심리 변화 등을 중심으로 최근 대화를 요약해줘.
-
-    최근 대화 내용 : $histories
+    최근 대화에 중요도를 높게 주는데 시간이 오래된 대화이더라도, 추억이나 기억 관련된 대화 내용은 중요도가 높을 수 있으니 포함해줘.
+    배열을 기준으로 앞(index 가 작을수록)일수록 최근 대화인거야.
+    
+    최근 요약 내용 : $histories
     ''';
 
     final chatModel = ChatOpenAI(
@@ -154,6 +155,14 @@ class LangchainDatasource {
       - 2. 정서 표현: 사용자의 감정 표현을 받아들이고, 공감하며 반영한다.
       - 3. 의미 재해석: 사건에 대한 관점을 바꾸는 기회를 제공한다.
       - 4. 감정 정리: 관계를 마무리하고, 수용과 위로의 말을 전한다.
+      
+      * 주의해야 할 것 * 
+      혹시나 사용자가 아래와 같은 주제로 요청을 할 경우 주저없이 요청에 대해 거부해야 해
+      1. 성인용 컨텐츠
+      2. 선정적인 주제
+      3. 폭력적인 주제
+      4. 부정확하거나 부적절한 주제
+      이 앱은 감정 치유가 목적이지, 선정적이거나 불건전한 주제 등 잘못된 주제와 관련된 컨텐츠 제공하는것이 아니야.
     ''';
   }
 }
