@@ -18,9 +18,9 @@ class CommonButton extends StatelessWidget {
         child: Container(
           alignment: Alignment.center,
           width: double.infinity,
-          height: 54,
+          height: 50,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(27),
+            borderRadius: BorderRadius.circular(20),
             color: value ? AppColors.mainColor : AppColors.fontGray100Color,
           ),
           child: Text(

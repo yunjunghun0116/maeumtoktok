@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:app/core/logging/report/report_entity.dart';
+import 'package:app/core/logging/report/report_logger.dart';
+import 'package:app/core/logging/report/report_type.dart';
 import 'package:app/features/chat/data/datasources/langchain_datasource.dart';
 import 'package:app/features/chat/data/models/langchain_dto.dart';
 import 'package:app/features/chat/data/models/read_chat_dto.dart';
@@ -11,6 +14,7 @@ import 'package:app/features/chat/presentation/controllers/chat_controller.dart'
 import 'package:app/features/chat/presentation/controllers/message_controller.dart';
 import 'package:app/features/chat/presentation/widgets/member_message_bubble.dart';
 import 'package:app/features/chat/presentation/widgets/other_message_bubble.dart';
+import 'package:app/features/chat/presentation/widgets/report_dialog.dart';
 import 'package:app/features/chat/presentation/widgets/send_message_input.dart';
 import 'package:app/features/member_information/domain/entities/member_information.dart';
 import 'package:app/features/member_information/presentation/controllers/member_information_controller.dart';
@@ -24,6 +28,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../shared/constants/app_colors.dart';
+import '../../../../shared/utils/local_util.dart';
 import '../../../member/presentation/controllers/member_controller.dart';
 import '../../../target/domain/entities/target.dart';
 
@@ -186,8 +191,8 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) => sendTargetMessage());
-    return Consumer<TargetController>(
-      builder: (context, controller, child) {
+    return Consumer2<MemberController, TargetController>(
+      builder: (context, memberController, targetController, child) {
         return Scaffold(
           backgroundColor: AppColors.backgroundColor,
           appBar: AppBar(
@@ -210,7 +215,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             centerTitle: true,
             title: Text(
-              controller.target!.name,
+              targetController.target!.name,
               style: TextStyle(
                 fontSize: 18,
                 height: 28 / 18,
@@ -219,6 +224,21 @@ class _ChatScreenState extends State<ChatScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            actions: [
+              GestureDetector(
+                onTap: () async {
+                  var result = await showDialog<ReportType?>(context: context, builder: (context) => ReportDialog());
+                  if (result != null) {
+                    var reportInformation = ReportEntity.of(memberId: memberController.member!.id, reportType: result);
+                    await ReportLogger.report(reportInformation);
+                    if (!context.mounted) return;
+                    LocalUtil.showMessage(context, message: "신고 내용이 접수되었습니다.\n관리자 확인 후 조치 취하도록 하겠습니다.");
+                  }
+                },
+                child: Icon(Icons.report_sharp, size: 24),
+              ),
+              SizedBox(width: 20),
+            ],
           ),
           body: Column(
             children: [
@@ -240,7 +260,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           if (_messages[index].senderType == SenderType.member) {
                             return MemberMessageBubble(message: _messages[index]);
                           }
-                          return OtherMessageBubble(message: _messages[index], target: controller.target!);
+                          return OtherMessageBubble(message: _messages[index], target: targetController.target!);
                         },
                       ),
                     );

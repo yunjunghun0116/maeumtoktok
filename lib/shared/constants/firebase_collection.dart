@@ -8,4 +8,5 @@ abstract final class FirebaseCollection {
   static const String messageCollection = "message";
   static const String sequenceCollection = "sequence";
   static const String logCollection = "log";
+  static const String reportCollection = "report";
 }

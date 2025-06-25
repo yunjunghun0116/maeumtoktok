@@ -1,5 +1,5 @@
-import '../../logging/log_entity.dart';
-import '../../logging/logger.dart';
+import '../../logging/log/log_entity.dart';
+import '../../logging/log/logger.dart';
 
 abstract class BaseUseCase<Result> {
   Future<Result> call() async {
