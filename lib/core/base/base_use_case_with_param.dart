@@ -1,6 +1,6 @@
 import 'package:app/core/logging/log/log_entity.dart';
 
-import '../../logging/log/logger.dart';
+import '../logging/log/logger.dart';
 
 abstract class BaseUseCaseWithParam<Param, Result> {
   Future<Result> call(Param param) async {

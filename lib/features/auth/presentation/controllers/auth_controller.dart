@@ -7,7 +7,7 @@ import 'package:app/features/auth/domain/usecases/register.dart';
 import 'package:app/features/auth/domain/usecases/validate_unique_email.dart';
 import 'package:app/features/member/domain/entities/member.dart';
 
-import '../../../../core/presentation/base_controller.dart';
+import '../../../../core/base/base_controller.dart';
 
 class AuthController extends BaseController {
   final Login _loginUseCase;

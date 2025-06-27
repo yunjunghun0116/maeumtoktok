@@ -1,4 +1,4 @@
-import 'package:app/core/presentation/base_controller.dart';
+import 'package:app/core/base/base_controller.dart';
 
 import '../../domain/entities/member.dart';
 

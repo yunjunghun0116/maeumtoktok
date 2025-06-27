@@ -1,6 +1,7 @@
-import 'package:app/core/domain/usecases/base_use_case_with_param.dart';
 import 'package:app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:app/features/member/domain/entities/member.dart';
+
+import '../../../../core/base/base_use_case_with_param.dart';
 
 class Leave extends BaseUseCaseWithParam<Member, bool> {
   final AuthRepository _authRepository;

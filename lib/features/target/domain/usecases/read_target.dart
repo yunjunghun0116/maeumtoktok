@@ -1,7 +1,7 @@
 import 'package:app/features/target/domain/entities/target.dart';
 import 'package:app/features/target/domain/repositories/target_repository.dart';
 
-import '../../../../core/domain/usecases/base_use_case_with_param.dart';
+import '../../../../core/base/base_use_case_with_param.dart';
 
 class ReadTarget extends BaseUseCaseWithParam<String, Target> {
   final TargetRepository _targetRepository;

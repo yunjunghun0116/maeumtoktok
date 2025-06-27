@@ -3,7 +3,7 @@ import 'package:app/features/target/domain/entities/target.dart';
 import 'package:app/features/target/domain/usecases/read_target.dart';
 import 'package:app/features/target/domain/usecases/update_target.dart';
 
-import '../../../../core/presentation/base_controller.dart';
+import '../../../../core/base/base_controller.dart';
 
 class TargetController extends BaseController {
   final ReadTarget _readTargetUseCase;

@@ -2,7 +2,7 @@ import 'package:app/features/target_information/domain/entities/target_informati
 import 'package:app/features/target_information/domain/usecases/read_target_information.dart';
 import 'package:app/features/target_information/domain/usecases/update_target_information.dart';
 
-import '../../../../core/presentation/base_controller.dart';
+import '../../../../core/base/base_controller.dart';
 
 class TargetInformationController extends BaseController {
   final ReadTargetInformation _readTargetInformationUseCase;
