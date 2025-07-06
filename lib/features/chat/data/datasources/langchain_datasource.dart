@@ -40,11 +40,8 @@ class LangchainDatasource {
   }
 
   Future<String> nextTargetMessage(LangchainDto dto) async {
-    print("입력 정보 : ${dto.toString()}");
     var result = await _makeNextMessage(dto);
-    print("1차 응답 생성 결과 : $result");
     var confirmedResult = await _confirmNextMessage(result, dto);
-    print("2차 응답 생성 결과 : $confirmedResult");
     return confirmedResult;
   }
 
