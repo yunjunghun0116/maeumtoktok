@@ -2,8 +2,11 @@ import 'package:app/core/exceptions/custom_exception.dart';
 import 'package:app/core/exceptions/exception_message.dart';
 import 'package:app/features/target/domain/entities/target.dart';
 import 'package:app/features/target/presentation/controllers/target_controller.dart';
+import 'package:app/features/target/presentation/widgets/target_additional_description_dialog.dart';
+import 'package:app/features/target/presentation/widgets/target_conversation_style_dialog.dart';
+import 'package:app/features/target/presentation/widgets/target_personality_dialog.dart';
+import 'package:app/features/target_issue/presentation/screens/target_issue_screen.dart';
 import 'package:app/shared/constants/app_colors.dart';
-import 'package:app/shared/constants/app_reg_exp.dart';
 import 'package:app/shared/utils/image_util.dart';
 import 'package:app/shared/widgets/loading_overlay.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +14,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../shared/widgets/common_text_field.dart';
-import '../controllers/target_information_controller.dart';
-import '../widgets/target_information_input_dialog.dart';
 
 class TargetInformationScreen extends StatefulWidget {
   const TargetInformationScreen({super.key});
@@ -24,22 +25,67 @@ class TargetInformationScreen extends StatefulWidget {
 class _TargetInformationScreenState extends State<TargetInformationScreen> {
   final _picker = ImagePicker();
   final _nameController = TextEditingController();
-  final _jobController = TextEditingController();
-  final _ageController = TextEditingController();
+  final _relationshipController = TextEditingController();
+  final _personalityController = TextEditingController();
+  final _conversationStyleController = TextEditingController();
 
   var _isLoading = false;
 
-  void _openTargetInformationDialog() async {
-    var controller = context.read<TargetInformationController>();
-    var information = controller.information!;
-    String? result = await showDialog<String?>(
-      context: context,
-      builder: (context) => TargetInformationInputDialog(information: information),
-    );
-    if (result == null) return;
-    if (!mounted) return;
-    information.updateDescription(result);
-    await controller.update(information);
+  void _updateAdditionalDescription() async {
+    try {
+      String? result = await showDialog<String?>(
+        context: context,
+        builder: (context) => TargetAdditionalDescriptionDialog(),
+      );
+      if (result == null) return;
+      if (!mounted) return;
+      setState(() => _isLoading = true);
+      var controller = context.read<TargetController>();
+      var target = controller.target!;
+      target.updateAdditionalDescription(result);
+      await controller.update(target);
+    } catch (e) {
+      throw CustomException(ExceptionMessage.progressing);
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  void _updateConversationStyle() async {
+    try {
+      String? result = await showDialog<String?>(
+        context: context,
+        builder: (context) => TargetConversationStyleDialog(),
+      );
+      if (result == null) return;
+      if (!mounted) return;
+      setState(() => _isLoading = true);
+      var controller = context.read<TargetController>();
+      var target = controller.target!;
+      target.updateConversationStyle(result);
+      await controller.update(target);
+    } catch (e) {
+      throw CustomException(ExceptionMessage.progressing);
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  void _updatePersonality() async {
+    try {
+      String? result = await showDialog<String?>(context: context, builder: (context) => TargetPersonalityDialog());
+      if (result == null) return;
+      if (!mounted) return;
+      setState(() => _isLoading = true);
+      var controller = context.read<TargetController>();
+      var target = controller.target!;
+      target.updatePersonality(result);
+      await controller.update(target);
+    } catch (e) {
+      throw CustomException(ExceptionMessage.progressing);
+    } finally {
+      setState(() => _isLoading = false);
+    }
   }
 
   void _updateImage(Target target) async {
@@ -60,9 +106,11 @@ class _TargetInformationScreenState extends State<TargetInformationScreen> {
     }
   }
 
-  void _updateName(Target target) async {
+  void _updateName() async {
     try {
       setState(() => _isLoading = true);
+      var controller = context.read<TargetController>();
+      var target = controller.target!;
       target.updateName(_nameController.text);
       await context.read<TargetController>().update(target);
     } catch (e) {
@@ -72,25 +120,12 @@ class _TargetInformationScreenState extends State<TargetInformationScreen> {
     }
   }
 
-  void _updateJob(Target target) async {
+  void _updateRelationship() async {
     try {
       setState(() => _isLoading = true);
-      target.updateJob(_jobController.text);
-      await context.read<TargetController>().update(target);
-    } catch (e) {
-      throw CustomException(ExceptionMessage.progressing);
-    } finally {
-      setState(() => _isLoading = false);
-    }
-  }
-
-  void _updateAge(Target target) async {
-    if (_ageController.text.isEmpty || !AppRegExp.ageRegExp.hasMatch(_ageController.text)) {
-      throw CustomException(ExceptionMessage.invalidType);
-    }
-    try {
-      setState(() => _isLoading = true);
-      target.updateAge(int.parse(_ageController.text));
+      var controller = context.read<TargetController>();
+      var target = controller.target!;
+      target.updateRelationship(_relationshipController.text);
       await context.read<TargetController>().update(target);
     } catch (e) {
       throw CustomException(ExceptionMessage.progressing);
@@ -102,9 +137,11 @@ class _TargetInformationScreenState extends State<TargetInformationScreen> {
   @override
   void initState() {
     super.initState();
-    _nameController.text = context.read<TargetController>().target!.name;
-    _jobController.text = context.read<TargetController>().target!.job;
-    _ageController.text = context.read<TargetController>().target!.age.toString();
+    var target = context.read<TargetController>().target!;
+    _relationshipController.text = target.relationship;
+    _personalityController.text = target.personality;
+    _conversationStyleController.text = target.conversationStyle;
+    _nameController.text = target.name;
   }
 
   @override
@@ -185,21 +222,50 @@ class _TargetInformationScreenState extends State<TargetInformationScreen> {
                       ),
                     ),
                     SizedBox(height: 20),
-                    targetUpdateContainer(title: "이름", controller: _nameController, onTap: () => _updateName(target)),
+                    updateContainer(
+                      title: "이름",
+                      hintText: "이름",
+                      controller: _nameController,
+                      onTap: () => _updateName(),
+                    ),
                     SizedBox(height: 20),
-                    targetUpdateContainer(title: "직업", controller: _jobController, onTap: () => _updateJob(target)),
+                    updateContainer(
+                      title: "관계",
+                      hintText: "사촌, 전 여자친구 등",
+                      controller: _relationshipController,
+                      onTap: () => _updateRelationship(),
+                    ),
                     SizedBox(height: 20),
-                    targetUpdateContainer(
-                      title: "나이",
-                      controller: _ageController,
-                      onTap: () => _updateAge(target),
-                      inputType: TextInputType.number,
+                    Row(
+                      children: [
+                        SizedBox(width: 80, child: Text("성격", textAlign: TextAlign.center)),
+                        Expanded(child: simpleActionButton("입력하기", () => _updatePersonality())),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        SizedBox(width: 80, child: Text("말투 및 대화스타일", textAlign: TextAlign.center)),
+                        Expanded(child: simpleActionButton("입력하기", () => _updateConversationStyle())),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        SizedBox(width: 80, child: Text("관련 기억", textAlign: TextAlign.center)),
+                        Expanded(
+                          child: simpleActionButton(
+                            "입력하기",
+                            () => Navigator.push(context, MaterialPageRoute(builder: (context) => TargetIssueScreen())),
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 20),
                     Row(
                       children: [
                         SizedBox(width: 80, child: Text("추가 정보", textAlign: TextAlign.center)),
-                        Expanded(child: simpleActionButton("정보 입력하기", () => _openTargetInformationDialog())),
+                        Expanded(child: simpleActionButton("입력하기", () => _updateAdditionalDescription())),
                       ],
                     ),
                   ],
@@ -213,10 +279,11 @@ class _TargetInformationScreenState extends State<TargetInformationScreen> {
     );
   }
 
-  Widget targetUpdateContainer({
+  Widget updateContainer({
     required String title,
     required TextEditingController controller,
     required Function() onTap,
+    required String hintText,
     TextInputType inputType = TextInputType.text,
   }) {
     return Row(
@@ -225,7 +292,7 @@ class _TargetInformationScreenState extends State<TargetInformationScreen> {
         Expanded(
           child: CommonTextField(
             controller: controller,
-            hintText: title,
+            hintText: hintText,
             onChanged: (String str) => setState(() {}),
             inputType: inputType,
           ),

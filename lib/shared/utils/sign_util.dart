@@ -1,7 +1,5 @@
 import 'package:app/core/domain/repositories/local_repository.dart';
-import 'package:app/features/member_information/presentation/controllers/member_information_controller.dart';
 import 'package:app/features/target/presentation/controllers/target_controller.dart';
-import 'package:app/features/target_information/presentation/controllers/target_information_controller.dart';
 import 'package:app/features/target_issue/presentation/controllers/target_issue_controller.dart';
 import 'package:app/shared/constants/local_repository_key.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +14,6 @@ final class SignUtil {
     // 이용자 정보 MemberController 에 저장
     context.read<MemberController>().login(member);
     if (!context.mounted) return;
-    // 나에 대한 정보 MemberInformationController 에 저장
-    await context.read<MemberInformationController>().initialize(member);
-    if (!context.mounted) return;
     // 상대방 정보 TargetController 에 저장
     await context.read<TargetController>().initialize(member);
     if (!context.mounted) return;
@@ -26,9 +21,6 @@ final class SignUtil {
     var target = context.read<TargetController>().target!;
     // 상대방과 관련된 사건 목록 TargetIssueController 에 저장
     await context.read<TargetIssueController>().initialize(target.id);
-    if (!context.mounted) return;
-    // 상대방에 대한 정보 TargetInformationController 에 저장
-    await context.read<TargetInformationController>().initialize(target.id);
     if (!context.mounted) return;
     // 모든 작업이 완료된 후 Main 화면으로 이동함
     if (isSaveLocal) {

@@ -1,12 +1,8 @@
 import 'package:app/features/auth/data/models/register_dto.dart';
 import 'package:app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:app/features/member/domain/entities/member.dart';
-import 'package:app/features/member_information/domain/entities/member_information.dart';
-import 'package:app/features/member_information/domain/repositories/target_information_repository.dart';
 import 'package:app/features/target/domain/entities/target.dart';
 import 'package:app/features/target/domain/repositories/target_repository.dart';
-import 'package:app/features/target_information/domain/entities/target_information.dart';
-import 'package:app/features/target_information/domain/repositories/target_information_repository.dart';
 import 'package:app/shared/constants/firebase_collection.dart';
 import 'package:app/shared/utils/image_util.dart';
 
@@ -18,19 +14,14 @@ import '../../../../core/exceptions/exception_message.dart';
 class Register extends BaseUseCaseWithParam<RegisterDto, Member> {
   final AuthRepository _authRepository;
   final SequenceRepository _sequenceRepository;
-  final MemberInformationRepository _memberInformationRepository;
   final TargetRepository _targetRepository;
-  final TargetInformationRepository _targetInformationRepository;
 
   Register({
     required AuthRepository authRepository,
     required SequenceRepository sequenceRepository,
-    required MemberInformationRepository memberInformationRepository,
     required TargetRepository targetRepository,
-    required TargetInformationRepository targetInformationRepository,
-  }) : _targetInformationRepository = targetInformationRepository,
-       _targetRepository = targetRepository,
-       _memberInformationRepository = memberInformationRepository,
+  }) : _targetRepository = targetRepository,
+
        _sequenceRepository = sequenceRepository,
        _authRepository = authRepository;
 
@@ -46,12 +37,8 @@ class Register extends BaseUseCaseWithParam<RegisterDto, Member> {
 
     await _authRepository.runTransaction((transaction) {
       _authRepository.create(member, transaction);
-      var memberInformation = MemberInformation.fromId(member.id);
-      _memberInformationRepository.create(memberInformation, transaction);
       var target = Target.defaultTarget(member.id, imageUploadResult);
       _targetRepository.create(target, transaction);
-      var targetInformation = TargetInformation.defaultInformation(target.id, imageUploadResult);
-      _targetInformationRepository.create(targetInformation, transaction);
     });
 
     return member;

@@ -15,7 +15,8 @@ class MemberRepositoryImpl implements MemberRepository {
       FirebaseFirestore.instance.collection(FirebaseCollection.memberCollection);
 
   @override
-  Future<void> update(Member member) async {
+  Future<Member> update(Member member) async {
     await _collection.doc(member.id).update(member.toJson());
+    return member;
   }
 }

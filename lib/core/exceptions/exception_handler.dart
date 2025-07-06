@@ -1,10 +1,8 @@
 import 'dart:developer';
 
-import 'package:another_flushbar/flushbar.dart';
 import 'package:app/shared/utils/local_util.dart';
 import 'package:flutter/material.dart';
 
-import '../../shared/constants/app_colors.dart';
 import 'custom_exception.dart';
 
 class ExceptionHandler {

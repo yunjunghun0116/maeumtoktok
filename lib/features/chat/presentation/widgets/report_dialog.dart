@@ -1,5 +1,4 @@
 import 'package:app/core/logging/report/report_type.dart';
-import 'package:app/features/target_information/domain/entities/target_information.dart';
 import 'package:app/shared/widgets/common_button.dart';
 import 'package:flutter/material.dart';
 

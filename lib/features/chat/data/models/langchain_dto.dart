@@ -1,13 +1,11 @@
 import 'package:app/features/chat/domain/entities/message.dart';
-import 'package:app/features/member_information/domain/entities/member_information.dart';
+import 'package:app/features/member/domain/entities/member.dart';
 import 'package:app/features/target/domain/entities/target.dart';
-import 'package:app/features/target_information/domain/entities/target_information.dart';
 import 'package:app/features/target_issue/domain/entities/target_issue.dart';
 
 class LangchainDto {
   final Target target;
-  final MemberInformation memberInformation;
-  final TargetInformation targetInformation;
+  final Member member;
   final List<TargetIssue> positiveIssues;
   final List<TargetIssue> negativeIssues;
   final List<TargetIssue> normalIssues;
@@ -17,8 +15,7 @@ class LangchainDto {
 
   LangchainDto({
     required this.target,
-    required this.memberInformation,
-    required this.targetInformation,
+    required this.member,
     required this.positiveIssues,
     required this.negativeIssues,
     required this.normalIssues,
@@ -29,8 +26,7 @@ class LangchainDto {
 
   factory LangchainDto.fromObject({
     required Target target,
-    required MemberInformation memberInformation,
-    required TargetInformation targetInformation,
+    required Member member,
     required List<TargetIssue> positiveIssues,
     required List<TargetIssue> negativeIssues,
     required List<TargetIssue> normalIssues,
@@ -40,8 +36,7 @@ class LangchainDto {
   }) {
     return LangchainDto(
       target: target,
-      memberInformation: memberInformation,
-      targetInformation: targetInformation,
+      member: member,
       positiveIssues: positiveIssues,
       negativeIssues: negativeIssues,
       normalIssues: normalIssues,

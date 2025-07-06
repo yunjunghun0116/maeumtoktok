@@ -7,15 +7,33 @@ class Target {
   final String id;
   String image;
   String name;
-  String job;
-  int age;
+  String relationship;
+  String personality;
+  String conversationStyle;
+  String additionalDescription;
 
-  Target({required this.id, required this.image, required this.name, required this.job, required this.age});
+  Target({
+    required this.id,
+    required this.image,
+    required this.name,
+    required this.relationship,
+    required this.personality,
+    required this.conversationStyle,
+    required this.additionalDescription,
+  });
 
   factory Target.fromJson(Map<String, dynamic> json) => _$TargetFromJson(json);
 
   factory Target.defaultTarget(String id, String image) {
-    return Target(id: id, image: image, name: "단절된 대상", job: "", age: 0);
+    return Target(
+      id: id,
+      image: image,
+      name: "상대방",
+      relationship: "단절된 대상",
+      personality: "",
+      conversationStyle: "",
+      additionalDescription: "",
+    );
   }
 
   Map<String, dynamic> toJson() => _$TargetToJson(this);
@@ -28,16 +46,24 @@ class Target {
     this.name = name;
   }
 
-  void updateJob(String job) {
-    this.job = job;
+  void updateRelationship(String relationship) {
+    this.relationship = relationship;
   }
 
-  void updateAge(int age) {
-    this.age = age;
+  void updatePersonality(String personality) {
+    this.personality = personality;
+  }
+
+  void updateConversationStyle(String conversationStyle) {
+    this.conversationStyle = conversationStyle;
+  }
+
+  void updateAdditionalDescription(String additionalDescription) {
+    this.additionalDescription = additionalDescription;
   }
 
   @override
   String toString() {
-    return 'Target{id: $id, image: $image, name: $name, job: $job, age: $age}';
+    return 'Target{id: $id, image: $image, name: $name, relationship: $relationship, personality: $personality, conversationStyle: $conversationStyle, additionalDescription: $additionalDescription}';
   }
 }

@@ -16,7 +16,7 @@ class TargetController extends BaseController {
       _readTargetUseCase = readTargetUseCase;
 
   Future<void> initialize(Member member) async {
-    target = await read(member.id);
+    target = await callMethod<Target>(() => _readTargetUseCase.call(member.id));
     notifyListeners();
   }
 
@@ -24,7 +24,8 @@ class TargetController extends BaseController {
     return await callMethod<Target>(() => _readTargetUseCase.call(id));
   }
 
-  Future<Target> update(Target target) async {
-    return await callMethod<Target>(() => _updateTargetUseCase.call(target));
+  Future<void> update(Target target) async {
+    this.target = await callMethod<Target>(() => _updateTargetUseCase.call(target));
+    notifyListeners();
   }
 }

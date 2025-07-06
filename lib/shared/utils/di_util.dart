@@ -22,21 +22,12 @@ import 'package:app/features/chat/domain/usecases/read_chat.dart';
 import 'package:app/features/chat/domain/usecases/read_more_message.dart';
 import 'package:app/features/chat/presentation/controllers/chat_controller.dart';
 import 'package:app/features/chat/presentation/controllers/message_controller.dart';
+import 'package:app/features/member/data/repositories/member_repository_impl.dart';
 import 'package:app/features/member/presentation/controllers/member_controller.dart';
-import 'package:app/features/member_information/data/repositories/member_information_repository_impl.dart';
-import 'package:app/features/member_information/domain/repositories/target_information_repository.dart';
-import 'package:app/features/member_information/domain/usecases/read_member_information.dart';
-import 'package:app/features/member_information/domain/usecases/update_member_information.dart';
-import 'package:app/features/member_information/presentation/controllers/member_information_controller.dart';
 import 'package:app/features/target/data/repositories/target_repository_impl.dart';
 import 'package:app/features/target/domain/usecases/read_target.dart';
 import 'package:app/features/target/domain/usecases/update_target.dart';
 import 'package:app/features/target/presentation/controllers/target_controller.dart';
-import 'package:app/features/target_information/data/repositories/target_information_repository_impl.dart';
-import 'package:app/features/target_information/domain/repositories/target_information_repository.dart';
-import 'package:app/features/target_information/domain/usecases/read_target_information.dart';
-import 'package:app/features/target_information/domain/usecases/update_target_information.dart';
-import 'package:app/features/target_information/presentation/controllers/target_information_controller.dart';
 import 'package:app/features/target_issue/data/repositories/target_issue_repository_impl.dart';
 import 'package:app/features/target_issue/domain/repositories/target_issue_repository.dart';
 import 'package:app/features/target_issue/domain/usecases/create_target_issue.dart';
@@ -48,6 +39,8 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 import '../../features/chat/domain/usecases/read_recent_message.dart';
+import '../../features/member/domain/repositories/member_repository.dart';
+import '../../features/member/domain/usecases/update_member.dart';
 import '../../features/target/domain/repositories/target_repository.dart';
 
 final class DiUtil {
@@ -57,9 +50,7 @@ final class DiUtil {
     result.addAll(_repositoryDependency());
     result.addAll(_authDependency());
     result.addAll(_memberDependency());
-    result.addAll(_memberInformationDependency());
     result.addAll(_targetDependency());
-    result.addAll(_targetInformationDependency());
     result.addAll(_targetIssueDependency());
     result.addAll(_chatDependency());
     result.addAll(_messageDependency());
@@ -69,9 +60,8 @@ final class DiUtil {
   static List<SingleChildWidget> _repositoryDependency() {
     var result = <SingleChildWidget>[];
     result.add(Provider<AuthRepository>(create: (_) => AuthRepositoryImpl()));
-    result.add(Provider<MemberInformationRepository>(create: (_) => MemberInformationRepositoryImpl()));
+    result.add(Provider<MemberRepository>(create: (_) => MemberRepositoryImpl()));
     result.add(Provider<TargetRepository>(create: (_) => TargetRepositoryImpl()));
-    result.add(Provider<TargetInformationRepository>(create: (_) => TargetInformationRepositoryImpl()));
     result.add(Provider<TargetIssueRepository>(create: (_) => TargetIssueRepositoryImpl()));
     result.add(Provider<ChatRepository>(create: (_) => ChatRepositoryImpl()));
     result.add(Provider<MessageRepository>(create: (_) => MessageRepositoryImpl()));
@@ -100,31 +90,14 @@ final class DiUtil {
       ),
     );
     result.add(
-      ProxyProvider5<
-        AuthRepository,
-        SequenceRepository,
-        MemberInformationRepository,
-        TargetRepository,
-        TargetInformationRepository,
-        Register
-      >(
+      ProxyProvider3<AuthRepository, SequenceRepository, TargetRepository, Register>(
         update:
-            (
-              _,
-              authRepository,
-              sequenceRepository,
-              memberInformationRepository,
-              targetRepository,
-              targetInformationRepository,
-              register,
-            ) =>
+            (_, authRepository, sequenceRepository, targetRepository, register) =>
                 register ??
                 Register(
                   authRepository: authRepository,
                   sequenceRepository: sequenceRepository,
-                  memberInformationRepository: memberInformationRepository,
                   targetRepository: targetRepository,
-                  targetInformationRepository: targetInformationRepository,
                 ),
       ),
     );
@@ -160,38 +133,15 @@ final class DiUtil {
 
   static List<SingleChildWidget> _memberDependency() {
     var result = <SingleChildWidget>[];
-    result.add(ChangeNotifierProvider<MemberController>(create: (_) => MemberController()));
-    return result;
-  }
-
-  static List<SingleChildWidget> _memberInformationDependency() {
-    var result = <SingleChildWidget>[];
     result.add(
-      ProxyProvider<MemberInformationRepository, ReadMemberInformation>(
-        update:
-            (_, memberInformationRepository, readMemberInformation) =>
-                readMemberInformation ??
-                ReadMemberInformation(memberInformationRepository: memberInformationRepository),
+      ProxyProvider<MemberRepository, UpdateMember>(
+        update: (_, memberRepository, updateMember) => updateMember ?? UpdateMember(memberRepository: memberRepository),
       ),
     );
     result.add(
-      ProxyProvider<MemberInformationRepository, UpdateMemberInformation>(
-        update:
-            (_, memberInformationRepository, updateMemberInformation) =>
-                updateMemberInformation ??
-                UpdateMemberInformation(memberInformationRepository: memberInformationRepository),
-      ),
-    );
-    result.add(
-      ChangeNotifierProxyProvider2<ReadMemberInformation, UpdateMemberInformation, MemberInformationController?>(
+      ChangeNotifierProxyProvider<UpdateMember, MemberController?>(
         create: (_) => null,
-        update:
-            (_, readMemberInformation, updateMemberInformation, controller) =>
-                controller ??
-                MemberInformationController(
-                  readMemberInformationUseCase: readMemberInformation,
-                  updateMemberInformationUseCase: updateMemberInformation,
-                ),
+        update: (_, updateMember, controller) => controller ?? MemberController(updateMemberUseCase: updateMember),
       ),
     );
     return result;
@@ -218,39 +168,6 @@ final class DiUtil {
       ),
     );
 
-    return result;
-  }
-
-  static List<SingleChildWidget> _targetInformationDependency() {
-    var result = <SingleChildWidget>[];
-    result.add(
-      ProxyProvider<TargetInformationRepository, ReadTargetInformation>(
-        update:
-            (_, targetInformationRepository, readTargetInformation) =>
-                readTargetInformation ??
-                ReadTargetInformation(targetInformationRepository: targetInformationRepository),
-      ),
-    );
-    result.add(
-      ProxyProvider<TargetInformationRepository, UpdateTargetInformation>(
-        update:
-            (_, targetInformationRepository, updateTargetInformation) =>
-                updateTargetInformation ??
-                UpdateTargetInformation(targetInformationRepository: targetInformationRepository),
-      ),
-    );
-    result.add(
-      ChangeNotifierProxyProvider2<ReadTargetInformation, UpdateTargetInformation, TargetInformationController?>(
-        create: (_) => null,
-        update:
-            (_, readTargetInformation, updateTargetInformation, controller) =>
-                controller ??
-                TargetInformationController(
-                  readTargetInformationUseCase: readTargetInformation,
-                  updateTargetInformationUseCase: updateTargetInformation,
-                ),
-      ),
-    );
     return result;
   }
 

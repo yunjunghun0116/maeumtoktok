@@ -16,11 +16,8 @@ import 'package:app/features/chat/presentation/widgets/member_message_bubble.dar
 import 'package:app/features/chat/presentation/widgets/other_message_bubble.dart';
 import 'package:app/features/chat/presentation/widgets/report_dialog.dart';
 import 'package:app/features/chat/presentation/widgets/send_message_input.dart';
-import 'package:app/features/member_information/domain/entities/member_information.dart';
-import 'package:app/features/member_information/presentation/controllers/member_information_controller.dart';
+import 'package:app/features/member/domain/entities/member.dart';
 import 'package:app/features/target/presentation/controllers/target_controller.dart';
-import 'package:app/features/target_information/domain/entities/target_information.dart';
-import 'package:app/features/target_information/presentation/controllers/target_information_controller.dart';
 import 'package:app/features/target_issue/domain/entities/target_issue.dart';
 import 'package:app/features/target_issue/presentation/controllers/target_issue_controller.dart';
 import 'package:app/shared/utils/chat_util.dart';
@@ -96,9 +93,7 @@ class _ChatScreenState extends State<ChatScreen> {
     if (!validateCanSendTargetMessage()) return;
 
     var member = context.read<MemberController>().member!;
-    var memberInformation = context.read<MemberInformationController>().information!;
     var target = context.read<TargetController>().target!;
-    var targetInformation = context.read<TargetInformationController>().information!;
     var positiveIssues = context.read<TargetIssueController>().positiveIssues;
     var negativeIssues = context.read<TargetIssueController>().negativeIssues;
     var normalIssues = context.read<TargetIssueController>().normalIssues;
@@ -106,9 +101,8 @@ class _ChatScreenState extends State<ChatScreen> {
       if (_isLoading) return;
       _isLoading = true;
       var langchainDto = await getLangChainDto(
-        memberInfo: memberInformation,
+        member: member,
         target: target,
-        targetInfo: targetInformation,
         positiveIssues: positiveIssues,
         negativeIssues: negativeIssues,
         normalIssues: normalIssues,
@@ -155,9 +149,8 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<LangchainDto?> getLangChainDto({
-    required MemberInformation memberInfo,
+    required Member member,
     required Target target,
-    required TargetInformation targetInfo,
     required List<TargetIssue> positiveIssues,
     required List<TargetIssue> negativeIssues,
     required List<TargetIssue> normalIssues,
@@ -170,8 +163,7 @@ class _ChatScreenState extends State<ChatScreen> {
     if (!mounted) return null;
     return LangchainDto(
       target: target,
-      memberInformation: memberInfo,
-      targetInformation: targetInfo,
+      member: member,
       positiveIssues: positiveIssues,
       negativeIssues: negativeIssues,
       normalIssues: normalIssues,

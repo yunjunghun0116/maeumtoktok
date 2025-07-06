@@ -12,8 +12,10 @@ class Member {
   final String id;
   final String email;
   final String password;
-  final String name;
+  String name;
   final DateTime lastLoginDate;
+  String personality;
+  String conversationStyle;
 
   Member({
     required this.id,
@@ -21,6 +23,8 @@ class Member {
     required this.password,
     required this.name,
     required this.lastLoginDate,
+    required this.personality,
+    required this.conversationStyle,
   });
 
   factory Member.fromJson(Map<String, dynamic> json) => _$MemberFromJson(json);
@@ -35,6 +39,8 @@ class Member {
       password: encryptedPassword,
       name: registerDto.name,
       lastLoginDate: DateTime.now(),
+      personality: "",
+      conversationStyle: "",
     );
   }
 
@@ -42,6 +48,18 @@ class Member {
     if (!SecurityUtil.checkPW(inputPassword, password)) {
       throw CustomException(ExceptionMessage.wrongEmailOrPassword);
     }
+  }
+
+  void updateName(String name) {
+    this.name = name;
+  }
+
+  void updatePersonality(String personality) {
+    this.personality = personality;
+  }
+
+  void updateConversationStyle(String conversationStyle) {
+    this.conversationStyle = conversationStyle;
   }
 
   @override

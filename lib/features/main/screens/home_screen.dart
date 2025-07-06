@@ -1,12 +1,9 @@
 import 'package:app/core/exceptions/custom_exception.dart';
 import 'package:app/core/exceptions/exception_message.dart';
 import 'package:app/features/member/presentation/controllers/member_controller.dart';
-import 'package:app/features/member_information/presentation/controllers/member_information_controller.dart';
-import 'package:app/features/member_information/presentation/widgets/member_information_input_dialog.dart';
+import 'package:app/features/member/presentation/screens/member_information_screen.dart';
 import 'package:app/features/target/domain/entities/target.dart';
 import 'package:app/features/target/presentation/controllers/target_controller.dart';
-import 'package:app/features/target_information/presentation/controllers/target_information_controller.dart';
-import 'package:app/features/target_information/presentation/screens/target_information_screen.dart';
 import 'package:app/features/target_issue/domain/entities/target_issue.dart';
 import 'package:app/features/target_issue/presentation/controllers/target_issue_controller.dart';
 import 'package:app/shared/widgets/common_progress_bar.dart';
@@ -14,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../shared/constants/app_colors.dart';
+import '../../target/presentation/screens/target_information_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,34 +21,24 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  void _openMemberInformationDialog() async {
-    var controller = context.read<MemberInformationController>();
-    var information = controller.information!;
-    String? result = await showDialog<String?>(
-      context: context,
-      builder: (context) => MemberInformationInputDialog(information: information),
-    );
-    if (result == null) return;
-    if (!mounted) return;
-    information.updateDescription(result);
-    await controller.update(information);
+  double _getMemberInformationInputProgress() {
+    var totalCnt = 3;
+    var inputCnt = 0;
+    var member = context.read<MemberController>().member!;
+    if (member.name.isNotEmpty) inputCnt++;
+    if (member.personality.isNotEmpty) inputCnt++;
+    if (member.conversationStyle.isNotEmpty) inputCnt++;
+    return inputCnt / totalCnt;
   }
 
-  double _getMemberInformationInputProgress(BuildContext context) {
-    var recommendLength = 50;
-    var information = context.read<MemberInformationController>().information;
-    if (information == null || information.description.isEmpty) return 0;
-    return information.description.length / recommendLength;
-  }
-
-  double _getTargetInputProgress(BuildContext context, Target target) {
+  double _getTargetInputProgress() {
     var totalCnt = 4;
     var inputCnt = 0;
-    var information = context.read<TargetInformationController>().information;
-    if (information != null && information.description.isNotEmpty) inputCnt++;
+    var target = context.read<TargetController>().target!;
     if (target.name.isNotEmpty) inputCnt++;
-    if (target.job.isNotEmpty) inputCnt++;
-    if (target.age != 0) inputCnt++;
+    if (target.relationship.isNotEmpty) inputCnt++;
+    if (target.personality.isNotEmpty) inputCnt++;
+    if (target.conversationStyle.isNotEmpty) inputCnt++;
     return inputCnt / totalCnt;
   }
 
@@ -60,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   double _getNegativeIssueProgress(List<TargetIssue> issues) {
-    var totalCnt = 3;
+    var totalCnt = 1;
     return issues.length / totalCnt;
   }
 
@@ -83,7 +71,10 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(height: 20),
             statusCard(context: context, target: targetController.target!),
             SizedBox(height: 20),
-            getCard(title: "내 정보 입력하기", onTap: () => _openMemberInformationDialog()),
+            getCard(
+              title: "내 정보 입력하기",
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MemberInformationScreen())),
+            ),
             getCard(
               title: "${targetController.target?.name} 정보 입력하기",
               onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TargetInformationScreen())),
@@ -107,9 +98,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           child: Column(
             children: [
-              inputStatus(title: "내 정보 입력 현황", progress: _getMemberInformationInputProgress(context)),
+              inputStatus(title: "내 정보 입력 현황", progress: _getMemberInformationInputProgress()),
               SizedBox(height: 10),
-              inputStatus(title: "단절된 대상 정보 입력 현황", progress: _getTargetInputProgress(context, target)),
+              inputStatus(title: "단절된 대상 정보 입력 현황", progress: _getTargetInputProgress()),
               SizedBox(height: 10),
               inputStatus(title: "긍정 기억 입력 현황", progress: _getPositiveIssueProgress(controller.positiveIssues)),
               SizedBox(height: 10),

@@ -9,14 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 
-class IssueScreen extends StatefulWidget {
-  const IssueScreen({super.key});
+class TargetIssueScreen extends StatefulWidget {
+  const TargetIssueScreen({super.key});
 
   @override
-  State<IssueScreen> createState() => _IssueScreenState();
+  State<TargetIssueScreen> createState() => _TargetIssueScreenState();
 }
 
-class _IssueScreenState extends State<IssueScreen> {
+class _TargetIssueScreenState extends State<TargetIssueScreen> {
   void _createDialog(IssueType issueType) async {
     String? result = await showDialog<String?>(
       context: context,
@@ -49,20 +49,38 @@ class _IssueScreenState extends State<IssueScreen> {
     await controller.initialize(target.id);
   }
 
+  List<TargetIssue> get issuesList {
+    var issueController = context.read<TargetIssueController>();
+    return [...issueController.positiveIssues, ...issueController.negativeIssues, ...issueController.normalIssues];
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<TargetIssueController>(
-      builder: (context, controller, child) {
+    return Consumer2<TargetIssueController, TargetController>(
+      builder: (context, issueController, targetController, child) {
         return Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: AppColors.backgroundColor,
           appBar: AppBar(
             backgroundColor: AppColors.whiteColor,
             elevation: 0,
-            automaticallyImplyLeading: false,
+            leadingWidth: 48,
+            leading: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                if (Navigator.canPop(context)) {
+                  Navigator.pop(context);
+                }
+              },
+              child: Container(
+                margin: const EdgeInsets.only(left: 20),
+                alignment: Alignment.center,
+                child: Icon(Icons.arrow_back_ios, size: 28),
+              ),
+            ),
             centerTitle: true,
             title: Text(
-              '단절된 대상과의 기억',
+              '${targetController.target!.name} 와(과)의 기억',
               style: TextStyle(
                 fontSize: 18,
                 height: 28 / 18,
@@ -73,12 +91,22 @@ class _IssueScreenState extends State<IssueScreen> {
             ),
           ),
           body: Column(
-            children:
-                [
-                  ...controller.positiveIssues,
-                  ...controller.negativeIssues,
-                  ...controller.normalIssues,
-                ].map((issue) => getIssueCard(issue: issue)).toList(),
+            children: [
+              Container(
+                width: double.infinity,
+                height: 50,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(color: AppColors.fontGray600Color),
+                alignment: Alignment.center,
+                child: Text(
+                  "${targetController.target!.name} 와(과)의 기억은 자세하게 입력할 수록\n상대방을 더 잘 반영하여 채팅할 수 있습니다.",
+                  style: TextStyle(fontSize: 14, height: 20 / 14, color: AppColors.whiteColor),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(height: 20),
+              ...issuesList.map((issue) => getIssueCard(issue: issue)).toList(),
+            ],
           ),
           floatingActionButton: SpeedDial(
             children: [

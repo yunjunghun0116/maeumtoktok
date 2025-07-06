@@ -23,12 +23,18 @@ enum ExceptionMessage {
   /* 포인트 관련 메시지 */
   cantUsePoint(400, "사용 가능한 포인트를 초과했습니다."),
   /* 채팅 관련 메시지 */
-  memberInformationRequired(400, "내 정보가 입력되어야 합니다."),
+  needMorePersonality(400, "성격은 최소 20자 이상 입력되어야 합니다."),
+  needMoreConversationStyle(400, "말투나 대화 스타일은 최소 20자 이상 입력되어야 합니다."),
+  memberNameRequired(400, "내 이름이 입력되어야 합니다."),
+  memberPersonalityRequired(400, "내 성격이 입력되어야 합니다."),
+  memberConversationStyleRequired(400, "내 말투 및 대화 스타일이 입력되어야 합니다."),
   targetInformationRequired(400, "단절된 대상에 대한 추가 정보(성격 등)가 입력되어야 합니다."),
-  targetIssueRequired(400, "단절된 대상과의 사건이 하나 이상 입력되어야 합니다."),
+  targetPositiveIssueRequired(400, "단절된 대상과의 긍정적인 기억이 하나 이상 입력되어야 합니다."),
+  targetNegativeIssueRequired(400, "단절된 대상과의 부정적인 기억이 하나 이상 입력되어야 합니다."),
   targetNameRequired(400, "단절된 대상의 이름이 입력되어야 합니다."),
-  targetJobRequired(400, "단절된 대상의 직업이 입력되어야 합니다."),
-  targetAgeRequired(400, "단절된 대상의 나이가 입력되어야 합니다.");
+  targetRelationshipRequired(400, "단절된 대상과의 관계가 입력되어야 합니다."),
+  targetPersonalityRequired(400, "단절된 대상의 성격이 입력되어야 합니다."),
+  targetConversationStyleRequired(400, "단절된 대상의 말투 및 대화 스타일이 입력되어야 합니다.");
 
   final int statusCode;
   final String description;

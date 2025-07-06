@@ -5,7 +5,6 @@ import 'package:app/features/main/screens/home_screen.dart';
 import 'package:app/features/member/presentation/controllers/member_controller.dart';
 import 'package:app/features/member/presentation/screens/member_screen.dart';
 import 'package:app/features/target/presentation/controllers/target_controller.dart';
-import 'package:app/features/target_issue/presentation/screens/issue_screen.dart';
 import 'package:app/shared/utils/chat_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,9 +33,9 @@ class _MainScreenState extends State<MainScreen> {
       case 1:
         screen = ChatScreen();
         break;
-      case 2:
-        screen = IssueScreen();
-        break;
+      // case 2:
+      //   screen = IssueScreen();
+      //   break;
       default:
         screen = MemberScreen();
         break;
@@ -79,8 +78,9 @@ class _MainScreenState extends State<MainScreen> {
 
                           var member = context.read<MemberController>().member;
                           var target = context.read<TargetController>().target;
-                          if (member == null) throw CustomException(ExceptionMessage.memberInformationRequired);
-                          if (target == null) throw CustomException(ExceptionMessage.targetInformationRequired);
+                          if (member == null || target == null) {
+                            throw CustomException(ExceptionMessage.noObjectAssigned);
+                          }
 
                           ChatUtil.goToChatScreen(member, target, context);
                         } on CustomException catch (e) {
@@ -90,19 +90,19 @@ class _MainScreenState extends State<MainScreen> {
                         }
                       },
                     ),
+                    // kBottomNavigationBarItem(
+                    //   activeIcon: Icons.view_list,
+                    //   inactiveIcon: Icons.view_list_outlined,
+                    //   index: 2,
+                    //   title: '기억',
+                    //   onTap: () => setState(() => _currentIndex = 2),
+                    // ),
                     kBottomNavigationBarItem(
-                      activeIcon: Icons.view_list,
-                      inactiveIcon: Icons.view_list_outlined,
+                      activeIcon: Icons.settings,
+                      inactiveIcon: Icons.settings_outlined,
                       index: 2,
-                      title: '기억',
+                      title: '설정',
                       onTap: () => setState(() => _currentIndex = 2),
-                    ),
-                    kBottomNavigationBarItem(
-                      activeIcon: Icons.person,
-                      inactiveIcon: Icons.person_outlined,
-                      index: 3,
-                      title: '마이',
-                      onTap: () => setState(() => _currentIndex = 3),
                     ),
                   ],
                 ),

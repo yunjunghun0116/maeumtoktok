@@ -1,25 +1,27 @@
-import 'package:app/features/target_information/domain/entities/target_information.dart';
+import 'package:app/core/exceptions/custom_exception.dart';
+import 'package:app/core/exceptions/exception_message.dart';
+import 'package:app/features/target/presentation/controllers/target_controller.dart';
 import 'package:app/shared/widgets/common_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../shared/constants/app_colors.dart';
 
-class TargetInformationInputDialog extends StatefulWidget {
-  final TargetInformation information;
-
-  const TargetInformationInputDialog({super.key, required this.information});
+class TargetPersonalityDialog extends StatefulWidget {
+  const TargetPersonalityDialog({super.key});
 
   @override
-  State<TargetInformationInputDialog> createState() => _TargetInformationInputDialogState();
+  State<TargetPersonalityDialog> createState() => _TargetPersonalityDialogState();
 }
 
-class _TargetInformationInputDialogState extends State<TargetInformationInputDialog> {
-  final _descriptionController = TextEditingController();
+class _TargetPersonalityDialogState extends State<TargetPersonalityDialog> {
+  final _personalityController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _descriptionController.text = widget.information.description;
+    var target = context.read<TargetController>().target!;
+    _personalityController.text = target.personality;
   }
 
   @override
@@ -37,7 +39,7 @@ class _TargetInformationInputDialogState extends State<TargetInformationInputDia
             Row(
               children: [
                 Text(
-                  "추가 정보 입력하기",
+                  "상대방의 성격",
                   style: TextStyle(
                     fontSize: 16,
                     color: AppColors.fontGray800Color,
@@ -55,7 +57,7 @@ class _TargetInformationInputDialogState extends State<TargetInformationInputDia
             ),
             SizedBox(height: 10),
             Text(
-              "상대방에 대한 성격이나\n나와 상대방과의 관계를 입력해 주세요.",
+              "상대방이 나와 있을 때 보여지는\n상대방의 성격을 구체적으로 입력해 주세요.",
               style: TextStyle(fontSize: 14, color: AppColors.fontGray600Color, height: 20 / 14),
             ),
             const SizedBox(height: 10),
@@ -64,12 +66,13 @@ class _TargetInformationInputDialogState extends State<TargetInformationInputDia
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12)),
                 child: TextField(
-                  controller: _descriptionController,
+                  controller: _personalityController,
                   maxLines: null,
                   minLines: 10,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(10),
-                    hintText: "예)\n내 아버지 이고\n성격은 엄하시고 단호하시고 ...\n같이 상대방에 대한 정보를\n자세히 적어주면 더 좋아요. :)",
+                    hintText:
+                        "밝고 긍정적인 성격, 내성적이고 말이 적은 편, 작은 일에도 잘 신경을 씀, 감정을 잘 숨기지 않음, 유머 감각이 있음, 항상 신중함, 주변을 잘 챙김 등 상대방의 성격이 잘 드러나도록 자세하게 입력해 주세요. ",
                     border: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
@@ -84,7 +87,12 @@ class _TargetInformationInputDialogState extends State<TargetInformationInputDia
             const SizedBox(height: 20),
             CommonButton(
               value: true,
-              onTap: () => Navigator.of(context).pop(_descriptionController.text),
+              onTap: () {
+                if (_personalityController.text.length < 20) {
+                  throw CustomException(ExceptionMessage.needMorePersonality);
+                }
+                Navigator.of(context).pop(_personalityController.text);
+              },
               title: "입력 완료",
             ),
           ],
