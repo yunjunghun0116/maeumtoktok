@@ -111,7 +111,7 @@ class _ChatScreenState extends State<ChatScreen> {
       if (!mounted) return;
 
       if (langchainDto == null) return;
-      var result = await context.read<LangchainDatasource>().nextTargetMessage(member.name, langchainDto);
+      var result = await context.read<LangchainDatasource>().nextTargetMessage(langchainDto);
       if (!mounted) return;
       var message = Message(
         chatId: _chat!.id,
