@@ -66,7 +66,14 @@ class LangchainDatasource {
     var negativeIssues = _negativeIssuesPrompt(issues: dto.negativeIssues);
     var normalIssues = _normalIssuesPrompt(issues: dto.normalIssues);
     return '''
+      사용자의 정보는 아래와 같습니다.
+      [사용자 정보]
+      - 이름 : ${dto.member.name}
+      - 사용자가 말투/대화스타일 : ${dto.member.conversationStyle}
+      - 사용자의 성격 : ${dto.member.personality}
+      
       당신은 사용자와의 대화에서 '${dto.target.name}'역할을 맡고 있습니다.
+      
       [프로필]
       - 이름 : ${dto.target.name}
       - 사용자와의 관계 : ${dto.target.relationship}
