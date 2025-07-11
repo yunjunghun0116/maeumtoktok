@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../shared/widgets/input_screen.dart';
+
 class TargetIssueScreen extends StatefulWidget {
   const TargetIssueScreen({super.key});
 
@@ -18,9 +20,20 @@ class TargetIssueScreen extends StatefulWidget {
 
 class _TargetIssueScreenState extends State<TargetIssueScreen> {
   void _createDialog(IssueType issueType) async {
-    String? result = await showDialog<String?>(
-      context: context,
-      builder: (context) => IssueInputDialog(issueType: issueType),
+    var result = await Navigator.push<String>(
+      context,
+      MaterialPageRoute(
+        builder:
+            (inputScreenContext) => InputScreen(
+              title: "상대방과의 ${issueType.name} 기억",
+              content: "상대방과의 기억 중\n기억에 남았던 ${issueType.name} 기억을 입력해 주세요.",
+              hintText:
+                  "O년전에 함께 OO에 갔었는데 그때 함께 OO을 했었고, 그 과정에서 OO한 경험을 하다보니 내 감정은 좋았어 등 상대방과의 기억 중 기억에 남았던 기억을 자세하게 입력해 주세요.",
+              onTap: (String text) {
+                Navigator.pop(inputScreenContext, text);
+              },
+            ),
+      ),
     );
     if (result == null || result.isEmpty) return;
     if (!mounted) return;
@@ -32,9 +45,21 @@ class _TargetIssueScreenState extends State<TargetIssueScreen> {
   }
 
   void _updateDialog(TargetIssue issue) async {
-    String? result = await showDialog<String?>(
-      context: context,
-      builder: (context) => IssueInputDialog(issue: issue, issueType: issue.issueType),
+    var result = await Navigator.push<String>(
+      context,
+      MaterialPageRoute(
+        builder:
+            (inputScreenContext) => InputScreen(
+              title: "상대방과의 ${issue.issueType.name} 기억",
+              content: "상대방과의 기억 중\n기억에 남았던 ${issue.issueType.name} 기억을 입력해 주세요.",
+              hintText:
+                  "O년전에 함께 OO에 갔었는데 그때 함께 OO을 했었고, 그 과정에서 OO한 경험을 하다보니 내 감정은 좋았어 등 상대방과의 기억 중 기억에 남았던 기억을 자세하게 입력해 주세요.",
+              onTap: (String text) {
+                Navigator.pop(inputScreenContext, text);
+              },
+              initialValue: issue.description,
+            ),
+      ),
     );
     if (result == null) return;
     if (!mounted) return;

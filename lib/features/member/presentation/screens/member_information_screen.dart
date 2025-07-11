@@ -1,9 +1,8 @@
 import 'package:app/core/exceptions/custom_exception.dart';
 import 'package:app/core/exceptions/exception_message.dart';
 import 'package:app/features/member/presentation/controllers/member_controller.dart';
-import 'package:app/features/member/presentation/widgets/member_conversation_style_dialog.dart';
-import 'package:app/features/member/presentation/widgets/member_personality_dialog.dart';
 import 'package:app/shared/constants/app_colors.dart';
+import 'package:app/shared/widgets/input_screen.dart';
 import 'package:app/shared/widgets/loading_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,16 +18,29 @@ class MemberInformationScreen extends StatefulWidget {
 
 class _MemberInformationScreenState extends State<MemberInformationScreen> {
   final _nameController = TextEditingController();
-  final _personalityController = TextEditingController();
-  final _conversationStyleController = TextEditingController();
 
   var _isLoading = false;
 
   void _updateConversationStyle() async {
     try {
-      String? result = await showDialog<String?>(
-        context: context,
-        builder: (context) => MemberConversationStyleDialog(),
+      var result = await Navigator.push<String>(
+        context,
+        MaterialPageRoute(
+          builder:
+              (inputScreenContext) => InputScreen(
+                title: "내 말투나 대화 스타일",
+                content: "상대방과 대화할 때 사용하는 \n나의 평소 말투나 대화 스타일을 \n자세하게 입력해 주세요.",
+                hintText:
+                    "퉁명스러운 말투, 차가운 말투, 장난스러운 말투, 친구스러운 대화, 시크하게, 유머러스하게, 조용히 공감하는 스타일, 고민을 많이 들어주는 스타일 등 상대방과 대화할 때의 내 말투나 대화 스타일을 자세하게 입력해 주세요. ",
+                onTap: (String text) {
+                  if (text.length < 20) {
+                    throw CustomException(ExceptionMessage.needMoreConversationStyle);
+                  }
+                  Navigator.pop(inputScreenContext, text);
+                },
+                initialValue: context.read<MemberController>().member!.conversationStyle,
+              ),
+        ),
       );
       if (result == null) return;
       if (!mounted) return;
@@ -46,7 +58,25 @@ class _MemberInformationScreenState extends State<MemberInformationScreen> {
 
   void _updatePersonality() async {
     try {
-      String? result = await showDialog<String?>(context: context, builder: (context) => MemberPersonalityDialog());
+      var result = await Navigator.push<String>(
+        context,
+        MaterialPageRoute(
+          builder:
+              (inputScreenContext) => InputScreen(
+                title: "내 성격",
+                content: "상대방이 보았을 때, 나의 성격은 어떤것 같나요?\n내 성격을 입력해 주세요.",
+                hintText:
+                    "밝고 긍정적인 성격, 내성적이고 말이 적은 편, 감정을 잘 숨기지 않음, 주변을 잘 챙김, 단호하고 상대방을 신경쓰지 않음 등 내 성격이 잘 드러나도록 자세하게 입력해 주세요. ",
+                onTap: (String text) {
+                  if (text.length < 20) {
+                    throw CustomException(ExceptionMessage.needMorePersonality);
+                  }
+                  Navigator.pop(inputScreenContext, text);
+                },
+                initialValue: context.read<MemberController>().member!.personality,
+              ),
+        ),
+      );
       if (result == null) return;
       if (!mounted) return;
       setState(() => _isLoading = true);
@@ -79,8 +109,6 @@ class _MemberInformationScreenState extends State<MemberInformationScreen> {
   void initState() {
     super.initState();
     var member = context.read<MemberController>().member!;
-    _personalityController.text = member.personality;
-    _conversationStyleController.text = member.conversationStyle;
     _nameController.text = member.name;
   }
 

@@ -4,7 +4,7 @@ import '../constants/app_colors.dart';
 
 class CommonButton extends StatelessWidget {
   final bool value;
-  final Function onTap;
+  final VoidCallback onTap;
   final String title;
 
   const CommonButton({super.key, required this.value, required this.onTap, required this.title});
@@ -12,7 +12,7 @@ class CommonButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onTap(),
+      onTap: onTap,
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 20),
         child: Container(

@@ -2,9 +2,6 @@ import 'package:app/core/exceptions/custom_exception.dart';
 import 'package:app/core/exceptions/exception_message.dart';
 import 'package:app/features/target/domain/entities/target.dart';
 import 'package:app/features/target/presentation/controllers/target_controller.dart';
-import 'package:app/features/target/presentation/widgets/target_additional_description_dialog.dart';
-import 'package:app/features/target/presentation/widgets/target_conversation_style_dialog.dart';
-import 'package:app/features/target/presentation/widgets/target_personality_dialog.dart';
 import 'package:app/features/target_issue/presentation/screens/target_issue_screen.dart';
 import 'package:app/shared/constants/app_colors.dart';
 import 'package:app/shared/utils/image_util.dart';
@@ -14,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../shared/widgets/common_text_field.dart';
+import '../../../../shared/widgets/input_screen.dart';
 
 class TargetInformationScreen extends StatefulWidget {
   const TargetInformationScreen({super.key});
@@ -26,16 +24,26 @@ class _TargetInformationScreenState extends State<TargetInformationScreen> {
   final _picker = ImagePicker();
   final _nameController = TextEditingController();
   final _relationshipController = TextEditingController();
-  final _personalityController = TextEditingController();
-  final _conversationStyleController = TextEditingController();
 
   var _isLoading = false;
 
   void _updateAdditionalDescription() async {
     try {
-      String? result = await showDialog<String?>(
-        context: context,
-        builder: (context) => TargetAdditionalDescriptionDialog(),
+      var result = await Navigator.push<String>(
+        context,
+        MaterialPageRoute(
+          builder:
+              (inputScreenContext) => InputScreen(
+                title: "상대방에 대한 추가 정보",
+                content: "상대방의 성격, 말투 및 대화 스타일 외에\n상대방에 대해 기억나는 다양한 추가 정보에\n대해 자유롭게 입력해 주세요.",
+                hintText:
+                    "말끝마다 '아니, 근데 있잖아~'라고 말해요, 같이 여행을 가면 사진을 엄청 많이 찍어요, 배가 고프면 기분이 엄청 나빠지거나 우울해져요 등 \n평소에 자주 쓰는 말이나 행동, 나와의 인상 깊은 에피소드, 현재는 어떤 상태로 지내는 지 등 상대방에 대해 기억나는 정보를 자유롭게 입력해 주세요.",
+                onTap: (String text) {
+                  Navigator.pop(inputScreenContext, text);
+                },
+                initialValue: context.read<TargetController>().target!.additionalDescription,
+              ),
+        ),
       );
       if (result == null) return;
       if (!mounted) return;
@@ -53,9 +61,24 @@ class _TargetInformationScreenState extends State<TargetInformationScreen> {
 
   void _updateConversationStyle() async {
     try {
-      String? result = await showDialog<String?>(
-        context: context,
-        builder: (context) => TargetConversationStyleDialog(),
+      var result = await Navigator.push<String>(
+        context,
+        MaterialPageRoute(
+          builder:
+              (inputScreenContext) => InputScreen(
+                title: "상대방의 말투나 대화 스타일",
+                content: "상대방이 나와 대화할 때 사용하는 \n상대방의 평소 말투나 대화 스타일을 \n자세하게 입력해 주세요.",
+                hintText:
+                    "퉁명스러운 말투, 차가운 말투, 장난스러운 말투, 친구스러운 대화, 시크하게, 유머러스하게, 조용히 공감하는 스타일, 고민을 많이 들어주는 스타일 등 상대방의 말투나 대화 스타일을 자세하게 입력해 주세요. ",
+                onTap: (String text) {
+                  if (text.length < 20) {
+                    throw CustomException(ExceptionMessage.needMoreConversationStyle);
+                  }
+                  Navigator.pop(inputScreenContext, text);
+                },
+                initialValue: context.read<TargetController>().target!.conversationStyle,
+              ),
+        ),
       );
       if (result == null) return;
       if (!mounted) return;
@@ -73,7 +96,25 @@ class _TargetInformationScreenState extends State<TargetInformationScreen> {
 
   void _updatePersonality() async {
     try {
-      String? result = await showDialog<String?>(context: context, builder: (context) => TargetPersonalityDialog());
+      var result = await Navigator.push<String>(
+        context,
+        MaterialPageRoute(
+          builder:
+              (inputScreenContext) => InputScreen(
+                title: "상대방의 성격",
+                content: "상대방이 나와 있을 때 보여지는\n상대방의 성격을 구체적으로 입력해 주세요.",
+                hintText:
+                    "밝고 긍정적인 성격, 내성적이고 말이 적은 편, 작은 일에도 잘 신경을 씀, 감정을 잘 숨기지 않음, 유머 감각이 있음, 항상 신중함, 주변을 잘 챙김 등 상대방의 성격이 잘 드러나도록 자세하게 입력해 주세요. ",
+                onTap: (String text) {
+                  if (text.length < 20) {
+                    throw CustomException(ExceptionMessage.needMorePersonality);
+                  }
+                  Navigator.pop(inputScreenContext, text);
+                },
+                initialValue: context.read<TargetController>().target!.personality,
+              ),
+        ),
+      );
       if (result == null) return;
       if (!mounted) return;
       setState(() => _isLoading = true);
@@ -139,8 +180,6 @@ class _TargetInformationScreenState extends State<TargetInformationScreen> {
     super.initState();
     var target = context.read<TargetController>().target!;
     _relationshipController.text = target.relationship;
-    _personalityController.text = target.personality;
-    _conversationStyleController.text = target.conversationStyle;
     _nameController.text = target.name;
   }
 
