@@ -1,28 +1,52 @@
 import 'package:app/core/exceptions/custom_exception.dart';
 import 'package:app/core/exceptions/exception_message.dart';
+import 'package:app/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:app/features/chat/presentation/screens/chat_screen.dart';
 import 'package:app/features/main/screens/home_screen.dart';
-import 'package:app/features/member/presentation/controllers/member_controller.dart';
 import 'package:app/features/member/presentation/screens/member_screen.dart';
-import 'package:app/features/target/presentation/controllers/target_controller.dart';
+import 'package:app/features/member/providers.dart';
+import 'package:app/features/target/providers.dart';
 import 'package:app/shared/utils/chat_util.dart';
+import 'package:app/shared/utils/local_util.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/constants/app_colors.dart';
 import '../../../shared/widgets/loading_overlay.dart';
 
-class MainScreen extends StatefulWidget {
+class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  ConsumerState<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends ConsumerState<MainScreen> {
   var _currentIndex = 0;
-
   var _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    validateAppState();
+  }
+
+  Future<void> validateAppState() async {
+    try {
+      setState(() => _isLoading = true);
+      if (ref.read(memberControllerProvider).member == null || ref.read(targetControllerProvider).target == null) {
+        LocalUtil.showMessage(context, message: "다시 로그인을 진행해 주세요.");
+      }
+    } catch (e) {
+      await Future.delayed(
+        Duration(seconds: 2),
+        () =>
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => SignInScreen()), (route) => false),
+      );
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
 
   Widget getScreen() {
     Widget screen;
@@ -33,9 +57,6 @@ class _MainScreenState extends State<MainScreen> {
       case 1:
         screen = ChatScreen();
         break;
-      // case 2:
-      //   screen = IssueScreen();
-      //   break;
       default:
         screen = MemberScreen();
         break;
@@ -76,13 +97,13 @@ class _MainScreenState extends State<MainScreen> {
                           if (_isLoading) return;
                           setState(() => _isLoading = true);
 
-                          var member = context.read<MemberController>().member;
-                          var target = context.read<TargetController>().target;
+                          var member = ref.read(memberControllerProvider).member;
+                          var target = ref.read(targetControllerProvider).target;
                           if (member == null || target == null) {
                             throw CustomException(ExceptionMessage.noObjectAssigned);
                           }
 
-                          ChatUtil.goToChatScreen(member, target, context);
+                          ChatUtil.goToChatScreen(context, ref: ref, member: member, target: target);
                         } on CustomException catch (e) {
                           rethrow;
                         } finally {
@@ -90,13 +111,6 @@ class _MainScreenState extends State<MainScreen> {
                         }
                       },
                     ),
-                    // kBottomNavigationBarItem(
-                    //   activeIcon: Icons.view_list,
-                    //   inactiveIcon: Icons.view_list_outlined,
-                    //   index: 2,
-                    //   title: '기억',
-                    //   onTap: () => setState(() => _currentIndex = 2),
-                    // ),
                     kBottomNavigationBarItem(
                       activeIcon: Icons.settings,
                       inactiveIcon: Icons.settings_outlined,

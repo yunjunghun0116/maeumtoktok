@@ -23,8 +23,8 @@ enum ExceptionMessage {
   /* 포인트 관련 메시지 */
   cantUsePoint(400, "사용 가능한 포인트를 초과했습니다."),
   /* 채팅 관련 메시지 */
-  needMorePersonality(400, "성격은 최소 20자 이상 입력되어야 합니다."),
-  needMoreConversationStyle(400, "말투나 대화 스타일은 최소 20자 이상 입력되어야 합니다."),
+  needMorePersonality(400, "성격이 너무 짧습니다."),
+  needMoreConversationStyle(400, "말투나 대화 스타일이 너무 짧습니다."),
   memberNameRequired(400, "내 이름이 입력되어야 합니다."),
   memberPersonalityRequired(400, "내 성격이 입력되어야 합니다."),
   memberConversationStyleRequired(400, "내 말투 및 대화 스타일이 입력되어야 합니다."),

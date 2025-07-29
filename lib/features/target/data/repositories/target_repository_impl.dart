@@ -24,10 +24,10 @@ class TargetRepositoryImpl implements TargetRepository {
   }
 
   @override
-  Future<Target> readById(String id) async {
-    var snapshot = await _collection.doc(id).get();
-    if (!snapshot.exists) throw CustomException(ExceptionMessage.badRequest);
-    var target = Target.fromJson(snapshot.data() as Map<String, dynamic>);
+  Future<Target> readByMemberId(String memberId) async {
+    var snapshot = await _collection.where("memberId", isEqualTo: memberId).get();
+    if (snapshot.docs.isEmpty) throw CustomException(ExceptionMessage.badRequest);
+    var target = Target.fromJson(snapshot.docs.first.data() as Map<String, dynamic>);
     return target;
   }
 

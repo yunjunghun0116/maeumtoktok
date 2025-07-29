@@ -8,6 +8,7 @@ part of 'target.dart';
 
 Target _$TargetFromJson(Map<String, dynamic> json) => Target(
   id: json['id'] as String,
+  memberId: json['memberId'] as String,
   image: json['image'] as String,
   name: json['name'] as String,
   relationship: json['relationship'] as String,
@@ -17,6 +18,7 @@ Target _$TargetFromJson(Map<String, dynamic> json) => Target(
 
 Map<String, dynamic> _$TargetToJson(Target instance) => <String, dynamic>{
   'id': instance.id,
+  'memberId': instance.memberId,
   'image': instance.image,
   'name': instance.name,
   'relationship': instance.relationship,

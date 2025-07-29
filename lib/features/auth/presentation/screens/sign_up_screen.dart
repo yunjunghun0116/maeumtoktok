@@ -1,6 +1,6 @@
-import 'package:app/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:app/features/auth/providers.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../shared/constants/app_colors.dart';
 import '../../../../shared/utils/sign_util.dart';
@@ -9,14 +9,14 @@ import 'email_password_screen.dart';
 import 'member_information_screen.dart';
 import 'signing_screen.dart';
 
-class SignUpScreen extends StatefulWidget {
+class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  ConsumerState<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   late String _email;
   late String _password;
   late String _name;
@@ -37,9 +37,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Future<void> register() async {
     var registerJson = {"email": _email, "password": _password, "name": _name};
     var registerDto = RegisterDto.fromJson(registerJson);
-    var member = await context.read<AuthController>().register(registerDto);
+    var member = await ref.read(authControllerProvider.notifier).register(registerDto);
     if (!mounted) return;
-    SignUtil.login(context: context, member: member, isSaveLocal: true);
+    SignUtil.login(context, ref: ref, member: member, isSaveLocal: true);
   }
 
   Widget getScreen() {

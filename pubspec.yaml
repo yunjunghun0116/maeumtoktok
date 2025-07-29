@@ -20,7 +20,7 @@ dependencies:
   # 데이터직렬화
   json_annotation: ^4.9.0
   # 상태관리
-  provider: ^6.1.2
+  flutter_riverpod: ^2.6.1
   # 내부저장소
   shared_preferences: ^2.5.2
   # 화면 내 알림

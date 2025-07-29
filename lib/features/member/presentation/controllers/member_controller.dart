@@ -3,25 +3,34 @@ import 'package:app/features/member/domain/usecases/update_member.dart';
 
 import '../../domain/entities/member.dart';
 
-class MemberController extends BaseController {
+class MemberState extends BaseState {
+  final Member? member;
+
+  const MemberState({this.member, super.isLoading});
+
+  @override
+  MemberState copyWith({Member? member, bool? isLoading}) {
+    return MemberState(member: member, isLoading: isLoading ?? this.isLoading);
+  }
+}
+
+class MemberController extends BaseController<MemberState> {
   final UpdateMember _updateMemberUseCase;
 
-  Member? member;
-
-  MemberController({required UpdateMember updateMemberUseCase}) : _updateMemberUseCase = updateMemberUseCase;
+  MemberController({required UpdateMember updateMemberUseCase})
+    : _updateMemberUseCase = updateMemberUseCase,
+      super(MemberState());
 
   void login(Member member) {
-    this.member = member;
-    notifyListeners();
+    state = state.copyWith(member: member);
   }
 
   void logout() {
-    member = null;
-    notifyListeners();
+    state = state.copyWith(member: null);
   }
 
   Future<void> update(Member member) async {
-    this.member = await callMethod<Member>(() => _updateMemberUseCase.call(member));
-    notifyListeners();
+    var updatedMember = await callMethod<Member>(() => _updateMemberUseCase.call(member));
+    state = state.copyWith(member: updatedMember);
   }
 }

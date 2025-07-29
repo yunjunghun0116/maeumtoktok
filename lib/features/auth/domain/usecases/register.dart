@@ -21,7 +21,6 @@ class Register extends BaseUseCaseWithParam<RegisterDto, Member> {
     required SequenceRepository sequenceRepository,
     required TargetRepository targetRepository,
   }) : _targetRepository = targetRepository,
-
        _sequenceRepository = sequenceRepository,
        _authRepository = authRepository;
 
@@ -30,6 +29,7 @@ class Register extends BaseUseCaseWithParam<RegisterDto, Member> {
     bool isDuplicated = await _authRepository.existsByEmail(registerDto.email);
     if (isDuplicated) throw CustomException(ExceptionMessage.emailDuplicated);
     var id = await _sequenceRepository.getNextSequence(FirebaseCollection.memberCollection);
+    var targetId = await _sequenceRepository.getNextSequence(FirebaseCollection.targetCollection);
     var member = Member.fromDto(id, registerDto);
 
     var imagePath = ImageUtil.getProfileImagePath(id);
@@ -37,7 +37,7 @@ class Register extends BaseUseCaseWithParam<RegisterDto, Member> {
 
     await _authRepository.runTransaction((transaction) {
       _authRepository.create(member, transaction);
-      var target = Target.defaultTarget(member.id, imageUploadResult);
+      var target = Target.defaultTarget(id: targetId, memberId: member.id, image: imageUploadResult);
       _targetRepository.create(target, transaction);
     });
 

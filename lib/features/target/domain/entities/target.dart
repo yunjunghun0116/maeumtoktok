@@ -5,6 +5,7 @@ part 'target.g.dart';
 @JsonSerializable()
 class Target {
   final String id;
+  final String memberId;
   String image;
   String name;
   String relationship;
@@ -13,6 +14,7 @@ class Target {
 
   Target({
     required this.id,
+    required this.memberId,
     required this.image,
     required this.name,
     required this.relationship,
@@ -22,8 +24,16 @@ class Target {
 
   factory Target.fromJson(Map<String, dynamic> json) => _$TargetFromJson(json);
 
-  factory Target.defaultTarget(String id, String image) {
-    return Target(id: id, image: image, name: "상대방", relationship: "단절된 대상", personality: "", conversationStyle: "");
+  factory Target.defaultTarget({required String id, required String memberId, required String image}) {
+    return Target(
+      id: id,
+      memberId: memberId,
+      image: image,
+      name: "상대방",
+      relationship: "단절된 대상",
+      personality: "",
+      conversationStyle: "",
+    );
   }
 
   Map<String, dynamic> toJson() => _$TargetToJson(this);
@@ -50,6 +60,6 @@ class Target {
 
   @override
   String toString() {
-    return 'Target{id: $id, image: $image, name: $name, relationship: $relationship, personality: $personality, conversationStyle: $conversationStyle}';
+    return 'Target{id: $id, memberId: $memberId, image: $image, name: $name, relationship: $relationship, personality: $personality, conversationStyle: $conversationStyle}';
   }
 }

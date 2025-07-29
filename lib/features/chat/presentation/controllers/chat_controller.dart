@@ -8,7 +8,7 @@ import 'package:app/features/chat/domain/usecases/read_chat.dart';
 
 import '../../../../core/base/base_controller.dart';
 
-class ChatController extends BaseController {
+class ChatController extends BaseController<BaseState> {
   final CreateChat _createChatUseCase;
   final ExistsChat _existsChatUseCase;
   final ReadChat _readChatUseCase;
@@ -19,7 +19,8 @@ class ChatController extends BaseController {
     required ReadChat readChatUseCase,
   }) : _readChatUseCase = readChatUseCase,
        _existsChatUseCase = existsChatUseCase,
-       _createChatUseCase = createChatUseCase;
+       _createChatUseCase = createChatUseCase,
+       super(BaseState());
 
   Future<Chat> create(CreateChatDto createChatDto) async {
     return await callMethod<Chat>(() => _createChatUseCase.call(createChatDto));

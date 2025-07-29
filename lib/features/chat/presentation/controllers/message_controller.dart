@@ -8,7 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../core/base/base_controller.dart';
 import '../../domain/usecases/read_recent_message.dart';
 
-class MessageController extends BaseController {
+class MessageController extends BaseController<BaseState> {
   final CreateMessage _createMessageUseCase;
   final ReadRecentMessage _readRecentMessageUseCase;
   final ReadMoreMessage _readMoreMessageUseCase;
@@ -19,7 +19,8 @@ class MessageController extends BaseController {
     required ReadMoreMessage readMoreMessageUseCase,
   }) : _readMoreMessageUseCase = readMoreMessageUseCase,
        _readRecentMessageUseCase = readRecentMessageUseCase,
-       _createMessageUseCase = createMessageUseCase;
+       _createMessageUseCase = createMessageUseCase,
+       super(BaseState());
 
   Future<Message> create(Message message) async {
     return await callMethod<Message>(() => _createMessageUseCase.call(message));

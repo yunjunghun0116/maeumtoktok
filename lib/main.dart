@@ -1,9 +1,8 @@
 import 'dart:async';
 
-import 'package:app/shared/utils/di_util.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/exceptions/exception_handler.dart';
 import 'core/firebase/firebase_options.dart';
@@ -18,7 +17,7 @@ void main() {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-    runApp(const MainApp());
+    runApp(ProviderScope(child: MainApp()));
   }, (error, stackTrace) => ExceptionHandler().handleException(error, stackTrace, rootStateKey.currentContext));
 }
 
@@ -27,23 +26,15 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: DiUtil.dependencyInjection(),
+    return MaterialApp(
+      title: "마음톡톡",
+      navigatorKey: rootStateKey,
+      debugShowCheckedModeBanner: false,
       builder: (context, child) {
-        return MaterialApp(
-          title: "마음톡톡",
-          navigatorKey: rootStateKey,
-          debugShowCheckedModeBanner: false,
-          builder: (context, child) {
-            if (child == null) return Container();
-            return MediaQuery(
-              data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1)),
-              child: child,
-            );
-          },
-          home: SplashScreen(),
-        );
+        if (child == null) return Container();
+        return MediaQuery(data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1)), child: child);
       },
+      home: SplashScreen(),
     );
   }
 }

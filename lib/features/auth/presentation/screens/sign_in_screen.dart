@@ -1,11 +1,11 @@
 import 'package:app/core/exceptions/custom_exception.dart';
 import 'package:app/core/exceptions/exception_message.dart';
 import 'package:app/features/auth/data/models/login_dto.dart';
-import 'package:app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:app/features/auth/presentation/widgets/invitation_dialog.dart';
+import 'package:app/features/auth/providers.dart';
 import 'package:app/shared/widgets/common_check_box.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../shared/constants/app_colors.dart';
 import '../../../../shared/utils/sign_util.dart';
@@ -13,23 +13,23 @@ import '../../../../shared/widgets/common_button.dart';
 import '../../../../shared/widgets/common_text_field.dart';
 import 'sign_up_screen.dart';
 
-class SignInScreen extends StatefulWidget {
+class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  ConsumerState<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignInScreenState extends ConsumerState<SignInScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isAutoLogin = true;
 
   Future<void> loginWithEmailAndPassword() async {
     var loginDto = LoginDto(email: _emailController.text, password: _passwordController.text);
-    var member = await context.read<AuthController>().login(loginDto);
+    var member = await ref.read(authControllerProvider.notifier).login(loginDto);
     if (!mounted) return;
-    SignUtil.login(context: context, member: member, isSaveLocal: _isAutoLogin);
+    SignUtil.login(context, ref: ref, member: member, isSaveLocal: _isAutoLogin);
   }
 
   @override

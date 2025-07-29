@@ -1,30 +1,28 @@
-import 'package:app/core/exceptions/custom_exception.dart';
-import 'package:app/core/exceptions/exception_message.dart';
-import 'package:app/features/member/presentation/controllers/member_controller.dart';
 import 'package:app/features/member/presentation/screens/member_information_screen.dart';
+import 'package:app/features/member/providers.dart';
 import 'package:app/features/target/domain/entities/target.dart';
-import 'package:app/features/target/presentation/controllers/target_controller.dart';
+import 'package:app/features/target/providers.dart';
 import 'package:app/features/target_issue/domain/entities/target_issue.dart';
-import 'package:app/features/target_issue/presentation/controllers/target_issue_controller.dart';
+import 'package:app/features/target_issue/providers.dart';
 import 'package:app/shared/widgets/common_progress_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/constants/app_colors.dart';
 import '../../target/presentation/screens/target_information_screen.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   double _getMemberInformationInputProgress() {
     var totalCnt = 3;
     var inputCnt = 0;
-    var member = context.read<MemberController>().member!;
+    var member = ref.read(memberControllerProvider).member!;
     if (member.name.isNotEmpty) inputCnt++;
     if (member.personality.isNotEmpty) inputCnt++;
     if (member.conversationStyle.isNotEmpty) inputCnt++;
@@ -34,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   double _getTargetInputProgress() {
     var totalCnt = 4;
     var inputCnt = 0;
-    var target = context.read<TargetController>().target!;
+    var target = ref.read(targetControllerProvider).target!;
     if (target.name.isNotEmpty) inputCnt++;
     if (target.relationship.isNotEmpty) inputCnt++;
     if (target.personality.isNotEmpty) inputCnt++;
@@ -54,61 +52,58 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<MemberController, TargetController>(
-      builder: (context, memberController, targetController, child) {
-        if (targetController.target == null) throw CustomException(ExceptionMessage.dependencyNotInjectedException);
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 20),
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Text(
-                "마음톡톡",
-                style: TextStyle(fontSize: 28, height: 1, color: AppColors.mainColor, fontWeight: FontWeight.bold),
-              ),
-            ),
-            SizedBox(height: 20),
-            statusCard(context: context, target: targetController.target!),
-            SizedBox(height: 20),
-            getCard(
-              title: "내 정보 입력하기",
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MemberInformationScreen())),
-            ),
-            getCard(
-              title: "${targetController.target?.name} 정보 입력하기",
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TargetInformationScreen())),
-            ),
-          ],
-        );
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 20),
+        Container(
+          padding: EdgeInsets.all(20),
+          child: Text(
+            "마음톡톡",
+            style: TextStyle(fontSize: 28, height: 1, color: AppColors.mainColor, fontWeight: FontWeight.bold),
+          ),
+        ),
+        SizedBox(height: 20),
+        statusCard(context: context, target: ref.watch(targetControllerProvider).target!),
+        SizedBox(height: 20),
+        getCard(
+          title: "내 정보 입력하기",
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MemberInformationScreen())),
+        ),
+        getCard(
+          title: "${ref.watch(targetControllerProvider).target!.name} 정보 입력하기",
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TargetInformationScreen())),
+        ),
+      ],
     );
   }
 
   Widget statusCard({required BuildContext context, required Target target}) {
-    return Consumer<TargetIssueController>(
-      builder: (context, controller, child) {
-        return Container(
-          width: double.infinity,
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            border: Border.all(color: AppColors.subColor2),
-            borderRadius: BorderRadius.circular(15),
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.subColor2),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Column(
+        children: [
+          inputStatus(title: "내 정보 입력 현황", progress: _getMemberInformationInputProgress()),
+          SizedBox(height: 10),
+          inputStatus(title: "단절된 대상 정보 입력 현황", progress: _getTargetInputProgress()),
+          SizedBox(height: 10),
+          inputStatus(
+            title: "긍정 기억 입력 현황",
+            progress: _getPositiveIssueProgress(ref.watch(targetIssueControllerProvider).positiveIssues),
           ),
-          child: Column(
-            children: [
-              inputStatus(title: "내 정보 입력 현황", progress: _getMemberInformationInputProgress()),
-              SizedBox(height: 10),
-              inputStatus(title: "단절된 대상 정보 입력 현황", progress: _getTargetInputProgress()),
-              SizedBox(height: 10),
-              inputStatus(title: "긍정 기억 입력 현황", progress: _getPositiveIssueProgress(controller.positiveIssues)),
-              SizedBox(height: 10),
-              inputStatus(title: "부정 기억 입력 현황", progress: _getNegativeIssueProgress(controller.negativeIssues)),
-            ],
+          SizedBox(height: 10),
+          inputStatus(
+            title: "부정 기억 입력 현황",
+            progress: _getNegativeIssueProgress(ref.watch(targetIssueControllerProvider).negativeIssues),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 

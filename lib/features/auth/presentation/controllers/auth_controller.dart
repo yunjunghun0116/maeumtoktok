@@ -9,7 +9,7 @@ import 'package:app/features/member/domain/entities/member.dart';
 
 import '../../../../core/base/base_controller.dart';
 
-class AuthController extends BaseController {
+class AuthController extends BaseController<BaseState> {
   final Login _loginUseCase;
   final Register _registerUseCase;
   final AutoLogin _autoLoginUseCase;
@@ -26,7 +26,8 @@ class AuthController extends BaseController {
        _autoLoginUseCase = autoLoginUseCase,
        _registerUseCase = registerUseCase,
        _leaveUseCase = leaveUseCase,
-       _loginUseCase = loginUseCase;
+       _loginUseCase = loginUseCase,
+       super(BaseState());
 
   Future<Member> login(LoginDto loginDto) async {
     return await callMethod<Member>(() => _loginUseCase.call(loginDto));

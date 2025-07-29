@@ -8,19 +8,28 @@ import 'package:app/features/target_issue/domain/usecases/update_target_issue.da
 
 import '../../../../core/base/base_controller.dart';
 
-class TargetIssueController extends BaseController {
+class TargetIssueState extends BaseState {
+  final List<TargetIssue> issues;
+
+  const TargetIssueState({required this.issues, super.isLoading});
+
+  List<TargetIssue> get positiveIssues => issues.where((issue) => issue.issueType == IssueType.positive).toList();
+
+  List<TargetIssue> get negativeIssues => issues.where((issue) => issue.issueType == IssueType.negative).toList();
+
+  List<TargetIssue> get normalIssues => issues.where((issue) => issue.issueType == IssueType.normal).toList();
+
+  @override
+  TargetIssueState copyWith({List<TargetIssue>? issues, bool? isLoading}) {
+    return TargetIssueState(issues: issues ?? this.issues, isLoading: isLoading ?? this.isLoading);
+  }
+}
+
+class TargetIssueController extends BaseController<TargetIssueState> {
   final CreateTargetIssue _createTargetIssueUseCase;
   final ReadAllTargetIssue _readAllTargetIssueUseCase;
   final UpdateTargetIssue _updateTargetIssueUseCase;
   final DeleteTargetIssue _deleteTargetIssueUseCase;
-
-  List<TargetIssue> _issues = [];
-
-  List<TargetIssue> get positiveIssues => _issues.where((issue) => issue.issueType == IssueType.positive).toList();
-
-  List<TargetIssue> get negativeIssues => _issues.where((issue) => issue.issueType == IssueType.negative).toList();
-
-  List<TargetIssue> get normalIssues => _issues.where((issue) => issue.issueType == IssueType.normal).toList();
 
   TargetIssueController({
     required CreateTargetIssue createTargetIssueUseCase,
@@ -30,26 +39,30 @@ class TargetIssueController extends BaseController {
   }) : _deleteTargetIssueUseCase = deleteTargetIssueUseCase,
        _updateTargetIssueUseCase = updateTargetIssueUseCase,
        _readAllTargetIssueUseCase = readAllTargetIssueUseCase,
-       _createTargetIssueUseCase = createTargetIssueUseCase;
+       _createTargetIssueUseCase = createTargetIssueUseCase,
+       super(TargetIssueState(issues: []));
 
   Future<void> initialize(String targetId) async {
-    _issues = await readAll(targetId);
-    notifyListeners();
+    var issues = await readAll(targetId);
+    state = state.copyWith(issues: issues);
   }
 
-  Future<TargetIssue> create(CreateIssueDto createIssueDto) async {
-    return await callMethod<TargetIssue>(() => _createTargetIssueUseCase.call(createIssueDto));
+  Future<void> create(CreateIssueDto createIssueDto) async {
+    await callMethod<TargetIssue>(() => _createTargetIssueUseCase.call(createIssueDto));
+    initialize(createIssueDto.targetId);
   }
 
   Future<List<TargetIssue>> readAll(String targetId) async {
     return await callMethod<List<TargetIssue>>(() => _readAllTargetIssueUseCase.call(targetId));
   }
 
-  Future<TargetIssue> update(TargetIssue issue) async {
-    return await callMethod<TargetIssue>(() => _updateTargetIssueUseCase.call(issue));
+  Future<void> update(TargetIssue issue) async {
+    await callMethod<TargetIssue>(() => _updateTargetIssueUseCase.call(issue));
+    initialize(issue.targetId);
   }
 
   Future<void> delete(TargetIssue issue) async {
     await callMethod<void>(() => _deleteTargetIssueUseCase.call(issue));
+    initialize(issue.targetId);
   }
 }

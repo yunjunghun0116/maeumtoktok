@@ -1,21 +1,21 @@
-import 'package:app/core/domain/repositories/local_repository.dart';
+import 'package:app/core/providers.dart';
+import 'package:app/features/auth/providers.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/exceptions/custom_exception.dart';
 import '../../../shared/constants/app_colors.dart';
 import '../../../shared/utils/sign_util.dart';
-import '../../auth/presentation/controllers/auth_controller.dart';
 import '../../auth/presentation/screens/sign_in_screen.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     super.initState();
@@ -27,14 +27,14 @@ class _SplashScreenState extends State<SplashScreen> {
   void _checkAutoLogin() async {
     await Future.delayed(Duration(seconds: 2), () async {
       if (!mounted) return;
-      await context.read<LocalRepository>().initialize();
+      await ref.read(localRepositoryProvider).initialize();
     });
 
     try {
       if (!mounted) return;
-      var member = await context.read<AuthController>().autoLogin();
+      var member = await ref.read(authControllerProvider.notifier).autoLogin();
       if (!mounted) return;
-      await SignUtil.login(context: context, member: member);
+      await SignUtil.login(context, ref: ref, member: member);
       return;
     } on CustomException catch (e) {
       if (!mounted) return;

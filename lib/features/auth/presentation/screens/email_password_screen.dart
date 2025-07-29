@@ -1,6 +1,6 @@
-import 'package:app/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:app/features/auth/providers.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/exceptions/custom_exception.dart';
 import '../../../../core/exceptions/exception_message.dart';
@@ -9,16 +9,16 @@ import '../../../../shared/constants/app_reg_exp.dart';
 import '../../../../shared/widgets/common_button.dart';
 import '../../../../shared/widgets/common_text_field.dart';
 
-class EmailPasswordScreen extends StatefulWidget {
+class EmailPasswordScreen extends ConsumerStatefulWidget {
   final Function onPressed;
 
   const EmailPasswordScreen({super.key, required this.onPressed});
 
   @override
-  State<EmailPasswordScreen> createState() => _EmailPasswordScreenState();
+  ConsumerState<EmailPasswordScreen> createState() => _EmailPasswordScreenState();
 }
 
-class _EmailPasswordScreenState extends State<EmailPasswordScreen> {
+class _EmailPasswordScreenState extends ConsumerState<EmailPasswordScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _passwordCheckController = TextEditingController();
@@ -43,7 +43,7 @@ class _EmailPasswordScreenState extends State<EmailPasswordScreen> {
   }
 
   Future<void> emailValidate() async {
-    if (await context.read<AuthController>().validateUniqueEmail(_emailController.text)) {
+    if (await ref.read(authControllerProvider.notifier).validateUniqueEmail(_emailController.text)) {
       throw CustomException(ExceptionMessage.emailDuplicated);
     }
     if (!AppRegExp.emailRegExp.hasMatch(_emailController.text)) {
