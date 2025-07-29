@@ -3,7 +3,6 @@ import 'package:app/features/target_issue/data/models/create_issue_dto.dart';
 import 'package:app/features/target_issue/domain/entities/issue_type.dart';
 import 'package:app/features/target_issue/domain/entities/target_issue.dart';
 import 'package:app/features/target_issue/presentation/controllers/target_issue_controller.dart';
-import 'package:app/features/target_issue/presentation/widgets/issue_input_dialog.dart';
 import 'package:app/shared/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';

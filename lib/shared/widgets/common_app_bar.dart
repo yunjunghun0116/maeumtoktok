@@ -18,23 +18,24 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
       surfaceTintColor: AppColors.backgroundColor,
       leadingWidth: 48,
       automaticallyImplyLeading: false,
-      leading: showLeading
-          ? GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap:
-                  onBack ??
-                  () {
-                    if (Navigator.canPop(context)) {
-                      Navigator.pop(context);
-                    }
-                  },
-              child: Container(
-                margin: const EdgeInsets.only(left: 20),
-                alignment: Alignment.center,
-                child: Icon(Icons.arrow_back_ios),
-              ),
-            )
-          : null,
+      leading:
+          showLeading
+              ? GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap:
+                    onBack ??
+                    () {
+                      if (Navigator.canPop(context)) {
+                        Navigator.pop(context);
+                      }
+                    },
+                child: Container(
+                  margin: const EdgeInsets.only(left: 20),
+                  alignment: Alignment.center,
+                  child: Icon(Icons.arrow_back_ios),
+                ),
+              )
+              : null,
       title: Text(
         title ?? '',
         style: TextStyle(fontSize: 16, height: 20 / 16, color: AppColors.fontGray800Color, fontWeight: FontWeight.bold),

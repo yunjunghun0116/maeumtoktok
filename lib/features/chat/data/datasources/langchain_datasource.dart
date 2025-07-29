@@ -79,7 +79,6 @@ class LangchainDatasource {
       - 사용자와의 관계 : ${dto.target.relationship}
       - 성격 : ${dto.target.personality}
       - 말투/대화스타일 : ${dto.target.conversationStyle}
-      - 그 외 추가정보 : ${dto.target.additionalDescription}
       - 사용자와 함께했던 긍정적인 경험 : ${positiveIssues}
       - 사용자와 함께했던 부정적인 경험 : ${negativeIssues}
       ${normalIssues.isNotEmpty ? '- 사용자와 함께했던 일반적인 경험 : $normalIssues' : ''}
@@ -141,7 +140,6 @@ class LangchainDatasource {
       - 사용자와의 관계: ${dto.target.relationship}
       - 성격: ${dto.target.personality}
       - 말투/대화스타일: ${dto.target.conversationStyle}
-      - 그 외 추가정보: ${dto.target.additionalDescription}
       - 사용자와 함께했던 긍정적인 경험: ${positiveIssues}
       - 사용자와 함께했던 부정적인 경험: ${negativeIssues}
       ${normalIssues.isNotEmpty ? '- 사용자와 함께했던 일반적인 경험: ${normalIssues}' : ''}

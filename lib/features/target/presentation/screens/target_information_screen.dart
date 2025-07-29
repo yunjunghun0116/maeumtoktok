@@ -27,38 +27,6 @@ class _TargetInformationScreenState extends State<TargetInformationScreen> {
 
   var _isLoading = false;
 
-  void _updateAdditionalDescription() async {
-    try {
-      var result = await Navigator.push<String>(
-        context,
-        MaterialPageRoute(
-          builder:
-              (inputScreenContext) => InputScreen(
-                title: "상대방에 대한 추가 정보",
-                content: "상대방의 성격, 말투 및 대화 스타일 외에\n상대방에 대해 기억나는 다양한 추가 정보에\n대해 자유롭게 입력해 주세요.",
-                hintText:
-                    "말끝마다 '아니, 근데 있잖아~'라고 말해요, 같이 여행을 가면 사진을 엄청 많이 찍어요, 배가 고프면 기분이 엄청 나빠지거나 우울해져요 등 \n평소에 자주 쓰는 말이나 행동, 나와의 인상 깊은 에피소드, 현재는 어떤 상태로 지내는 지 등 상대방에 대해 기억나는 정보를 자유롭게 입력해 주세요.",
-                onTap: (String text) {
-                  Navigator.pop(inputScreenContext, text);
-                },
-                initialValue: context.read<TargetController>().target!.additionalDescription,
-              ),
-        ),
-      );
-      if (result == null) return;
-      if (!mounted) return;
-      setState(() => _isLoading = true);
-      var controller = context.read<TargetController>();
-      var target = controller.target!;
-      target.updateAdditionalDescription(result);
-      await controller.update(target);
-    } catch (e) {
-      throw CustomException(ExceptionMessage.progressing);
-    } finally {
-      setState(() => _isLoading = false);
-    }
-  }
-
   void _updateConversationStyle() async {
     try {
       var result = await Navigator.push<String>(
@@ -298,13 +266,6 @@ class _TargetInformationScreenState extends State<TargetInformationScreen> {
                             () => Navigator.push(context, MaterialPageRoute(builder: (context) => TargetIssueScreen())),
                           ),
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      children: [
-                        SizedBox(width: 80, child: Text("추가 정보", textAlign: TextAlign.center)),
-                        Expanded(child: simpleActionButton("입력하기", () => _updateAdditionalDescription())),
                       ],
                     ),
                   ],

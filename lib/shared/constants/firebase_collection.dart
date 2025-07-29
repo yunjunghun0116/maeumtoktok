@@ -1,8 +1,12 @@
 abstract final class FirebaseCollection {
   static const String memberCollection = "member";
   static const String memberInformationCollection = "memberInformation";
+  static const String memberPersonalityCollection = "memberPersonality";
+  static const String memberConversationStyleCollection = "memberConversationStyle";
   static const String targetCollection = "target";
   static const String targetInformationCollection = "targetInformation";
+  static const String targetPersonalityCollection = "targetPersonality";
+  static const String targetConversationStyleCollection = "targetConversationStyle";
   static const String targetIssueCollection = "targetIssue";
   static const String chatCollection = "chat";
   static const String messageCollection = "message";

@@ -12,8 +12,8 @@ Member _$MemberFromJson(Map<String, dynamic> json) => Member(
   password: json['password'] as String,
   name: json['name'] as String,
   lastLoginDate: DateTime.parse(json['lastLoginDate'] as String),
-  personality: json.containsKey('personality') ? json['personality'] as String : '',
-  conversationStyle: json.containsKey('conversationStyle') ? json['conversationStyle'] as String : '',
+  personality: json['personality'] as String,
+  conversationStyle: json['conversationStyle'] as String,
 );
 
 Map<String, dynamic> _$MemberToJson(Member instance) => <String, dynamic>{
