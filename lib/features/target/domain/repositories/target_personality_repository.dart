@@ -7,5 +7,5 @@ abstract class TargetPersonalityRepository {
 
   Future<TargetPersonality> update(TargetPersonality targetPersonality);
 
-  Future<void> delete(TargetPersonality targetPersonality);
+  Future<void> delete(String id);
 }

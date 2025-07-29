@@ -35,7 +35,7 @@ class TargetPersonalityRepositoryImpl implements TargetPersonalityRepository {
   }
 
   @override
-  Future<void> delete(TargetPersonality targetPersonality) async {
-    await _collection.doc(targetPersonality.id).delete();
+  Future<void> delete(String id) async {
+    await _collection.doc(id).delete();
   }
 }
