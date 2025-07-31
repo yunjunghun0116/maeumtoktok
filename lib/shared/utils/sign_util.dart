@@ -21,9 +21,12 @@ final class SignUtil {
     ref.read<MemberController>(memberControllerProvider.notifier).login(member);
     // 상대방 정보 TargetController 에 저장
     await ref.read(targetControllerProvider.notifier).initialize(member);
-
-    var target = ref.read(targetControllerProvider).target!;
+    // Controller Initialize 작업
+    // 내 성격, 말투 및 대화스타일
+    await ref.read(memberPersonalityControllerProvider.notifier).initialize(member.id);
+    await ref.read(memberConversationStyleControllerProvider.notifier).initialize(member.id);
     // 상대방 성격
+    var target = ref.read(targetControllerProvider).target!;
     await ref.read(targetPersonalityControllerProvider.notifier).initialize(target.id);
     await ref.read(targetConversationStyleControllerProvider.notifier).initialize(target.id);
     // 상대방과 관련된 사건 목록 TargetIssueController 에 저장

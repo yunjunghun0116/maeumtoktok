@@ -13,7 +13,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../shared/widgets/common_text_field.dart';
-import '../../../../shared/widgets/input_screen.dart';
 
 class TargetInformationScreen extends ConsumerStatefulWidget {
   const TargetInformationScreen({super.key});
@@ -28,41 +27,6 @@ class _TargetInformationScreenState extends ConsumerState<TargetInformationScree
   final _relationshipController = TextEditingController();
 
   var _isLoading = false;
-
-  void _updateConversationStyle() async {
-    try {
-      if (_isLoading) return;
-      var result = await Navigator.push<String?>(
-        context,
-        MaterialPageRoute(
-          builder:
-              (inputScreenContext) => InputScreen(
-                title: "상대방의 말투나 대화 스타일",
-                content: "상대방이 나와 대화할 때 사용하는 \n상대방의 평소 말투나 대화 스타일을 \n자세하게 입력해 주세요.",
-                hintText:
-                    "퉁명스러운 말투, 차가운 말투, 장난스러운 말투, 친구스러운 대화, 시크하게, 유머러스하게, 조용히 공감하는 스타일, 고민을 많이 들어주는 스타일 등 상대방의 말투나 대화 스타일을 자세하게 입력해 주세요. ",
-                onTap: (String text) {
-                  if (text.length < 20) {
-                    throw CustomException(ExceptionMessage.needMoreConversationStyle);
-                  }
-                  Navigator.pop(inputScreenContext, text);
-                },
-                initialValue: ref.read(targetControllerProvider).target!.conversationStyle,
-              ),
-        ),
-      );
-      if (result == null) return;
-      if (!mounted) return;
-      setState(() => _isLoading = true);
-      var target = ref.read(targetControllerProvider).target!;
-      target.updateConversationStyle(result);
-      await ref.read(targetControllerProvider.notifier).update(target);
-    } catch (e) {
-      throw CustomException(ExceptionMessage.progressing);
-    } finally {
-      setState(() => _isLoading = false);
-    }
-  }
 
   void _updateImage(Target target) async {
     try {

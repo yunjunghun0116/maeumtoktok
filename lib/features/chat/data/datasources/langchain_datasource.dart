@@ -1,5 +1,7 @@
 import 'package:app/features/chat/data/models/langchain_dto.dart';
 import 'package:app/features/chat/domain/entities/sender_type.dart';
+import 'package:app/features/member/domain/entities/member_conversation_style.dart';
+import 'package:app/features/member/domain/entities/member_personality.dart';
 import 'package:app/features/target/domain/entities/target_conversation_style.dart';
 import 'package:app/features/target/domain/entities/target_personality.dart';
 import 'package:app/features/target_issue/domain/entities/target_issue.dart';
@@ -59,6 +61,16 @@ class LangchainDatasource {
     return '[${issues.map((issue) => '${number++}. ${issue.description},').join('')}]';
   }
 
+  String _memberPersonalityPrompt({required List<MemberPersonality> personalities}) {
+    if (personalities.isEmpty) return '';
+    return personalities.map((personality) => personality.value).join(",");
+  }
+
+  String _memberConversationStylePrompt({required List<MemberConversationStyle> conversationStyles}) {
+    if (conversationStyles.isEmpty) return '';
+    return conversationStyles.map((conversationStyle) => conversationStyle.value).join(",");
+  }
+
   String _targetPersonalityPrompt({required List<TargetPersonality> personalities}) {
     if (personalities.isEmpty) return '';
     return personalities.map((personality) => personality.value).join(",");
@@ -75,12 +87,14 @@ class LangchainDatasource {
     var normalIssues = _normalIssuesPrompt(issues: dto.normalIssues);
     var targetPersonality = _targetPersonalityPrompt(personalities: dto.targetPersonalities);
     var targetConversationStyle = _targetConversationStylePrompt(conversationStyles: dto.targetConversationStyles);
+    var memberPersonality = _memberPersonalityPrompt(personalities: dto.memberPersonalities);
+    var memberConversationStyle = _memberConversationStylePrompt(conversationStyles: dto.memberConversationStyles);
     return '''
       사용자의 정보는 아래와 같습니다.
       [사용자 정보]
       - 이름 : ${dto.member.name}
-      - 사용자의 말투/대화스타일 : ${dto.member.conversationStyle}
-      - 사용자의 성격 : ${dto.member.personality}
+      - 사용자의 말투/대화스타일 : $memberConversationStyle
+      - 사용자의 성격 : $memberPersonality
       
       당신은 사용자와의 대화에서 '${dto.target.name}'역할을 맡고 있습니다.
       

@@ -5,12 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../shared/constants/firebase_collection.dart';
 
 class TargetIssueRepositoryImpl implements TargetIssueRepository {
-  static final TargetIssueRepositoryImpl _instance = TargetIssueRepositoryImpl._internal();
-
-  factory TargetIssueRepositoryImpl() => _instance;
-
-  TargetIssueRepositoryImpl._internal();
-
   static CollectionReference get _collection =>
       FirebaseFirestore.instance.collection(FirebaseCollection.targetIssueCollection);
 

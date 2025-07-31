@@ -7,12 +7,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../shared/constants/firebase_collection.dart';
 
 class ChatRepositoryImpl implements ChatRepository {
-  static final ChatRepositoryImpl _instance = ChatRepositoryImpl._internal();
-
-  factory ChatRepositoryImpl() => _instance;
-
-  ChatRepositoryImpl._internal();
-
   static CollectionReference get collection => FirebaseFirestore.instance.collection(FirebaseCollection.chatCollection);
 
   @override

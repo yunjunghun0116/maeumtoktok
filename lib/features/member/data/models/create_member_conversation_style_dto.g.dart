@@ -1,21 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'create_target_conversation_style_dto.dart';
+part of 'create_member_conversation_style_dto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CreateTargetConversationStyleDto _$CreateTargetConversationStyleDtoFromJson(Map<String, dynamic> json) =>
-    CreateTargetConversationStyleDto(
-      targetId: json['targetId'] as String,
+CreateMemberConversationStyleDto _$CreateMemberConversationStyleDtoFromJson(Map<String, dynamic> json) =>
+    CreateMemberConversationStyleDto(
+      memberId: json['memberId'] as String,
       inputType: $enumDecode(_$CustomInputTypeEnumMap, json['inputType']),
       value: json['value'] as String,
     );
 
-Map<String, dynamic> _$CreateTargetConversationStyleDtoToJson(CreateTargetConversationStyleDto instance) =>
+Map<String, dynamic> _$CreateMemberConversationStyleDtoToJson(CreateMemberConversationStyleDto instance) =>
     <String, dynamic>{
-      'targetId': instance.targetId,
+      'memberId': instance.memberId,
       'inputType': _$CustomInputTypeEnumMap[instance.inputType]!,
       'value': instance.value,
     };

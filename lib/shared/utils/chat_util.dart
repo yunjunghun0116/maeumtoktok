@@ -20,9 +20,9 @@ final class ChatUtil {
       return 3;
     }
     if (message.length < 60) {
-      return (message.length / 3).toInt();
+      return (message.length / 4).toInt();
     }
-    return 20;
+    return 15;
   }
 
   static int calculateRemainDelay(Message message, int delay) {
@@ -67,11 +67,12 @@ final class ChatUtil {
   static void _validateTarget(WidgetRef ref) {
     var target = ref.read(targetControllerProvider).target;
     var targetPersonalities = ref.read(targetPersonalityControllerProvider).personalities;
+    var targetConversationStyles = ref.read(targetConversationStyleControllerProvider).conversationStyles;
     if (target == null) throw CustomException(ExceptionMessage.noObjectAssigned);
     if (target.name.isEmpty) throw CustomException(ExceptionMessage.targetNameRequired);
     if (target.relationship.isEmpty) throw CustomException(ExceptionMessage.targetRelationshipRequired);
     if (targetPersonalities.isEmpty) throw CustomException(ExceptionMessage.targetPersonalityRequired);
-    if (target.conversationStyle.isEmpty) throw CustomException(ExceptionMessage.targetConversationStyleRequired);
+    if (targetConversationStyles.isEmpty) throw CustomException(ExceptionMessage.targetConversationStyleRequired);
   }
 
   static void _validateTargetIssues(WidgetRef ref) {

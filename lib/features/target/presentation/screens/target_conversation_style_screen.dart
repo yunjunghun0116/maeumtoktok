@@ -1,13 +1,9 @@
 import 'package:app/features/target/data/models/create_target_conversation_style_dto.dart';
-import 'package:app/features/target/data/models/create_target_personality_dto.dart';
-import 'package:app/features/target/domain/entities/conversation_style_type.dart';
-import 'package:app/features/target/domain/entities/personality_type.dart';
 import 'package:app/features/target/domain/entities/target_conversation_style.dart';
-import 'package:app/features/target/domain/entities/target_personality.dart';
 import 'package:app/features/target/presentation/screens/select_target_conversation_style_screen.dart';
-import 'package:app/features/target/presentation/screens/select_target_personality_screen.dart';
 import 'package:app/features/target/providers.dart';
 import 'package:app/shared/constants/app_colors.dart';
+import 'package:app/shared/domain/custom_input_type.dart';
 import 'package:app/shared/widgets/common_app_bar.dart';
 import 'package:app/shared/widgets/delete_dialog.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +53,7 @@ class _TargetConversationStyleScreenState extends ConsumerState<TargetConversati
 
       var createTargetConversationStyleDto = CreateTargetConversationStyleDto(
         targetId: ref.read(targetControllerProvider).target!.id,
-        conversationStyleType: ConversationStyleType.text,
+        inputType: CustomInputType.text,
         value: result,
       );
       await ref.read(targetConversationStyleControllerProvider.notifier).create(createTargetConversationStyleDto);
@@ -80,7 +76,7 @@ class _TargetConversationStyleScreenState extends ConsumerState<TargetConversati
       setState(() => _isLoading = true);
       var createTargetConversationStyleDto = CreateTargetConversationStyleDto(
         targetId: ref.read(targetControllerProvider).target!.id,
-        conversationStyleType: ConversationStyleType.button,
+        inputType: CustomInputType.button,
         value: result,
       );
       await ref.read(targetConversationStyleControllerProvider.notifier).create(createTargetConversationStyleDto);
@@ -120,10 +116,7 @@ class _TargetConversationStyleScreenState extends ConsumerState<TargetConversati
         ),
       ),
       floatingActionButton: SpeedDial(
-        children: [
-          getActionChild(conversationStyleType: ConversationStyleType.text),
-          getActionChild(conversationStyleType: ConversationStyleType.button),
-        ],
+        children: [getActionChild(inputType: CustomInputType.text), getActionChild(inputType: CustomInputType.button)],
         icon: Icons.add,
         backgroundColor: AppColors.mainColor,
         foregroundColor: AppColors.whiteColor,
@@ -131,17 +124,17 @@ class _TargetConversationStyleScreenState extends ConsumerState<TargetConversati
     );
   }
 
-  SpeedDialChild getActionChild({required ConversationStyleType conversationStyleType}) {
+  SpeedDialChild getActionChild({required CustomInputType inputType}) {
     return SpeedDialChild(
       onTap: () {
-        if (conversationStyleType == ConversationStyleType.text) {
+        if (inputType == CustomInputType.text) {
           _createConversationStyle();
           return;
         }
         _selectConversationStyle();
       },
       child: Text(
-        conversationStyleType.name,
+        inputType.name,
         style: TextStyle(color: AppColors.whiteColor, fontWeight: FontWeight.bold, fontSize: 14, height: 20 / 14),
       ),
       backgroundColor: AppColors.mainColor,

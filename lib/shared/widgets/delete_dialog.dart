@@ -23,17 +23,19 @@ class DeleteDialog extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: AppColors.fontGray800Color,
-                    fontWeight: FontWeight.bold,
-                    height: 20 / 16,
+                Expanded(
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: AppColors.fontGray800Color,
+                      fontWeight: FontWeight.bold,
+                      height: 20 / 16,
+                    ),
                   ),
                 ),
-                Spacer(),
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () => Navigator.pop(context),
@@ -41,9 +43,14 @@ class DeleteDialog extends StatelessWidget {
                 ),
               ],
             ),
-            Spacer(),
-            Text(contents, style: TextStyle(fontSize: 14, color: AppColors.fontGray600Color, height: 20 / 14)),
-            Spacer(),
+            Expanded(
+              child: Center(
+                child: Text(
+                  contents,
+                  style: TextStyle(fontSize: 14, color: AppColors.fontGray600Color, height: 20 / 14),
+                ),
+              ),
+            ),
             CommonButton(value: true, onTap: () => Navigator.of(context).pop(true), title: "삭제"),
           ],
         ),

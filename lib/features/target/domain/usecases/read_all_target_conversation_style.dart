@@ -1,7 +1,5 @@
 import 'package:app/features/target/domain/entities/target_conversation_style.dart';
-import 'package:app/features/target/domain/entities/target_personality.dart';
 import 'package:app/features/target/domain/repositories/target_conversation_style_repository.dart';
-import 'package:app/features/target/domain/repositories/target_personality_repository.dart';
 
 import '../../../../core/base/base_use_case_with_param.dart';
 

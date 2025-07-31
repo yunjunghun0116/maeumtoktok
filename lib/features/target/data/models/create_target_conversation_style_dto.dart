@@ -1,4 +1,4 @@
-import 'package:app/features/target/domain/entities/conversation_style_type.dart';
+import 'package:app/shared/domain/custom_input_type.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'create_target_conversation_style_dto.g.dart';
@@ -6,10 +6,10 @@ part 'create_target_conversation_style_dto.g.dart';
 @JsonSerializable()
 class CreateTargetConversationStyleDto {
   final String targetId;
-  final ConversationStyleType conversationStyleType;
+  final CustomInputType inputType;
   final String value;
 
-  CreateTargetConversationStyleDto({required this.targetId, required this.conversationStyleType, required this.value});
+  CreateTargetConversationStyleDto({required this.targetId, required this.inputType, required this.value});
 
   factory CreateTargetConversationStyleDto.fromJson(Map<String, dynamic> json) =>
       _$CreateTargetConversationStyleDtoFromJson(json);
@@ -18,6 +18,6 @@ class CreateTargetConversationStyleDto {
 
   @override
   String toString() {
-    return 'CreateTargetConversationStyleDto{targetId: $targetId, conversationStyleType: $conversationStyleType, value: $value}';
+    return 'CreateTargetConversationStyleDto{targetId: $targetId, inputType: $inputType, value: $value}';
   }
 }

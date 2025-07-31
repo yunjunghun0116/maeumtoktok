@@ -5,12 +5,6 @@ import '../../../../shared/constants/firebase_collection.dart';
 import '../../domain/entities/member.dart';
 
 class MemberRepositoryImpl implements MemberRepository {
-  static final MemberRepositoryImpl _instance = MemberRepositoryImpl._internal();
-
-  factory MemberRepositoryImpl() => _instance;
-
-  MemberRepositoryImpl._internal();
-
   static CollectionReference get _collection =>
       FirebaseFirestore.instance.collection(FirebaseCollection.memberCollection);
 

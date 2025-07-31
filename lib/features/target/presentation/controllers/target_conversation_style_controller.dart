@@ -1,13 +1,8 @@
 import 'package:app/features/target/data/models/create_target_conversation_style_dto.dart';
-import 'package:app/features/target/data/models/create_target_personality_dto.dart';
 import 'package:app/features/target/domain/entities/target_conversation_style.dart';
-import 'package:app/features/target/domain/entities/target_personality.dart';
 import 'package:app/features/target/domain/usecases/create_target_conversation_style.dart';
-import 'package:app/features/target/domain/usecases/create_target_personality.dart';
 import 'package:app/features/target/domain/usecases/delete_target_conversation_style.dart';
-import 'package:app/features/target/domain/usecases/delete_target_personality.dart';
 import 'package:app/features/target/domain/usecases/read_all_target_conversation_style.dart';
-import 'package:app/features/target/domain/usecases/read_all_target_personality.dart';
 
 import '../../../../core/base/base_controller.dart';
 

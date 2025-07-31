@@ -7,12 +7,6 @@ import '../../../../core/exceptions/exception_message.dart';
 import '../../../../shared/constants/firebase_collection.dart';
 
 class TargetRepositoryImpl implements TargetRepository {
-  static final TargetRepositoryImpl _instance = TargetRepositoryImpl._internal();
-
-  factory TargetRepositoryImpl() => _instance;
-
-  TargetRepositoryImpl._internal();
-
   static CollectionReference get _collection =>
       FirebaseFirestore.instance.collection(FirebaseCollection.targetCollection);
 

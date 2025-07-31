@@ -1,4 +1,4 @@
-import 'package:app/features/target/domain/entities/personality_type.dart';
+import 'package:app/shared/domain/custom_input_type.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'create_target_personality_dto.g.dart';
@@ -6,10 +6,10 @@ part 'create_target_personality_dto.g.dart';
 @JsonSerializable()
 class CreateTargetPersonalityDto {
   final String targetId;
-  final PersonalityType personalityType;
+  final CustomInputType inputType;
   final String value;
 
-  CreateTargetPersonalityDto({required this.targetId, required this.personalityType, required this.value});
+  CreateTargetPersonalityDto({required this.targetId, required this.inputType, required this.value});
 
   factory CreateTargetPersonalityDto.fromJson(Map<String, dynamic> json) => _$CreateTargetPersonalityDtoFromJson(json);
 
@@ -17,6 +17,6 @@ class CreateTargetPersonalityDto {
 
   @override
   String toString() {
-    return 'CreateTargetPersonalityDto{targetId: $targetId, personalityType: $personalityType, value: $value}';
+    return 'CreateTargetPersonalityDto{targetId: $targetId, inputType: $inputType, value: $value}';
   }
 }

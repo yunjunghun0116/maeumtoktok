@@ -9,15 +9,15 @@ part of 'target_personality.dart';
 TargetPersonality _$TargetPersonalityFromJson(Map<String, dynamic> json) => TargetPersonality(
   id: json['id'] as String,
   targetId: json['targetId'] as String,
-  personalityType: $enumDecode(_$PersonalityTypeEnumMap, json['personalityType']),
+  inputType: $enumDecode(_$CustomInputTypeEnumMap, json['inputType']),
   value: json['value'] as String,
 );
 
 Map<String, dynamic> _$TargetPersonalityToJson(TargetPersonality instance) => <String, dynamic>{
   'id': instance.id,
   'targetId': instance.targetId,
-  'personalityType': _$PersonalityTypeEnumMap[instance.personalityType]!,
+  'inputType': _$CustomInputTypeEnumMap[instance.inputType]!,
   'value': instance.value,
 };
 
-const _$PersonalityTypeEnumMap = {PersonalityType.button: 'button', PersonalityType.text: 'text'};
+const _$CustomInputTypeEnumMap = {CustomInputType.button: 'button', CustomInputType.text: 'text'};

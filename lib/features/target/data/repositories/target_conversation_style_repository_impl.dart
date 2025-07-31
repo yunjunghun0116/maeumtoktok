@@ -5,12 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../shared/constants/firebase_collection.dart';
 
 class TargetConversationStyleRepositoryImpl implements TargetConversationStyleRepository {
-  static final TargetConversationStyleRepositoryImpl _instance = TargetConversationStyleRepositoryImpl._internal();
-
-  factory TargetConversationStyleRepositoryImpl() => _instance;
-
-  TargetConversationStyleRepositoryImpl._internal();
-
   static CollectionReference get _collection =>
       FirebaseFirestore.instance.collection(FirebaseCollection.targetConversationStyleCollection);
 

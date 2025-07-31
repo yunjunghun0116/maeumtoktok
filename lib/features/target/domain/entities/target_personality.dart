@@ -1,6 +1,7 @@
 import 'package:app/features/target/data/models/create_target_personality_dto.dart';
-import 'package:app/features/target/domain/entities/personality_type.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../../../../shared/domain/custom_input_type.dart';
 
 part 'target_personality.g.dart';
 
@@ -8,10 +9,10 @@ part 'target_personality.g.dart';
 class TargetPersonality {
   final String id;
   final String targetId;
-  final PersonalityType personalityType;
+  final CustomInputType inputType;
   String value;
 
-  TargetPersonality({required this.id, required this.targetId, required this.personalityType, required this.value});
+  TargetPersonality({required this.id, required this.targetId, required this.inputType, required this.value});
 
   factory TargetPersonality.fromJson(Map<String, dynamic> json) => _$TargetPersonalityFromJson(json);
 
@@ -19,7 +20,7 @@ class TargetPersonality {
     return TargetPersonality(
       id: id,
       targetId: createTargetPersonalityDto.targetId,
-      personalityType: createTargetPersonalityDto.personalityType,
+      inputType: createTargetPersonalityDto.inputType,
       value: createTargetPersonalityDto.value,
     );
   }
@@ -32,6 +33,6 @@ class TargetPersonality {
 
   @override
   String toString() {
-    return 'TargetPersonality{id: $id, targetId: $targetId, personalityType: $personalityType, value: $value}';
+    return 'TargetPersonality{id: $id, targetId: $targetId, inputType: $inputType, value: $value}';
   }
 }

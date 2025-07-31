@@ -9,7 +9,6 @@ class Target {
   String image;
   String name;
   String relationship;
-  String conversationStyle;
 
   Target({
     required this.id,
@@ -17,13 +16,12 @@ class Target {
     required this.image,
     required this.name,
     required this.relationship,
-    required this.conversationStyle,
   });
 
   factory Target.fromJson(Map<String, dynamic> json) => _$TargetFromJson(json);
 
   factory Target.defaultTarget({required String id, required String memberId, required String image}) {
-    return Target(id: id, memberId: memberId, image: image, name: "상대방", relationship: "단절된 대상", conversationStyle: "");
+    return Target(id: id, memberId: memberId, image: image, name: "상대방", relationship: "단절된 대상");
   }
 
   Map<String, dynamic> toJson() => _$TargetToJson(this);
@@ -40,12 +38,8 @@ class Target {
     this.relationship = relationship;
   }
 
-  void updateConversationStyle(String conversationStyle) {
-    this.conversationStyle = conversationStyle;
-  }
-
   @override
   String toString() {
-    return 'Target{id: $id, memberId: $memberId, image: $image, name: $name, relationship: $relationship, conversationStyle: $conversationStyle}';
+    return 'Target{id: $id, memberId: $memberId, image: $image, name: $name, relationship: $relationship}';
   }
 }

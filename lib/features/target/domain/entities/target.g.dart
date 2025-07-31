@@ -12,7 +12,6 @@ Target _$TargetFromJson(Map<String, dynamic> json) => Target(
   image: json['image'] as String,
   name: json['name'] as String,
   relationship: json['relationship'] as String,
-  conversationStyle: json['conversationStyle'] as String,
 );
 
 Map<String, dynamic> _$TargetToJson(Target instance) => <String, dynamic>{
@@ -21,5 +20,4 @@ Map<String, dynamic> _$TargetToJson(Target instance) => <String, dynamic>{
   'image': instance.image,
   'name': instance.name,
   'relationship': instance.relationship,
-  'conversationStyle': instance.conversationStyle,
 };

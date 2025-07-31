@@ -6,12 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../shared/constants/firebase_collection.dart';
 
 class MessageRepositoryImpl implements MessageRepository {
-  static final MessageRepositoryImpl _instance = MessageRepositoryImpl._internal();
-
-  factory MessageRepositoryImpl() => _instance;
-
-  MessageRepositoryImpl._internal();
-
   static final int _getMessageSize = 20;
 
   static CollectionReference collection(String chatId) => FirebaseFirestore.instance

@@ -7,12 +7,6 @@ import '../../../../core/exceptions/exception_message.dart';
 import '../../../../shared/constants/firebase_collection.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  static final AuthRepositoryImpl _instance = AuthRepositoryImpl._internal();
-
-  factory AuthRepositoryImpl() => _instance;
-
-  AuthRepositoryImpl._internal();
-
   static CollectionReference get _collection =>
       FirebaseFirestore.instance.collection(FirebaseCollection.memberCollection);
 

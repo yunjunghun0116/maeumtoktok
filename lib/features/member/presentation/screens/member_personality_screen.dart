@@ -1,7 +1,7 @@
-import 'package:app/features/target/data/models/create_target_personality_dto.dart';
-import 'package:app/features/target/domain/entities/target_personality.dart';
-import 'package:app/features/target/presentation/screens/select_target_personality_screen.dart';
-import 'package:app/features/target/providers.dart';
+import 'package:app/features/member/data/models/create_member_personality_dto.dart';
+import 'package:app/features/member/domain/entities/member_personality.dart';
+import 'package:app/features/member/presentation/screens/select_member_personality_screen.dart';
+import 'package:app/features/member/providers.dart';
 import 'package:app/shared/constants/app_colors.dart';
 import 'package:app/shared/domain/custom_input_type.dart';
 import 'package:app/shared/widgets/common_app_bar.dart';
@@ -14,14 +14,14 @@ import '../../../../core/exceptions/custom_exception.dart';
 import '../../../../core/exceptions/exception_message.dart';
 import '../../../../shared/widgets/input_screen.dart';
 
-class TargetPersonalityScreen extends ConsumerStatefulWidget {
-  const TargetPersonalityScreen({super.key});
+class MemberPersonalityScreen extends ConsumerStatefulWidget {
+  const MemberPersonalityScreen({super.key});
 
   @override
-  ConsumerState<TargetPersonalityScreen> createState() => _TargetPersonalityScreenState();
+  ConsumerState<MemberPersonalityScreen> createState() => _MemberPersonalityScreenScreenState();
 }
 
-class _TargetPersonalityScreenState extends ConsumerState<TargetPersonalityScreen> {
+class _MemberPersonalityScreenScreenState extends ConsumerState<MemberPersonalityScreen> {
   var _isLoading = false;
 
   void _createPersonality() async {
@@ -32,10 +32,10 @@ class _TargetPersonalityScreenState extends ConsumerState<TargetPersonalityScree
         MaterialPageRoute(
           builder:
               (inputScreenContext) => InputScreen(
-                title: "상대방의 성격",
+                title: "내 성격",
                 content:
-                    "밝고 긍정적인 성격, 내성적이고 말이 적은 편, 작은 일에도 잘 신경을 씀, 감정을 잘 숨기지 않음, 유머 감각이 있음, 항상 신중함, 주변을 잘 챙김 등 상대방의 성격이 잘 드러나도록 자세하게 입력해 주세요. ",
-                hintText: "상대방이 나와 있을 때 보여지는\n상대방의 성격을 구체적으로 입력해 주세요.",
+                    "밝고 긍정적인 성격, 내성적이고 말이 적은 편, 작은 일에도 잘 신경을 씀, 감정을 잘 숨기지 않음, 유머 감각이 있음, 항상 신중함, 주변을 잘 챙김 등 내 성격이 잘 드러나도록 자세하게 입력해 주세요. ",
+                hintText: "상대방과 함께 있을 때 보여지는\n내 성격을 구체적으로 입력해 주세요.",
                 onTap: (String text) {
                   if (text.isEmpty) {
                     throw CustomException(ExceptionMessage.needMorePersonality);
@@ -50,12 +50,12 @@ class _TargetPersonalityScreenState extends ConsumerState<TargetPersonalityScree
       if (!mounted) return;
       setState(() => _isLoading = true);
 
-      var createTargetPersonalityDto = CreateTargetPersonalityDto(
-        targetId: ref.read(targetControllerProvider).target!.id,
+      var createMemberPersonalityDto = CreateMemberPersonalityDto(
+        memberId: ref.read(memberControllerProvider).member!.id,
         inputType: CustomInputType.text,
         value: result,
       );
-      await ref.read(targetPersonalityControllerProvider.notifier).create(createTargetPersonalityDto);
+      await ref.read(memberPersonalityControllerProvider.notifier).create(createMemberPersonalityDto);
     } catch (e) {
       throw CustomException(ExceptionMessage.progressing);
     } finally {
@@ -68,17 +68,17 @@ class _TargetPersonalityScreenState extends ConsumerState<TargetPersonalityScree
       if (_isLoading) return;
       var result = await Navigator.push<String?>(
         context,
-        MaterialPageRoute(builder: (inputScreenContext) => SelectTargetPersonalityScreen()),
+        MaterialPageRoute(builder: (inputScreenContext) => SelectMemberPersonalityScreen()),
       );
       if (result == null) return;
       if (!mounted) return;
       setState(() => _isLoading = true);
-      var createTargetPersonalityDto = CreateTargetPersonalityDto(
-        targetId: ref.read(targetControllerProvider).target!.id,
+      var createMemberPersonalityDto = CreateMemberPersonalityDto(
+        memberId: ref.read(memberControllerProvider).member!.id,
         inputType: CustomInputType.button,
         value: result,
       );
-      await ref.read(targetPersonalityControllerProvider.notifier).create(createTargetPersonalityDto);
+      await ref.read(memberPersonalityControllerProvider.notifier).create(createMemberPersonalityDto);
     } catch (e) {
       throw CustomException(ExceptionMessage.progressing);
     } finally {
@@ -90,14 +90,14 @@ class _TargetPersonalityScreenState extends ConsumerState<TargetPersonalityScree
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "상대방의 성격"),
+      appBar: CommonAppBar(title: "내 성격"),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "상대방이 나와 있을 때 보여지는\n상대방의 성격을 구체적으로 입력해 주세요.\n자세히 입력할 수록 상대방을 더 잘 이해할 수 있습니다.",
+              "상대방과 함께 있을 때의 나의 성격을 자세하게 입력해 주세요.\n자세히 입력할 수록 상대방이 나를 더 잘 이해할 수 있습니다.",
               style: TextStyle(fontSize: 14, height: 20 / 14, color: AppColors.fontGray800Color),
             ),
             SizedBox(height: 20),
@@ -106,7 +106,7 @@ class _TargetPersonalityScreenState extends ConsumerState<TargetPersonalityScree
               runSpacing: 8,
               children:
                   ref
-                      .watch(targetPersonalityControllerProvider)
+                      .watch(memberPersonalityControllerProvider)
                       .personalities
                       .map((personality) => getPersonalityItem(personality))
                       .toList(),
@@ -141,20 +141,20 @@ class _TargetPersonalityScreenState extends ConsumerState<TargetPersonalityScree
     );
   }
 
-  Widget getPersonalityItem(TargetPersonality personality) {
+  Widget getPersonalityItem(MemberPersonality memberPersonality) {
     return GestureDetector(
       onLongPress: () async {
         var result = await showDialog<bool?>(
           context: context,
           builder:
               (context) => DeleteDialog(
-                value: personality.value,
-                title: "상대방의 성격을 삭제하시겠습니까?",
-                contents: "상대방의 성격 중 '${personality.value}'을(를)\n삭제하시겠습니까?",
+                value: memberPersonality.value,
+                title: "내 성격을 삭제하시겠습니까?",
+                contents: "내 성격 중 '${memberPersonality.value}'을(를)\n삭제하시겠습니까?",
               ),
         );
         if (result == null || !result) return;
-        await ref.read(targetPersonalityControllerProvider.notifier).delete(personality);
+        await ref.read(memberPersonalityControllerProvider.notifier).delete(memberPersonality);
       },
       child: Container(
         padding: const EdgeInsets.all(8),
@@ -163,7 +163,7 @@ class _TargetPersonalityScreenState extends ConsumerState<TargetPersonalityScree
           border: Border.all(color: AppColors.mainColor),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Text(personality.value),
+        child: Text(memberPersonality.value),
       ),
     );
   }

@@ -22,21 +22,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   double _getMemberInformationInputProgress() {
     var totalCnt = 3;
     var inputCnt = 0;
-    var member = ref.read(memberControllerProvider).member!;
+    var member = ref.watch(memberControllerProvider).member!;
     if (member.name.isNotEmpty) inputCnt++;
-    if (member.personality.isNotEmpty) inputCnt++;
-    if (member.conversationStyle.isNotEmpty) inputCnt++;
+    if (ref.watch(memberPersonalityControllerProvider).personalities.isNotEmpty) inputCnt++;
+    if (ref.watch(memberConversationStyleControllerProvider).conversationStyles.isNotEmpty) inputCnt++;
     return inputCnt / totalCnt;
   }
 
   double _getTargetInputProgress() {
     var totalCnt = 4;
     var inputCnt = 0;
-    var target = ref.read(targetControllerProvider).target!;
+    var target = ref.watch(targetControllerProvider).target!;
     if (target.name.isNotEmpty) inputCnt++;
     if (target.relationship.isNotEmpty) inputCnt++;
-    if (ref.read(targetPersonalityControllerProvider).personalities.isNotEmpty) inputCnt++;
-    if (target.conversationStyle.isNotEmpty) inputCnt++;
+    if (ref.watch(targetPersonalityControllerProvider).personalities.isNotEmpty) inputCnt++;
+    if (ref.watch(targetConversationStyleControllerProvider).conversationStyles.isNotEmpty) inputCnt++;
     return inputCnt / totalCnt;
   }
 
