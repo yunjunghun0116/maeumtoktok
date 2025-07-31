@@ -1,10 +1,8 @@
 import 'package:app/features/target/data/models/create_target_personality_dto.dart';
-import 'package:app/features/target/domain/entities/personality_type.dart';
 import 'package:app/features/target/domain/entities/target_personality.dart';
 import 'package:app/features/target/domain/usecases/create_target_personality.dart';
 import 'package:app/features/target/domain/usecases/delete_target_personality.dart';
 import 'package:app/features/target/domain/usecases/read_all_target_personality.dart';
-import 'package:app/features/target/domain/usecases/update_target_personality.dart';
 
 import '../../../../core/base/base_controller.dart';
 
@@ -14,9 +12,7 @@ class TargetPersonalityState extends BaseState {
   const TargetPersonalityState({required this.personalities, super.isLoading});
 
   bool contains(String keyword) {
-    return personalities.any(
-      (personality) => personality.value == keyword && personality.personalityType == PersonalityType.button,
-    );
+    return personalities.any((personality) => personality.value == keyword);
   }
 
   @override
@@ -32,17 +28,14 @@ class TargetPersonalityController extends BaseController<TargetPersonalityState>
   final CreateTargetPersonality _createTargetPersonalityUseCase;
   final DeleteTargetPersonality _deleteTargetPersonalityUseCase;
   final ReadAllTargetPersonality _readAllTargetPersonalityUseCase;
-  final UpdateTargetPersonality _updateTargetPersonalityUseCase;
 
   TargetPersonalityController({
     required CreateTargetPersonality createTargetPersonalityUseCase,
     required DeleteTargetPersonality deleteTargetPersonalityUseCase,
     required ReadAllTargetPersonality readAllTargetPersonalityUseCase,
-    required UpdateTargetPersonality updateTargetPersonalityUseCase,
   }) : _createTargetPersonalityUseCase = createTargetPersonalityUseCase,
        _deleteTargetPersonalityUseCase = deleteTargetPersonalityUseCase,
        _readAllTargetPersonalityUseCase = readAllTargetPersonalityUseCase,
-       _updateTargetPersonalityUseCase = updateTargetPersonalityUseCase,
        super(TargetPersonalityState(personalities: []));
 
   Future<void> initialize(String targetId) async {
@@ -55,11 +48,6 @@ class TargetPersonalityController extends BaseController<TargetPersonalityState>
   Future<void> create(CreateTargetPersonalityDto createTargetPersonalityDto) async {
     await callMethod<TargetPersonality>(() => _createTargetPersonalityUseCase.call(createTargetPersonalityDto));
     await initialize(createTargetPersonalityDto.targetId);
-  }
-
-  Future<void> update(TargetPersonality targetPersonality) async {
-    await callMethod<TargetPersonality>(() => _updateTargetPersonalityUseCase.call(targetPersonality));
-    await initialize(targetPersonality.targetId);
   }
 
   Future<void> delete(TargetPersonality targetPersonality) async {

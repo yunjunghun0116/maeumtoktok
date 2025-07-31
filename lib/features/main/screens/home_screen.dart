@@ -35,7 +35,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     var target = ref.read(targetControllerProvider).target!;
     if (target.name.isNotEmpty) inputCnt++;
     if (target.relationship.isNotEmpty) inputCnt++;
-    if (target.personality.isNotEmpty) inputCnt++;
+    if (ref.read(targetPersonalityControllerProvider).personalities.isNotEmpty) inputCnt++;
     if (target.conversationStyle.isNotEmpty) inputCnt++;
     return inputCnt / totalCnt;
   }

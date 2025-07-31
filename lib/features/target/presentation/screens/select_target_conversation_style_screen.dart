@@ -1,0 +1,74 @@
+import 'package:app/features/target/providers.dart';
+import 'package:app/shared/constants/app_colors.dart';
+import 'package:app/shared/constants/app_values.dart';
+import 'package:app/shared/utils/local_util.dart';
+import 'package:app/shared/widgets/common_app_bar.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class SelectTargetConversationStyleScreen extends ConsumerWidget {
+  const SelectTargetConversationStyleScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+      backgroundColor: AppColors.whiteColor,
+      appBar: CommonAppBar(title: "상대방의 말투 및 대화 스타일"),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "상대방이 나와 대화할 때 사용하는 평소 말투나\n대화 스타일을 자세하게 입력해 주세요.\n많이 선택할수록 상대방을 더 잘 이해할 수 있습니다.",
+              style: TextStyle(fontSize: 14, height: 20 / 14, color: AppColors.fontGray800Color),
+            ),
+            SizedBox(height: 20),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children:
+                  AppValues.conversationStyles
+                      .map(
+                        (conversationStyle) => getConversationItem(
+                          context,
+                          conversationStyle: conversationStyle,
+                          contains: ref.watch(targetConversationStyleControllerProvider).contains(conversationStyle),
+                        ),
+                      )
+                      .toList(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget getConversationItem(BuildContext context, {required String conversationStyle, required bool contains}) {
+    return GestureDetector(
+      onTap: () {
+        if (contains) {
+          LocalUtil.showMessage(context, message: "이미 선택된 말투 및 대화 스타일 입니다.");
+          return;
+        }
+        Navigator.pop(context, conversationStyle);
+      },
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: AppColors.whiteColor,
+          border: Border.all(color: contains ? AppColors.mainColor : AppColors.subColor1),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Text(
+          conversationStyle,
+          style: TextStyle(
+            fontSize: 14,
+            height: 20 / 14,
+            color: contains ? AppColors.fontGray800Color : AppColors.fontGray400Color,
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -1,6 +1,7 @@
 import 'package:app/core/exceptions/custom_exception.dart';
 import 'package:app/core/exceptions/exception_message.dart';
 import 'package:app/features/target/domain/entities/target.dart';
+import 'package:app/features/target/presentation/screens/target_conversation_style_screen.dart';
 import 'package:app/features/target/presentation/screens/target_personality_screen.dart';
 import 'package:app/features/target/providers.dart';
 import 'package:app/features/target_issue/presentation/screens/target_issue_screen.dart';
@@ -30,7 +31,8 @@ class _TargetInformationScreenState extends ConsumerState<TargetInformationScree
 
   void _updateConversationStyle() async {
     try {
-      var result = await Navigator.push<String>(
+      if (_isLoading) return;
+      var result = await Navigator.push<String?>(
         context,
         MaterialPageRoute(
           builder:
@@ -62,42 +64,9 @@ class _TargetInformationScreenState extends ConsumerState<TargetInformationScree
     }
   }
 
-  void _updatePersonality() async {
-    try {
-      var result = await Navigator.push<String>(
-        context,
-        MaterialPageRoute(
-          builder:
-              (inputScreenContext) => InputScreen(
-                title: "상대방의 성격",
-                content: "상대방이 나와 있을 때 보여지는\n상대방의 성격을 구체적으로 입력해 주세요.",
-                hintText:
-                    "밝고 긍정적인 성격, 내성적이고 말이 적은 편, 작은 일에도 잘 신경을 씀, 감정을 잘 숨기지 않음, 유머 감각이 있음, 항상 신중함, 주변을 잘 챙김 등 상대방의 성격이 잘 드러나도록 자세하게 입력해 주세요. ",
-                onTap: (String text) {
-                  if (text.length < 20) {
-                    throw CustomException(ExceptionMessage.needMorePersonality);
-                  }
-                  Navigator.pop(inputScreenContext, text);
-                },
-                initialValue: ref.read(targetControllerProvider).target!.personality,
-              ),
-        ),
-      );
-      if (result == null) return;
-      if (!mounted) return;
-      setState(() => _isLoading = true);
-      var target = ref.read(targetControllerProvider).target!;
-      target.updatePersonality(result);
-      await ref.read(targetControllerProvider.notifier).update(target);
-    } catch (e) {
-      throw CustomException(ExceptionMessage.progressing);
-    } finally {
-      setState(() => _isLoading = false);
-    }
-  }
-
   void _updateImage(Target target) async {
     try {
+      if (_isLoading) return;
       setState(() => _isLoading = true);
       var image = await _picker.pickImage(source: ImageSource.gallery);
       if (image == null) return;
@@ -129,6 +98,7 @@ class _TargetInformationScreenState extends ConsumerState<TargetInformationScree
 
   void _updateRelationship() async {
     try {
+      if (_isLoading) return;
       setState(() => _isLoading = true);
       var target = ref.read(targetControllerProvider).target!;
       target.updateRelationship(_relationshipController.text);
@@ -249,7 +219,15 @@ class _TargetInformationScreenState extends ConsumerState<TargetInformationScree
                 Row(
                   children: [
                     SizedBox(width: 80, child: Text("말투 및 대화스타일", textAlign: TextAlign.center)),
-                    Expanded(child: simpleActionButton("입력하기", () => _updateConversationStyle())),
+                    Expanded(
+                      child: simpleActionButton(
+                        "입력하기",
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => TargetConversationStyleScreen()),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(height: 20),

@@ -21,12 +21,6 @@ class TargetPersonalityRepositoryImpl implements TargetPersonalityRepository {
   }
 
   @override
-  Future<TargetPersonality> update(TargetPersonality targetPersonality) async {
-    await _collection.doc(targetPersonality.id).set(targetPersonality.toJson());
-    return targetPersonality;
-  }
-
-  @override
   Future<List<TargetPersonality>> readAllByTargetId(String targetId) async {
     var snapshot = await _collection.where("targetId", isEqualTo: targetId).get();
     return snapshot.docs

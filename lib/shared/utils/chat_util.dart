@@ -66,10 +66,11 @@ final class ChatUtil {
 
   static void _validateTarget(WidgetRef ref) {
     var target = ref.read(targetControllerProvider).target;
+    var targetPersonalities = ref.read(targetPersonalityControllerProvider).personalities;
     if (target == null) throw CustomException(ExceptionMessage.noObjectAssigned);
     if (target.name.isEmpty) throw CustomException(ExceptionMessage.targetNameRequired);
     if (target.relationship.isEmpty) throw CustomException(ExceptionMessage.targetRelationshipRequired);
-    if (target.personality.isEmpty) throw CustomException(ExceptionMessage.targetPersonalityRequired);
+    if (targetPersonalities.isEmpty) throw CustomException(ExceptionMessage.targetPersonalityRequired);
     if (target.conversationStyle.isEmpty) throw CustomException(ExceptionMessage.targetConversationStyleRequired);
   }
 

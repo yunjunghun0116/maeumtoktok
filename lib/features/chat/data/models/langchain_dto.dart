@@ -1,10 +1,18 @@
 import 'package:app/features/chat/domain/entities/message.dart';
 import 'package:app/features/member/domain/entities/member.dart';
+import 'package:app/features/member/providers.dart';
 import 'package:app/features/target/domain/entities/target.dart';
+import 'package:app/features/target/domain/entities/target_conversation_style.dart';
+import 'package:app/features/target/domain/entities/target_personality.dart';
+import 'package:app/features/target/providers.dart';
 import 'package:app/features/target_issue/domain/entities/target_issue.dart';
+import 'package:app/features/target_issue/providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LangchainDto {
   final Target target;
+  final List<TargetPersonality> targetPersonalities;
+  final List<TargetConversationStyle> targetConversationStyles;
   final Member member;
   final List<TargetIssue> positiveIssues;
   final List<TargetIssue> negativeIssues;
@@ -15,6 +23,8 @@ class LangchainDto {
 
   LangchainDto({
     required this.target,
+    required this.targetPersonalities,
+    required this.targetConversationStyles,
     required this.member,
     required this.positiveIssues,
     required this.negativeIssues,
@@ -24,22 +34,25 @@ class LangchainDto {
     required this.message,
   });
 
-  factory LangchainDto.fromObject({
-    required Target target,
-    required Member member,
-    required List<TargetIssue> positiveIssues,
-    required List<TargetIssue> negativeIssues,
-    required List<TargetIssue> normalIssues,
-    required List<Message> messages,
+  factory LangchainDto.fromWidgetRef({
+    required WidgetRef ref,
     required String conversationsContext,
+    required List<Message> messages,
     required String message,
   }) {
+    var target = ref.read(targetControllerProvider).target!;
+    var targetPersonalities = ref.read(targetPersonalityControllerProvider).personalities;
+    var targetConversationStyles = ref.read(targetConversationStyleControllerProvider).conversationStyles;
+    var member = ref.read(memberControllerProvider).member!;
+    var issueProvider = ref.read(targetIssueControllerProvider);
     return LangchainDto(
       target: target,
+      targetPersonalities: targetPersonalities,
+      targetConversationStyles: targetConversationStyles,
       member: member,
-      positiveIssues: positiveIssues,
-      negativeIssues: negativeIssues,
-      normalIssues: normalIssues,
+      positiveIssues: issueProvider.positiveIssues,
+      negativeIssues: issueProvider.negativeIssues,
+      normalIssues: issueProvider.normalIssues,
       messages: messages,
       conversationsContext: conversationsContext,
       message: message,

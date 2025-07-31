@@ -5,7 +5,5 @@ abstract class TargetPersonalityRepository {
 
   Future<List<TargetPersonality>> readAllByTargetId(String targetId);
 
-  Future<TargetPersonality> update(TargetPersonality targetPersonality);
-
   Future<void> delete(String id);
 }

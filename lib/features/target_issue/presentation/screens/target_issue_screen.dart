@@ -19,7 +19,7 @@ class TargetIssueScreen extends ConsumerStatefulWidget {
 
 class _TargetIssueScreenState extends ConsumerState<TargetIssueScreen> {
   void _createDialog(IssueType issueType) async {
-    var result = await Navigator.push<String>(
+    var result = await Navigator.push<String?>(
       context,
       MaterialPageRoute(
         builder:
@@ -43,7 +43,7 @@ class _TargetIssueScreenState extends ConsumerState<TargetIssueScreen> {
   }
 
   void _updateDialog(TargetIssue issue) async {
-    var result = await Navigator.push<String>(
+    var result = await Navigator.push<String?>(
       context,
       MaterialPageRoute(
         builder:

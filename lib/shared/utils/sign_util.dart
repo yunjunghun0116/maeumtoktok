@@ -19,22 +19,21 @@ final class SignUtil {
   }) async {
     // 이용자 정보 MemberController 에 저장
     ref.read<MemberController>(memberControllerProvider.notifier).login(member);
-    if (!context.mounted) return;
     // 상대방 정보 TargetController 에 저장
     await ref.read(targetControllerProvider.notifier).initialize(member);
-    if (!context.mounted) return;
 
     var target = ref.read(targetControllerProvider).target!;
+    // 상대방 성격
+    await ref.read(targetPersonalityControllerProvider.notifier).initialize(target.id);
+    await ref.read(targetConversationStyleControllerProvider.notifier).initialize(target.id);
     // 상대방과 관련된 사건 목록 TargetIssueController 에 저장
     await ref.read(targetIssueControllerProvider.notifier).initialize(target.id);
-    if (!context.mounted) return;
     // 모든 작업이 완료된 후 Main 화면으로 이동함
     if (isSaveLocal) {
       await ref.read(localRepositoryProvider).save<bool>(LocalRepositoryKey.isLoggedIn, true);
-      if (!context.mounted) return;
       await ref.read(localRepositoryProvider).save<String>(LocalRepositoryKey.memberEmail, member.email);
-      if (!context.mounted) return;
     }
+    if (!context.mounted) return;
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MainScreen()), (route) => false);
   }
 }

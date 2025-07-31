@@ -1,5 +1,7 @@
 import 'package:app/features/chat/data/models/langchain_dto.dart';
 import 'package:app/features/chat/domain/entities/sender_type.dart';
+import 'package:app/features/target/domain/entities/target_conversation_style.dart';
+import 'package:app/features/target/domain/entities/target_personality.dart';
 import 'package:app/features/target_issue/domain/entities/target_issue.dart';
 import 'package:app/shared/constants/secrets.dart';
 import 'package:langchain/langchain.dart';
@@ -18,12 +20,11 @@ class LangchainDatasource {
         })
         .join('\n');
     final prompt = '''
+    넌 요약가야.
     다음은 사용자와 상대방 간의 최근 대화야.
     대화의 감정 흐름, 갈등이나 사건, 사용자 심리 변화 등을 중심으로 최근 대화를 요약해줘.
     최근 대화에 중요도를 높게 주는데 시간이 오래된 대화이더라도, 추억이나 기억 관련된 대화 내용은 중요도가 높을 수 있으니 포함해줘.
-    배열을 기준으로 앞(index 가 작을수록)일수록 최근 대화인거야.
-    
-    최근 대화 내용 : $histories
+    앞에 나올수록 최근 대화야.
     ''';
 
     final chatModel = ChatOpenAI(
@@ -31,10 +32,7 @@ class LangchainDatasource {
       defaultOptions: ChatOpenAIOptions(model: 'gpt-4o', temperature: 0.3, maxTokens: 500, topP: 0.95),
     );
 
-    final result = await chatModel.call([
-      ChatMessage.system("넌 요약가야. 주어진 대화를 정서 흐름 중심으로 요약해줘."),
-      ChatMessage.humanText(prompt),
-    ]);
+    final result = await chatModel.call([ChatMessage.system(prompt), ChatMessage.humanText("최근 대화 내용 : $histories")]);
 
     return result.content;
   }
@@ -61,10 +59,22 @@ class LangchainDatasource {
     return '[${issues.map((issue) => '${number++}. ${issue.description},').join('')}]';
   }
 
+  String _targetPersonalityPrompt({required List<TargetPersonality> personalities}) {
+    if (personalities.isEmpty) return '';
+    return personalities.map((personality) => personality.value).join(",");
+  }
+
+  String _targetConversationStylePrompt({required List<TargetConversationStyle> conversationStyles}) {
+    if (conversationStyles.isEmpty) return '';
+    return conversationStyles.map((conversationStyle) => conversationStyle.value).join(",");
+  }
+
   String _getMakeAgentsSystemPrompt(LangchainDto dto) {
     var positiveIssues = _positiveIssuesPrompt(issues: dto.positiveIssues);
     var negativeIssues = _negativeIssuesPrompt(issues: dto.negativeIssues);
     var normalIssues = _normalIssuesPrompt(issues: dto.normalIssues);
+    var targetPersonality = _targetPersonalityPrompt(personalities: dto.targetPersonalities);
+    var targetConversationStyle = _targetConversationStylePrompt(conversationStyles: dto.targetConversationStyles);
     return '''
       사용자의 정보는 아래와 같습니다.
       [사용자 정보]
@@ -77,10 +87,10 @@ class LangchainDatasource {
       [당신의 프로필]
       - 이름 : ${dto.target.name}
       - 사용자와의 관계 : ${dto.target.relationship}
-      - 성격 : ${dto.target.personality}
-      - 말투/대화스타일 : ${dto.target.conversationStyle}
-      - 사용자와 함께했던 긍정적인 경험 : ${positiveIssues}
-      - 사용자와 함께했던 부정적인 경험 : ${negativeIssues}
+      - 성격 : $targetPersonality
+      - 말투/대화스타일 : $targetConversationStyle
+      - 사용자와 함께했던 긍정적인 경험 : $positiveIssues
+      - 사용자와 함께했던 부정적인 경험 : $negativeIssues
       ${normalIssues.isNotEmpty ? '- 사용자와 함께했던 일반적인 경험 : $normalIssues' : ''}
       
       [최근 대화 내용]
@@ -92,7 +102,7 @@ class LangchainDatasource {
       3. 시스템이나 AI라는 느낌을 주지 말고, 상황과 감정에 어울리는 현실적인 문장으로 답변해 주세요.
       4. 대화 초반에는 상대방의 리듬과 분위기를 존중해 주세요. 억지로 밝거나 감정을 유도하지 않고, 무던하고 담담하게 대화를 시작합니다.
       5. 사용자가 솔직하게 털어놓을 수 있도록, 편안하게 들어주고 사용자의 말을 존중하는 태도를 유지해 주세요.
-      6. 답변은 너무 길거나 짧지 않게, 사용자가 방금 입력한 메시지 길이의 1/2~2배 이내로 해 주세요.
+      6. 답변은 너무 길거나 짧지 않게, 사용자가 방금 입력한 메시지 길이의 1.5배 이내로 해 주세요.
     ''';
   }
 
@@ -132,17 +142,19 @@ class LangchainDatasource {
     var positiveIssues = _positiveIssuesPrompt(issues: dto.positiveIssues);
     var negativeIssues = _negativeIssuesPrompt(issues: dto.negativeIssues);
     var normalIssues = _normalIssuesPrompt(issues: dto.normalIssues);
+    var targetPersonality = _targetPersonalityPrompt(personalities: dto.targetPersonalities);
+    var targetConversationStyle = _targetConversationStylePrompt(conversationStyles: dto.targetConversationStyles);
     return '''
       다음은 ${dto.target.name}의 프로필, 최근 대화 내용, 그리고 1차 Agent가 생성한 답변입니다.
 
       [당신의 프로필]
       - 이름: ${dto.target.name}
       - 사용자와의 관계: ${dto.target.relationship}
-      - 성격: ${dto.target.personality}
-      - 말투/대화스타일: ${dto.target.conversationStyle}
-      - 사용자와 함께했던 긍정적인 경험: ${positiveIssues}
-      - 사용자와 함께했던 부정적인 경험: ${negativeIssues}
-      ${normalIssues.isNotEmpty ? '- 사용자와 함께했던 일반적인 경험: ${normalIssues}' : ''}
+      - 성격: $targetPersonality
+      - 말투/대화스타일: $targetConversationStyle
+      - 사용자와 함께했던 긍정적인 경험: $positiveIssues
+      - 사용자와 함께했던 부정적인 경험: $negativeIssues
+      ${normalIssues.isNotEmpty ? '- 사용자와 함께했던 일반적인 경험: $normalIssues' : ''}
       
       [최근 대화 내용]  
       ${dto.conversationsContext}

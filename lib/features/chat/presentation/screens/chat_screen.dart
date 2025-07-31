@@ -14,18 +14,14 @@ import 'package:app/features/chat/presentation/widgets/other_message_bubble.dart
 import 'package:app/features/chat/presentation/widgets/report_dialog.dart';
 import 'package:app/features/chat/presentation/widgets/send_message_input.dart';
 import 'package:app/features/chat/providers.dart';
-import 'package:app/features/member/domain/entities/member.dart';
 import 'package:app/features/member/providers.dart';
 import 'package:app/features/target/providers.dart';
-import 'package:app/features/target_issue/domain/entities/target_issue.dart';
-import 'package:app/features/target_issue/providers.dart';
 import 'package:app/shared/utils/chat_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../shared/constants/app_colors.dart';
 import '../../../../shared/utils/local_util.dart';
-import '../../../target/domain/entities/target.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
   const ChatScreen({super.key});
@@ -90,22 +86,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     if (_chat == null) return;
     if (!validateCanSendTargetMessage()) return;
 
-    var member = ref.read(memberControllerProvider).member!;
     var target = ref.read(targetControllerProvider).target!;
-    var positiveIssues = ref.read(targetIssueControllerProvider).positiveIssues;
-    var negativeIssues = ref.read(targetIssueControllerProvider).negativeIssues;
-    var normalIssues = ref.read(targetIssueControllerProvider).normalIssues;
     try {
       if (_isLoading) return;
       _isLoading = true;
-      var langchainDto = await getLangChainDto(
-        member: member,
-        target: target,
-        positiveIssues: positiveIssues,
-        negativeIssues: negativeIssues,
-        normalIssues: normalIssues,
-        messages: _messages,
-      );
+      var langchainDto = await getLangChainDto(messages: _messages);
       if (!mounted) return;
 
       if (langchainDto == null) return;
@@ -146,26 +131,15 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     return false;
   }
 
-  Future<LangchainDto?> getLangChainDto({
-    required Member member,
-    required Target target,
-    required List<TargetIssue> positiveIssues,
-    required List<TargetIssue> negativeIssues,
-    required List<TargetIssue> normalIssues,
-    required List<Message> messages,
-  }) async {
+  Future<LangchainDto?> getLangChainDto({required List<Message> messages}) async {
     var history = messages.reversed.toList();
     history.removeLast();
 
     var conversationsContext = await ref.read(langchainDatasourceProvider).summarizeConversation(history);
     if (!mounted) return null;
-    return LangchainDto(
-      target: target,
-      member: member,
-      positiveIssues: positiveIssues,
-      negativeIssues: negativeIssues,
-      normalIssues: normalIssues,
-      messages: history,
+    return LangchainDto.fromWidgetRef(
+      ref: ref,
+      messages: messages,
       conversationsContext: conversationsContext,
       message: messages.first.contents,
     );

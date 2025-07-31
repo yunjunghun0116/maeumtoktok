@@ -1,6 +1,10 @@
+import 'package:app/features/target/data/models/create_target_conversation_style_dto.dart';
 import 'package:app/features/target/data/models/create_target_personality_dto.dart';
+import 'package:app/features/target/domain/entities/conversation_style_type.dart';
 import 'package:app/features/target/domain/entities/personality_type.dart';
+import 'package:app/features/target/domain/entities/target_conversation_style.dart';
 import 'package:app/features/target/domain/entities/target_personality.dart';
+import 'package:app/features/target/presentation/screens/select_target_conversation_style_screen.dart';
 import 'package:app/features/target/presentation/screens/select_target_personality_screen.dart';
 import 'package:app/features/target/providers.dart';
 import 'package:app/shared/constants/app_colors.dart';
@@ -14,17 +18,17 @@ import '../../../../core/exceptions/custom_exception.dart';
 import '../../../../core/exceptions/exception_message.dart';
 import '../../../../shared/widgets/input_screen.dart';
 
-class TargetPersonalityScreen extends ConsumerStatefulWidget {
-  const TargetPersonalityScreen({super.key});
+class TargetConversationStyleScreen extends ConsumerStatefulWidget {
+  const TargetConversationStyleScreen({super.key});
 
   @override
-  ConsumerState<TargetPersonalityScreen> createState() => _TargetPersonalityScreenState();
+  ConsumerState<TargetConversationStyleScreen> createState() => _TargetConversationStyleScreenState();
 }
 
-class _TargetPersonalityScreenState extends ConsumerState<TargetPersonalityScreen> {
+class _TargetConversationStyleScreenState extends ConsumerState<TargetConversationStyleScreen> {
   var _isLoading = false;
 
-  void _createPersonality() async {
+  void _createConversationStyle() async {
     try {
       if (_isLoading) return;
       var result = await Navigator.push<String?>(
@@ -32,13 +36,14 @@ class _TargetPersonalityScreenState extends ConsumerState<TargetPersonalityScree
         MaterialPageRoute(
           builder:
               (inputScreenContext) => InputScreen(
-                title: "상대방의 성격",
+                title: "상대방의 말투나 대화 스타일",
                 content:
-                    "밝고 긍정적인 성격, 내성적이고 말이 적은 편, 작은 일에도 잘 신경을 씀, 감정을 잘 숨기지 않음, 유머 감각이 있음, 항상 신중함, 주변을 잘 챙김 등 상대방의 성격이 잘 드러나도록 자세하게 입력해 주세요. ",
-                hintText: "상대방이 나와 있을 때 보여지는\n상대방의 성격을 구체적으로 입력해 주세요.",
+                    "퉁명스러운 말투, 차가운 말투, 장난스러운 말투, 친구스러운 대화, 시크하게, 유머러스하게, 조용히 공감하는 스타일, 고민을 많이 들어주는 스타일 등 상대방의 말투나 대화 스타일을 자세하게 입력해 주세요. ",
+                hintText: "상대방이 나와 대화할 때 사용하는 \n상대방의 평소 말투나 대화 스타일을 \n자세하게 입력해 주세요.",
+
                 onTap: (String text) {
                   if (text.isEmpty) {
-                    throw CustomException(ExceptionMessage.needMorePersonality);
+                    throw CustomException(ExceptionMessage.needMoreConversationStyle);
                   }
                   Navigator.pop(inputScreenContext, text);
                 },
@@ -50,12 +55,12 @@ class _TargetPersonalityScreenState extends ConsumerState<TargetPersonalityScree
       if (!mounted) return;
       setState(() => _isLoading = true);
 
-      var createTargetPersonalityDto = CreateTargetPersonalityDto(
+      var createTargetConversationStyleDto = CreateTargetConversationStyleDto(
         targetId: ref.read(targetControllerProvider).target!.id,
-        personalityType: PersonalityType.text,
+        conversationStyleType: ConversationStyleType.text,
         value: result,
       );
-      await ref.read(targetPersonalityControllerProvider.notifier).create(createTargetPersonalityDto);
+      await ref.read(targetConversationStyleControllerProvider.notifier).create(createTargetConversationStyleDto);
     } catch (e) {
       throw CustomException(ExceptionMessage.progressing);
     } finally {
@@ -63,22 +68,22 @@ class _TargetPersonalityScreenState extends ConsumerState<TargetPersonalityScree
     }
   }
 
-  void _selectPersonality() async {
+  void _selectConversationStyle() async {
     try {
       if (_isLoading) return;
       var result = await Navigator.push<String?>(
         context,
-        MaterialPageRoute(builder: (inputScreenContext) => SelectTargetPersonalityScreen()),
+        MaterialPageRoute(builder: (inputScreenContext) => SelectTargetConversationStyleScreen()),
       );
       if (result == null) return;
       if (!mounted) return;
       setState(() => _isLoading = true);
-      var createTargetPersonalityDto = CreateTargetPersonalityDto(
+      var createTargetConversationStyleDto = CreateTargetConversationStyleDto(
         targetId: ref.read(targetControllerProvider).target!.id,
-        personalityType: PersonalityType.button,
+        conversationStyleType: ConversationStyleType.button,
         value: result,
       );
-      await ref.read(targetPersonalityControllerProvider.notifier).create(createTargetPersonalityDto);
+      await ref.read(targetConversationStyleControllerProvider.notifier).create(createTargetConversationStyleDto);
     } catch (e) {
       throw CustomException(ExceptionMessage.progressing);
     } finally {
@@ -90,14 +95,14 @@ class _TargetPersonalityScreenState extends ConsumerState<TargetPersonalityScree
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "상대방의 성격"),
+      appBar: CommonAppBar(title: "상대방의 말투 및 대화 스타일"),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "상대방이 나와 있을 때 보여지는\n상대방의 성격을 구체적으로 입력해 주세요.\n자세히 입력할 수록 상대방을 더 잘 이해할 수 있습니다.",
+              "상대방이 나와 대화할 때 사용하는 평소 말투나\n대화 스타일을 자세하게 입력해 주세요.\n자세히 입력할 수록 상대방을 더 잘 이해할 수 있습니다.",
               style: TextStyle(fontSize: 14, height: 20 / 14, color: AppColors.fontGray800Color),
             ),
             SizedBox(height: 20),
@@ -106,9 +111,9 @@ class _TargetPersonalityScreenState extends ConsumerState<TargetPersonalityScree
               runSpacing: 8,
               children:
                   ref
-                      .watch(targetPersonalityControllerProvider)
-                      .personalities
-                      .map((personality) => getPersonalityItem(personality))
+                      .watch(targetConversationStyleControllerProvider)
+                      .conversationStyles
+                      .map((conversationStyle) => getConversationStyleItem(conversationStyle))
                       .toList(),
             ),
           ],
@@ -116,8 +121,8 @@ class _TargetPersonalityScreenState extends ConsumerState<TargetPersonalityScree
       ),
       floatingActionButton: SpeedDial(
         children: [
-          getActionChild(personalityType: PersonalityType.text),
-          getActionChild(personalityType: PersonalityType.button),
+          getActionChild(conversationStyleType: ConversationStyleType.text),
+          getActionChild(conversationStyleType: ConversationStyleType.button),
         ],
         icon: Icons.add,
         backgroundColor: AppColors.mainColor,
@@ -126,17 +131,17 @@ class _TargetPersonalityScreenState extends ConsumerState<TargetPersonalityScree
     );
   }
 
-  SpeedDialChild getActionChild({required PersonalityType personalityType}) {
+  SpeedDialChild getActionChild({required ConversationStyleType conversationStyleType}) {
     return SpeedDialChild(
       onTap: () {
-        if (personalityType == PersonalityType.text) {
-          _createPersonality();
+        if (conversationStyleType == ConversationStyleType.text) {
+          _createConversationStyle();
           return;
         }
-        _selectPersonality();
+        _selectConversationStyle();
       },
       child: Text(
-        personalityType.name,
+        conversationStyleType.name,
         style: TextStyle(color: AppColors.whiteColor, fontWeight: FontWeight.bold, fontSize: 14, height: 20 / 14),
       ),
       backgroundColor: AppColors.mainColor,
@@ -144,20 +149,20 @@ class _TargetPersonalityScreenState extends ConsumerState<TargetPersonalityScree
     );
   }
 
-  Widget getPersonalityItem(TargetPersonality personality) {
+  Widget getConversationStyleItem(TargetConversationStyle conversationStyle) {
     return GestureDetector(
       onLongPress: () async {
         var result = await showDialog<bool?>(
           context: context,
           builder:
               (context) => DeleteDialog(
-                value: personality.value,
-                title: "상대방의 성격을 삭제하시겠습니까?",
-                contents: "상대방의 성격 중 '${personality.value}'을(를)\n삭제하시겠습니까?",
+                value: conversationStyle.value,
+                title: "상대방의 말투 및 대화 스타일을 삭제하시겠습니까?",
+                contents: "상대방의 말투 및 대화 스타일 중 '${conversationStyle.value}'을(를)\n삭제하시겠습니까?",
               ),
         );
         if (result == null || !result) return;
-        await ref.read(targetPersonalityControllerProvider.notifier).delete(personality);
+        await ref.read(targetConversationStyleControllerProvider.notifier).delete(conversationStyle);
       },
       child: Container(
         padding: const EdgeInsets.all(8),
@@ -166,7 +171,7 @@ class _TargetPersonalityScreenState extends ConsumerState<TargetPersonalityScree
           border: Border.all(color: AppColors.mainColor),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Text(personality.value),
+        child: Text(conversationStyle.value),
       ),
     );
   }

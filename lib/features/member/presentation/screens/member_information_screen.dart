@@ -23,7 +23,7 @@ class _MemberInformationScreenState extends ConsumerState<MemberInformationScree
 
   void _updateConversationStyle() async {
     try {
-      var result = await Navigator.push<String>(
+      var result = await Navigator.push<String?>(
         context,
         MaterialPageRoute(
           builder:
@@ -57,7 +57,7 @@ class _MemberInformationScreenState extends ConsumerState<MemberInformationScree
 
   void _updatePersonality() async {
     try {
-      var result = await Navigator.push<String>(
+      var result = await Navigator.push<String?>(
         context,
         MaterialPageRoute(
           builder:
