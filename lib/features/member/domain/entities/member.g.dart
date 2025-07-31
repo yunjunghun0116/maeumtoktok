@@ -12,8 +12,6 @@ Member _$MemberFromJson(Map<String, dynamic> json) => Member(
   password: json['password'] as String,
   name: json['name'] as String,
   lastLoginDate: DateTime.parse(json['lastLoginDate'] as String),
-  personality: json['personality'] as String,
-  conversationStyle: json['conversationStyle'] as String,
 );
 
 Map<String, dynamic> _$MemberToJson(Member instance) => <String, dynamic>{
@@ -22,6 +20,4 @@ Map<String, dynamic> _$MemberToJson(Member instance) => <String, dynamic>{
   'password': instance.password,
   'name': instance.name,
   'lastLoginDate': instance.lastLoginDate.toIso8601String(),
-  'personality': instance.personality,
-  'conversationStyle': instance.conversationStyle,
 };

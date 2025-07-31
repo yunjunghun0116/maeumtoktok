@@ -58,10 +58,12 @@ final class ChatUtil {
 
   static void _validateMember(WidgetRef ref) {
     var member = ref.read(memberControllerProvider).member;
+    var memberPersonalities = ref.read(memberPersonalityControllerProvider).personalities;
+    var memberConversationStyles = ref.read(memberConversationStyleControllerProvider).conversationStyles;
     if (member == null) throw CustomException(ExceptionMessage.noObjectAssigned);
     if (member.name.isEmpty) throw CustomException(ExceptionMessage.memberNameRequired);
-    if (member.personality.isEmpty) throw CustomException(ExceptionMessage.memberPersonalityRequired);
-    if (member.conversationStyle.isEmpty) throw CustomException(ExceptionMessage.memberConversationStyleRequired);
+    if (memberPersonalities.isEmpty) throw CustomException(ExceptionMessage.memberPersonalityRequired);
+    if (memberConversationStyles.isEmpty) throw CustomException(ExceptionMessage.memberConversationStyleRequired);
   }
 
   static void _validateTarget(WidgetRef ref) {

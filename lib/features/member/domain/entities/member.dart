@@ -14,8 +14,6 @@ class Member {
   final String password;
   String name;
   final DateTime lastLoginDate;
-  String personality;
-  String conversationStyle;
 
   Member({
     required this.id,
@@ -23,8 +21,6 @@ class Member {
     required this.password,
     required this.name,
     required this.lastLoginDate,
-    required this.personality,
-    required this.conversationStyle,
   });
 
   factory Member.fromJson(Map<String, dynamic> json) => _$MemberFromJson(json);
@@ -39,8 +35,6 @@ class Member {
       password: encryptedPassword,
       name: registerDto.name,
       lastLoginDate: DateTime.now(),
-      personality: "",
-      conversationStyle: "",
     );
   }
 
@@ -54,16 +48,8 @@ class Member {
     this.name = name;
   }
 
-  void updatePersonality(String personality) {
-    this.personality = personality;
-  }
-
-  void updateConversationStyle(String conversationStyle) {
-    this.conversationStyle = conversationStyle;
-  }
-
   @override
   String toString() {
-    return 'Member{id: $id, email: $email, password: $password, name: $name, lastLoginDate: ${lastLoginDate.toIso8601String()}';
+    return 'Member{id: $id, email: $email, password: $password, name: $name, lastLoginDate: $lastLoginDate}';
   }
 }
