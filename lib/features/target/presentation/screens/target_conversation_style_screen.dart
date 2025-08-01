@@ -101,6 +101,11 @@ class _TargetConversationStyleScreenState extends ConsumerState<TargetConversati
               "상대방이 나와 대화할 때 사용하는 평소 말투나\n대화 스타일을 자세하게 입력해 주세요.\n자세히 입력할 수록 상대방을 더 잘 이해할 수 있습니다.",
               style: TextStyle(fontSize: 14, height: 20 / 14, color: AppColors.fontGray800Color),
             ),
+            SizedBox(height: 10),
+            Text(
+              "입력형으로 최소 하나 이상 추가해야 합니다.",
+              style: TextStyle(fontSize: 14, height: 20 / 14, color: AppColors.fontGray600Color),
+            ),
             SizedBox(height: 20),
             Wrap(
               spacing: 8,

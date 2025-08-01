@@ -28,13 +28,15 @@ enum ExceptionMessage {
   memberNameRequired(400, "내 이름이 입력되어야 합니다."),
   memberPersonalityRequired(400, "내 성격이 입력되어야 합니다."),
   memberConversationStyleRequired(400, "내 말투 및 대화 스타일이 입력되어야 합니다."),
-  targetInformationRequired(400, "단절된 대상에 대한 추가 정보(성격 등)가 입력되어야 합니다."),
-  targetPositiveIssueRequired(400, "단절된 대상과의 긍정적인 기억이 하나 이상 입력되어야 합니다."),
-  targetNegativeIssueRequired(400, "단절된 대상과의 부정적인 기억이 하나 이상 입력되어야 합니다."),
-  targetNameRequired(400, "단절된 대상의 이름이 입력되어야 합니다."),
-  targetRelationshipRequired(400, "단절된 대상과의 관계가 입력되어야 합니다."),
-  targetPersonalityRequired(400, "단절된 대상의 성격이 입력되어야 합니다."),
-  targetConversationStyleRequired(400, "단절된 대상의 말투 및 대화 스타일이 입력되어야 합니다.");
+  targetInformationRequired(400, "상대방에 대한 추가 정보(성격 등)가 입력되어야 합니다."),
+  targetPositiveIssueRequired(400, "상대방과의 긍정적인 기억이 하나 이상 입력되어야 합니다."),
+  targetNegativeIssueRequired(400, "상대방과의 부정적인 기억이 하나 이상 입력되어야 합니다."),
+  targetNameRequired(400, "상대방의 이름이 입력되어야 합니다."),
+  targetRelationshipRequired(400, "상대방과의 관계가 입력되어야 합니다."),
+  targetPersonalityRequired(400, "상대방의 성격이 입력되어야 합니다."),
+  targetTextTypePersonalityRequired(400, "입력형으로 추가된 상대방의 성격이 최소 하나 이상 입력되어야 합니다."),
+  targetConversationStyleRequired(400, "상대방의 말투 및 대화 스타일이 입력되어야 합니다."),
+  targetTextTypeConversationStyleRequired(400, "입력형으로 추가된 상대방의 성격이 최소 하나 이상 입력되어야 합니다.");
 
   final int statusCode;
   final String description;

@@ -3,6 +3,7 @@ import 'package:app/features/chat/providers.dart';
 import 'package:app/features/member/providers.dart';
 import 'package:app/features/target/providers.dart';
 import 'package:app/features/target_issue/providers.dart';
+import 'package:app/shared/domain/custom_input_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -74,7 +75,13 @@ final class ChatUtil {
     if (target.name.isEmpty) throw CustomException(ExceptionMessage.targetNameRequired);
     if (target.relationship.isEmpty) throw CustomException(ExceptionMessage.targetRelationshipRequired);
     if (targetPersonalities.isEmpty) throw CustomException(ExceptionMessage.targetPersonalityRequired);
+    if (!targetPersonalities.any((personality) => personality.inputType == CustomInputType.text)) {
+      throw CustomException(ExceptionMessage.targetTextTypePersonalityRequired);
+    }
     if (targetConversationStyles.isEmpty) throw CustomException(ExceptionMessage.targetConversationStyleRequired);
+    if (!targetConversationStyles.any((conversationStyle) => conversationStyle.inputType == CustomInputType.text)) {
+      throw CustomException(ExceptionMessage.targetTextTypeConversationStyleRequired);
+    }
   }
 
   static void _validateTargetIssues(WidgetRef ref) {
