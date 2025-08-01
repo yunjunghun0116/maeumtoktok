@@ -79,9 +79,6 @@ final class ChatUtil {
       throw CustomException(ExceptionMessage.targetTextTypePersonalityRequired);
     }
     if (targetConversationStyles.isEmpty) throw CustomException(ExceptionMessage.targetConversationStyleRequired);
-    if (!targetConversationStyles.any((conversationStyle) => conversationStyle.inputType == CustomInputType.text)) {
-      throw CustomException(ExceptionMessage.targetTextTypeConversationStyleRequired);
-    }
   }
 
   static void _validateTargetIssues(WidgetRef ref) {
