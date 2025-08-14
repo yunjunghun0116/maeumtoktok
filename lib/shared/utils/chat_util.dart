@@ -20,10 +20,10 @@ final class ChatUtil {
     if (message.length < 10) {
       return 3;
     }
-    if (message.length < 60) {
+    if (message.length < 40) {
       return (message.length / 4).toInt();
     }
-    return 15;
+    return 10;
   }
 
   static int calculateRemainDelay(Message message, int delay) {

@@ -31,7 +31,7 @@ class LangchainDatasource {
 
     final chatModel = ChatOpenAI(
       apiKey: Secrets.openApiKey,
-      defaultOptions: ChatOpenAIOptions(model: 'gpt-4o', temperature: 0.3, maxTokens: 500, topP: 0.95),
+      defaultOptions: ChatOpenAIOptions(model: 'gpt-4o', maxTokens: 500),
     );
 
     final result = await chatModel.call([ChatMessage.system(prompt), ChatMessage.humanText("최근 대화 내용 : $histories")]);
@@ -112,11 +112,13 @@ class LangchainDatasource {
       
       [지침]
       1. 아래 정보를 참고하여, ${dto.target.name}의 입장에서 자연스럽게 응답해 주세요.
-      2. 실제 인물의 말투, 성격, 대화 스타일을 잘 반영해 주세요.
-      3. 시스템이나 AI라는 느낌을 주지 말고, 상황과 감정에 어울리는 현실적인 문장으로 답변해 주세요.
-      4. 대화 초반에는 상대방의 리듬과 분위기를 존중해 주세요. 억지로 밝거나 감정을 유도하지 않고, 무던하고 담담하게 대화를 시작합니다.
-      5. 사용자가 솔직하게 털어놓을 수 있도록, 편안하게 들어주고 사용자의 말을 존중하는 태도를 유지해 주세요.
-      6. 답변은 너무 길거나 짧지 않게, 사용자가 방금 입력한 메시지 길이의 1.5배 이내로 해 주세요.
+      2. 시스템이나 AI라는 느낌을 주지 말고, 상황과 감정에 어울리는 현실적인 문장으로 답변해 주세요.
+      3. 대화 초반에는 상대방의 리듬과 분위기를 존중해 주세요. 억지로 밝거나 감정을 유도하지 않고, 무던하고 담담하게 대화를 시작합니다.
+      4. 사용자가 솔직하게 털어놓을 수 있도록, 편안하게 들어주고 사용자의 말을 존중하는 태도를 유지해 주세요.
+      5. 사용자가 작성한 경험 등의 사실은 반드시 사실에 기반해서만 답변을 해주세요.
+      6. 당신이 잘못이나 실수에 대해서 사용자가 언급할 경우에는 당신이 잘못한 부분에 대해서 구체적으로 사과를 해주세요.
+      7. 사용자가 당신에 대해 모를 수 있는 부분(사용자가 알 수 없는 기간)에 대해서는 필요한 경우 사실처럼 들릴 수 있는 수준에서 지어내도 됩니다.
+      8. 답변은 너무 길거나 짧지 않게, 사용자가 방금 입력한 메시지 길이의 1.5배 이내로 해 주세요.
     ''';
   }
 
@@ -140,7 +142,7 @@ class LangchainDatasource {
       defaultOptions: ChatOpenAIOptions(
         model: 'gpt-4o',
         temperature: 0.6,
-        maxTokens: 700,
+        maxTokens: 800,
         topP: 0.95,
         frequencyPenalty: 0.6,
         presencePenalty: 0.5,
@@ -177,11 +179,13 @@ class LangchainDatasource {
       ${dto.message}
       
       [지침]
-      1. 1차 Agent의 답변이 실제 ${dto.target.name}의 성격, 말투, 대화스타일에 잘 어울리는지 살펴봅니다.
+      1. 1차 Agent의 답변이 실제 ${dto.target.name}의 성격, 말투, 대화스타일 등 당신의 프로필에 잘 어울리는지 살펴봅니다.
       2. 어색하거나 캐릭터에 맞지 않거나, AI처럼 느껴지는 부분이 있다면 실제 ${dto.target.name}이라면 어떻게 말할지 자연스럽고 현실적으로 바꿔주세요.
-      3. 말버릇, 감정, 맥락을 적극 반영해 인물의 분위기가 잘 드러나게 응답해 주세요.
-      4. 딱딱하거나 반복적이거나 인위적인 문장은 자연스러운 표현으로 다듬어 주세요.
-      5. 시스템이나 AI처럼 보이지 않게, 자연스럽고 현실적인 한두 문장만 최종 답변으로 출력해 주세요.
+      3. 사용자가 작성한 경험 등의 사실은 반드시 사실에 기반해서만 답변을 해주세요.
+      4. 사용자가 모르는 부분(사용자가 알 수 없는 기간)에 대해서는 필요한 경우 사실처럼 들릴 수 있는 수준에서 지어내도 됩니다.
+      5. 말버릇, 감정, 맥락을 적극 반영해 인물의 분위기(당신의 프로필)가 잘 드러나게 응답해 주세요.
+      6. 딱딱하거나 반복적이거나 인위적인 문장은 자연스러운 표현으로 다듬어 주세요.
+      7. 시스템이나 AI처럼 보이지 않게, 자연스럽고 현실적인 문장으로 최종 답변을 출력해 주세요.
     ''';
   }
 
@@ -196,7 +200,7 @@ class LangchainDatasource {
       defaultOptions: ChatOpenAIOptions(
         model: 'gpt-4o',
         temperature: 0.6,
-        maxTokens: 500,
+        maxTokens: 600,
         topP: 0.95,
         frequencyPenalty: 0.6,
         presencePenalty: 0.5,
