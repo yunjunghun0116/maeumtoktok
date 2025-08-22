@@ -2,7 +2,6 @@ import java.util.Properties
 import java.io.FileInputStream
 import java.io.File
 
-
 plugins {
     id("com.android.application")
     // START: FlutterFire Configuration
